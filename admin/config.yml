@@ -1,8 +1,7 @@
 backend:
   name: git-gateway
   branch: main
-  repo: your-username/noa-cakes  # CHANGE THIS to your GitHub repo
-
+repo: eranniv100-afk/noa-cakes
 media_folder: "images"
 public_folder: "/images"
 
