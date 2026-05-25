@@ -1,0 +1,52 @@
+backend:
+  name: git-gateway
+  branch: main
+  repo: your-username/noa-cakes  # CHANGE THIS to your GitHub repo
+
+media_folder: "images"
+public_folder: "/images"
+
+site_url: https://noa-cakes.netlify.app  # CHANGE THIS to your Netlify URL
+
+# Enable editorial workflow for drafts
+publish_mode: editorial_workflow
+
+# Collections
+collections:
+  - name: "gallery"
+    label: "גלריית עוגות"
+    label_singular: "עוגה"
+    folder: "content/gallery"
+    create: true
+    delete: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "כותרת", name: "title", widget: "string", required: true }
+      - { label: "תמונה", name: "image", widget: "image", required: true }
+      - { label: "קטגוריה", name: "category", widget: "select", options: ["עוגות מעוצבות", "עוגות בנטו", "בצקים", "קינוחים", "מארזים"], required: true }
+      - { label: "תיאור", name: "description", widget: "text", required: false }
+      - { label: "מוצג בדף הבית", name: "hero", widget: "boolean", default: false, required: false }
+      - { label: "סדר הצגה", name: "order", widget: "number", value_type: "int", default: 0, required: false }
+
+  - name: "settings"
+    label: "הגדרות אתר"
+    files:
+      - name: "site"
+        label: "הגדרות כלליות"
+        file: "content/settings.json"
+        fields:
+          - { label: "שם האתר", name: "site_name", widget: "string", default: "נעה | עוגות מעוצבות" }
+          - { label: "טלפון וואטסאפ", name: "whatsapp", widget: "string", default: "972542345906" }
+          - { label: "אינסטגרם", name: "instagram", widget: "string", default: "noa__sweet_" }
+          - { label: "כתובת", name: "address", widget: "string", default: "ירושלים" }
+
+  - name: "hero"
+    label: "תמונות רקע ראשי"
+    folder: "content/hero"
+    create: true
+    delete: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "כותרת", name: "title", widget: "string", required: true }
+      - { label: "תמונה", name: "image", widget: "image", required: true }
+      - { label: "סדר הצגה", name: "order", widget: "number", value_type: "int", default: 0, required: false }
