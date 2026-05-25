@@ -1,0 +1,1523 @@
+
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+  <meta name="theme-color" content="#9d174d">
+  <meta name="description" content="נעה - עוגות מעוצבות בוטיק בירושלים. עוגות מעוצבות, סדנאות בוטיק, ומתוקים מיוחדים.">
+  <meta name="format-detection" content="telephone=no">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta property="og:title" content="נעה | עוגות מעוצבות – ירושלים">
+  <meta property="og:description" content="עוגות מעוצבות בוטיק בירושלים. כל עוגה היא יצירת אמנות.">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="he_IL">
+  <meta property="og:image" content="./logo.jpg">
+  <title>נעה | עוגות מעוצבות – ירושלים</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+  <style>
+    @layer reset, base, layout, components, utilities, animations;
+
+    @layer reset {
+      *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+      img, picture, video, canvas, svg { display: block; max-width: 100%; }
+      input, button, textarea, select { font: inherit; color: inherit; }
+      button { cursor: pointer; background: none; border: none; }
+      a { text-decoration: none; color: inherit; }
+      ul, ol { list-style: none; }
+    }
+
+    @layer base {
+      :root {
+        --color-primary: #9d174d;
+        --color-primary-dark: #4c0519;
+        --color-primary-light: #be185d;
+        --color-bg: #fffcf9;
+        --color-bg-warm: #fff5f0;
+        --color-bg-pink: #fce7f3;
+        --color-bg-cream: #fef9f6;
+        --color-text: #2c2c2c;
+        --color-text-muted: #6b6b6b;
+        --color-text-light: #8a8a8a;
+        --color-border: #fbcfe8;
+        --color-border-light: #f0c8e0;
+        --color-whatsapp: #25D366;
+        --font-body: 'Assistant', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        --font-display: 'Playfair Display', 'Times New Roman', serif;
+        --text-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
+        --text-sm: clamp(0.875rem, 0.8rem + 0.35vw, 1rem);
+        --text-base: clamp(1rem, 0.9rem + 0.5vw, 1.1rem);
+        --text-lg: clamp(1.125rem, 1rem + 0.6vw, 1.25rem);
+        --text-xl: clamp(1.5rem, 1.2rem + 1.5vw, 2.2rem);
+        --text-2xl: clamp(2rem, 1.5rem + 2.5vw, 3rem);
+        --text-3xl: clamp(3rem, 2rem + 5vw, 5.5rem);
+        --space-xs: clamp(0.5rem, 0.4rem + 0.5vw, 0.75rem);
+        --space-sm: clamp(0.75rem, 0.6rem + 0.75vw, 1rem);
+        --space-md: clamp(1rem, 0.8rem + 1vw, 1.5rem);
+        --space-lg: clamp(1.5rem, 1.2rem + 1.5vw, 2rem);
+        --space-xl: clamp(2rem, 1.5rem + 2.5vw, 3rem);
+        --space-2xl: clamp(3rem, 2rem + 5vw, 5rem);
+        --container-max: 1400px;
+        --container-padding: clamp(1rem, 0.8rem + 1vw, 1.5rem);
+        --radius-sm: 0.75rem;
+        --radius-md: 1.5rem;
+        --radius-lg: 2rem;
+        --radius-full: 9999px;
+        --shadow-sm: 0 2px 8px rgba(0,0,0,0.04);
+        --shadow-md: 0 8px 24px rgba(0,0,0,0.06);
+        --shadow-lg: 0 15px 40px rgba(0,0,0,0.08);
+        --shadow-xl: 0 25px 60px rgba(0,0,0,0.12);
+        --transition-fast: 150ms ease;
+        --transition-base: 250ms ease;
+        --transition-slow: 400ms ease;
+      }
+      html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+      body {
+        font-family: var(--font-body);
+        font-size: var(--text-base);
+        line-height: 1.6;
+        color: var(--color-text);
+        background-color: var(--color-bg);
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        overflow-x: hidden;
+      }
+      ::selection { background-color: var(--color-bg-pink); color: var(--color-primary-dark); }
+    }
+
+    @layer layout {
+      .container { width: 100%; max-width: var(--container-max); margin-inline: auto; padding-inline: var(--container-padding); }
+
+      /* ===== NAVBAR ===== */
+      .navbar {
+        position: fixed; inset-block-start: 0; inset-inline: 0; z-index: 1000;
+        background: rgba(255, 252, 249, 0.95);
+        backdrop-filter: blur(16px) saturate(180%);
+        -webkit-backdrop-filter: blur(16px) saturate(180%);
+        border-bottom: 1px solid rgba(251, 207, 232, 0.5);
+        padding-block: var(--space-sm); padding-inline: var(--container-padding);
+        transition: background var(--transition-base), box-shadow var(--transition-base);
+      }
+      .navbar--scrolled { background: rgba(255, 252, 249, 0.98); box-shadow: var(--shadow-sm); }
+      .nav-container { max-width: var(--container-max); margin-inline: auto; display: flex; align-items: center; justify-content: space-between; gap: var(--space-md); }
+      .logo-area { display: flex; align-items: center; gap: 12px; }
+      .logo-img { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; border: 2px solid var(--color-border); box-shadow: var(--shadow-sm); }
+      .logo-text { font-family: var(--font-display); font-size: clamp(1.5rem, 1.2rem + 1.5vw, 1.7rem); font-weight: 500; color: var(--color-primary); letter-spacing: -0.02em; }
+      .nav-links { display: flex; align-items: center; gap: clamp(1rem, 0.8rem + 1vw, 2rem); }
+      .nav-links a { font-weight: 500; font-size: var(--text-sm); color: #4a4a4a; position: relative; padding-block: 4px; transition: color var(--transition-fast); }
+      .nav-links a::after { content: ''; position: absolute; inset-block-end: 0; inset-inline: 0; height: 2px; background: var(--color-primary); transform: scaleX(0); transform-origin: right; transition: transform var(--transition-base); }
+      .nav-links a:hover { color: var(--color-primary-light); }
+      .nav-links a:hover::after { transform: scaleX(1); }
+      .order-nav-btn { background: var(--color-primary); color: white; padding: 10px 28px; border-radius: var(--radius-full); font-weight: 600; font-size: var(--text-sm); transition: all var(--transition-base); box-shadow: 0 4px 14px rgba(157, 23, 77, 0.25); touch-action: manipulation; }
+      .order-nav-btn:hover { background: var(--color-primary-dark); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(157, 23, 77, 0.35); }
+      .order-nav-btn:active { transform: translateY(0); }
+      .mobile-menu-btn { display: none; font-size: 1.75rem; color: var(--color-primary); padding: 4px; touch-action: manipulation; }
+      .mobile-drawer { position: fixed; inset-block: 0; inset-inline-end: 0; width: min(75%, 300px); background: white; z-index: 1100; transform: translateX(100%); transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1); padding: var(--space-xl); display: flex; flex-direction: column; gap: var(--space-lg); box-shadow: var(--shadow-xl); }
+      [dir="rtl"] .mobile-drawer { transform: translateX(-100%); }
+      .mobile-drawer.open { transform: translateX(0); }
+      .close-drawer { align-self: flex-start; font-size: 1.75rem; color: var(--color-text); padding: 4px; touch-action: manipulation; }
+      .mobile-drawer a { font-size: var(--text-lg); font-weight: 500; color: var(--color-text); padding-block: var(--space-xs); transition: color var(--transition-fast); }
+      .mobile-drawer a:hover { color: var(--color-primary); }
+      .mobile-drawer .order-nav-btn { text-align: center; margin-block-start: var(--space-sm); }
+      .drawer-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1099; backdrop-filter: blur(4px); opacity: 0; transition: opacity var(--transition-base); }
+      .drawer-overlay.active { display: block; opacity: 1; }
+
+      /* ===== HERO ===== */
+      .hero {
+        min-height: 100dvh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: var(--space-xl);
+        position: relative;
+        overflow: hidden;
+        isolation: isolate;
+      }
+      .hero__slideshow { position: absolute; inset: 0; z-index: 0; overflow: hidden; }
+      .hero__slide { position: absolute; inset: 0; opacity: 0; transition: opacity 1.5s ease-in-out, transform 8s ease-out; transform: scale(1.1); }
+      .hero__slide.active { opacity: 1; transform: scale(1); }
+      .hero__slide img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.35) saturate(0.8); }
+      .hero__overlay { position: absolute; inset: 0; background: linear-gradient(145deg, rgba(157,23,77,0.3) 0%, rgba(76,5,25,0.5) 100%); z-index: 1; }
+      .hero__vignette { position: absolute; inset: 0; background: radial-gradient(ellipse at center, transparent 0%, rgba(0,0,0,0.4) 100%); z-index: 2; }
+      .hero-content { position: relative; z-index: 3; animation: fadeInUp 0.8s ease-out; color: white; text-shadow: 0 2px 20px rgba(0,0,0,0.3); }
+      .hero h1 { font-family: var(--font-display); font-size: var(--text-3xl); font-weight: 300; line-height: 1.1; margin-block-end: var(--space-sm); letter-spacing: -0.02em; }
+      .hero p { font-size: var(--text-lg); color: rgba(255,255,255,0.85); font-weight: 300; }
+      .hero-buttons { margin-block-start: var(--space-lg); display: flex; gap: var(--space-md); justify-content: center; flex-wrap: wrap; }
+      .btn-primary, .btn-outline {
+        padding: 14px 36px; border-radius: var(--radius-full); font-weight: 600; font-size: var(--text-sm);
+        transition: all var(--transition-base); display: inline-flex; align-items: center; gap: 8px;
+        touch-action: manipulation; position: relative; overflow: hidden;
+      }
+      .btn-primary { background: var(--color-primary); color: white; border: 2px solid var(--color-primary); box-shadow: 0 4px 16px rgba(157, 23, 77, 0.3); }
+      .btn-primary:hover { background: var(--color-primary-dark); border-color: var(--color-primary-dark); transform: translateY(-3px); box-shadow: 0 8px 24px rgba(157, 23, 77, 0.4); }
+      .btn-primary:active { transform: translateY(-1px); }
+      .btn-outline { background: rgba(255, 255, 255, 0.15); border: 2px solid rgba(255,255,255,0.6); color: white; backdrop-filter: blur(8px); }
+      .btn-outline:hover { background: rgba(255, 255, 255, 0.3); border-color: white; transform: translateY(-3px); }
+
+      /* ===== SECTION SEPARATORS ===== */
+      .section-divider {
+        height: 120px;
+        background: linear-gradient(to bottom, var(--color-bg-warm) 0%, var(--color-bg) 50%, var(--color-bg-cream) 100%);
+        position: relative;
+        overflow: hidden;
+      }
+      .section-divider::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 60px;
+        height: 60px;
+        background: var(--color-bg-pink);
+        border-radius: 50%;
+        opacity: 0.3;
+      }
+      .section-divider::after {
+        content: '🍰';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 1.5rem;
+      }
+
+      /* ===== GALLERY ===== */
+      .gallery-section { padding-block: var(--space-2xl); background: var(--color-bg); }
+      .section-header { text-align: center; margin-block-end: var(--space-xl); }
+      .section-header h2 { font-family: var(--font-display); font-size: var(--text-2xl); margin-block-end: var(--space-sm); font-weight: 400; }
+      .section-header p { color: var(--color-text-muted); max-width: 560px; margin-inline: auto; font-size: var(--text-base); }
+
+      /* Category Filter Dropdown */
+      .category-filter {
+        max-width: 400px;
+        margin: 0 auto var(--space-xl);
+        position: relative;
+      }
+      .category-filter__select {
+        width: 100%;
+        padding: 14px 20px;
+        border: 2px solid var(--color-border-light);
+        border-radius: var(--radius-full);
+        font-size: var(--text-base);
+        font-weight: 500;
+        color: var(--color-text);
+        background: white;
+        cursor: pointer;
+        appearance: none;
+        -webkit-appearance: none;
+        text-align: center;
+        transition: all var(--transition-fast);
+        box-shadow: var(--shadow-sm);
+      }
+      .category-filter__select:hover, .category-filter__select:focus {
+        border-color: var(--color-primary);
+        box-shadow: 0 0 0 4px rgba(157, 23, 77, 0.1);
+        outline: none;
+      }
+      .category-filter__arrow {
+        position: absolute;
+        left: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        pointer-events: none;
+        color: var(--color-primary);
+        font-size: 0.8rem;
+      }
+      .category-count {
+        text-align: center;
+        color: var(--color-text-muted);
+        font-size: var(--text-sm);
+        margin-block-end: var(--space-md);
+      }
+
+      .gallery-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+        gap: var(--space-lg);
+      }
+      @supports (container-type: inline-size) {
+        .gallery-section { container-type: inline-size; }
+        @container (min-width: 900px) { .gallery-grid { grid-template-columns: repeat(3, 1fr); } }
+        @container (min-width: 1200px) { .gallery-grid { grid-template-columns: repeat(4, 1fr); } }
+      }
+      .gallery-card {
+        background: white;
+        border-radius: var(--radius-lg);
+        overflow: hidden;
+        box-shadow: var(--shadow-md);
+        transition: all var(--transition-base);
+        cursor: pointer;
+        position: relative;
+        background-image: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+        background-size: 200% 100%;
+        animation: skeleton 1.5s infinite;
+      }
+      .gallery-card.loaded { background-image: none; animation: none; }
+      .gallery-card.hidden { display: none; }
+      @media (hover: hover) { .gallery-card:hover { transform: translateY(-8px); box-shadow: var(--shadow-xl); } }
+      .gallery-card:active { transform: scale(0.98); }
+      .gallery-card__image-wrapper { position: relative; aspect-ratio: 1 / 1; overflow: hidden; background: linear-gradient(135deg, #f8e8e0 0%, #f0d8e0 100%); }
+      .gallery-card img { width: 100%; height: 100%; object-fit: cover; transition: transform var(--transition-slow); content-visibility: auto; contain: paint; }
+      @media (hover: hover) { .gallery-card:hover img { transform: scale(1.05); } }
+      .gallery-card__zoom-hint {
+        position: absolute; bottom: 12px; left: 12px;
+        background: rgba(0,0,0,0.5); color: white; padding: 6px 12px;
+        border-radius: var(--radius-full); font-size: 0.75rem;
+        opacity: 0; transition: opacity var(--transition-fast);
+        backdrop-filter: blur(4px); pointer-events: none;
+        display: flex; align-items: center; gap: 4px;
+      }
+      @media (hover: hover) { .gallery-card:hover .gallery-card__zoom-hint { opacity: 1; } }
+      @media (hover: none) { .gallery-card__zoom-hint { opacity: 0.7; } }
+      .gallery-card__category-tag {
+        position: absolute; top: 12px; right: 12px;
+        background: rgba(157, 23, 77, 0.85); color: white;
+        padding: 4px 12px; border-radius: var(--radius-full);
+        font-size: 0.75rem; font-weight: 600;
+        backdrop-filter: blur(4px);
+      }
+
+      /* ===== ABOUT / WORKSHOPS ===== */
+      .about-section { background: var(--color-bg-cream); padding-block: var(--space-2xl); }
+      .about-inner { max-width: 1100px; margin-inline: auto; display: flex; flex-wrap: wrap; gap: var(--space-xl); align-items: center; justify-content: center; }
+      .about-text { flex: 2; min-width: min(100%, 400px); }
+      .about-text h2 { font-family: var(--font-display); font-size: var(--text-2xl); margin-block-end: var(--space-md); font-weight: 400; }
+      .about-text p { margin-block-end: var(--space-md); color: var(--color-text); }
+      .about-text blockquote { font-style: italic; color: var(--color-text-muted); border-right: 3px solid var(--color-primary); padding-right: var(--space-md); margin-block: var(--space-md); font-family: var(--font-display); }
+      .about-img { flex: 1; min-width: min(100%, 280px); text-align: center; }
+      .about-img img { max-width: 280px; width: 100%; border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); aspect-ratio: 1 / 1; object-fit: cover; }
+      .about-features { display: flex; gap: var(--space-xl); flex-wrap: wrap; margin-block-start: var(--space-lg); }
+      .about-feature h4 { color: var(--color-primary); font-size: var(--text-lg); margin-block-end: var(--space-xs); font-weight: 600; }
+      .workshop-link { color: var(--color-primary); border-bottom: 2px solid var(--color-primary); padding-bottom: 2px; font-weight: 500; transition: all var(--transition-fast); touch-action: manipulation; }
+      .workshop-link:hover { color: var(--color-primary-dark); border-color: var(--color-primary-dark); }
+
+      /* ===== WORKSHOPS SECTION ===== */
+      .workshops-section { background: linear-gradient(135deg, var(--color-bg-warm) 0%, var(--color-bg-pink) 100%); padding-block: var(--space-2xl); }
+      .workshops-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: var(--space-lg); margin-top: var(--space-xl); }
+      .workshop-card {
+        background: white; border-radius: var(--radius-lg); padding: var(--space-xl);
+        box-shadow: var(--shadow-md); transition: all var(--transition-base);
+        text-align: center; position: relative; overflow: hidden;
+      }
+      .workshop-card::before {
+        content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+        background: linear-gradient(90deg, var(--color-primary), var(--color-primary-light));
+      }
+      @media (hover: hover) { .workshop-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-xl); } }
+      .workshop-card__icon { font-size: 3rem; margin-bottom: var(--space-sm); }
+      .workshop-card h3 { font-family: var(--font-display); font-size: var(--text-xl); color: var(--color-primary); margin-bottom: var(--space-sm); }
+      .workshop-card p { color: var(--color-text-muted); margin-bottom: var(--space-md); }
+      .workshop-card__price { font-size: var(--text-lg); font-weight: 700; color: var(--color-primary); margin-bottom: var(--space-sm); }
+      .workshop-card__btn {
+        background: var(--color-primary); color: white; padding: 10px 28px;
+        border-radius: var(--radius-full); font-weight: 600; font-size: var(--text-sm);
+        transition: all var(--transition-base); display: inline-block;
+        box-shadow: 0 4px 14px rgba(157, 23, 77, 0.25);
+      }
+      .workshop-card__btn:hover { background: var(--color-primary-dark); transform: translateY(-2px); }
+
+      /* ===== FOOTER ===== */
+      footer { text-align: center; padding-block: var(--space-xl); background: white; border-top: 1px solid var(--color-bg-pink); color: var(--color-text-light); }
+      footer p { margin-block-end: var(--space-sm); }
+      .social-link { color: var(--color-primary); font-weight: 500; transition: color var(--transition-fast); display: inline-flex; align-items: center; gap: 6px; }
+      .social-link:hover { color: var(--color-primary-dark); text-decoration: underline; text-underline-offset: 4px; }
+      .share-btn {
+        background: var(--color-bg-pink); color: var(--color-primary); padding: 10px 24px;
+        border-radius: var(--radius-full); font-weight: 600; font-size: var(--text-sm);
+        transition: all var(--transition-base); display: inline-flex; align-items: center; gap: 8px;
+        margin-top: var(--space-sm); border: 2px solid var(--color-border);
+        touch-action: manipulation;
+      }
+      .share-btn:hover { background: var(--color-primary); color: white; transform: translateY(-2px); }
+      .share-btn.copied { background: var(--color-whatsapp); color: white; border-color: var(--color-whatsapp); }
+
+      /* ===== FLOATING ELEMENTS ===== */
+      .jerusalem-badge { position: fixed; bottom: 20px; left: 20px; background: var(--color-bg-pink); padding: 8px 20px; border-radius: var(--radius-full); font-size: var(--text-xs); font-weight: 700; color: var(--color-primary); z-index: 1050; backdrop-filter: blur(8px); border: 1px solid var(--color-border); pointer-events: none; box-shadow: var(--shadow-sm); letter-spacing: 0.02em; }
+      .whatsapp-float { position: fixed; bottom: 20px; right: 20px; width: 60px; height: 60px; background: var(--color-whatsapp); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 16px rgba(0,0,0,0.2); z-index: 1060; transition: transform var(--transition-base), box-shadow var(--transition-base); touch-action: manipulation; }
+      .whatsapp-float:hover { transform: scale(1.1); box-shadow: 0 6px 24px rgba(0,0,0,0.3); }
+      .whatsapp-float:active { transform: scale(0.95); }
+
+      /* ===== ORDER MODAL ===== */
+      .order-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); z-index: 1500; align-items: center; justify-content: center; padding: var(--space-md); opacity: 0; transition: opacity var(--transition-base); }
+      .order-modal.active { display: flex; opacity: 1; }
+      .modal-card { background: white; max-width: 520px; width: 100%; border-radius: var(--radius-lg); padding: var(--space-xl); position: relative; text-align: right; box-shadow: var(--shadow-xl); transform: scale(0.9) translateY(20px); transition: transform var(--transition-base); }
+      .order-modal.active .modal-card { transform: scale(1) translateY(0); }
+      .close-modal { position: absolute; left: var(--space-md); top: var(--space-sm); font-size: 1.75rem; color: var(--color-text-muted); transition: color var(--transition-fast); touch-action: manipulation; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 50%; }
+      .close-modal:hover { color: var(--color-text); background: var(--color-bg-warm); }
+      .modal-card h3 { font-family: var(--font-display); font-size: var(--text-xl); margin-block-end: var(--space-xs); color: var(--color-text); }
+      .modal-badge { color: var(--color-primary); font-size: var(--text-sm); font-weight: 500; margin-block-end: var(--space-md); display: flex; align-items: center; gap: 6px; }
+      .form-group { margin-block-end: var(--space-sm); }
+      .form-group label { display: block; font-size: var(--text-sm); font-weight: 500; color: var(--color-text-muted); margin-block-end: 4px; }
+      .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 12px 16px; border: 2px solid var(--color-border-light); border-radius: var(--radius-md); font-size: var(--text-base); transition: all var(--transition-fast); background: var(--color-bg); }
+      .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: var(--color-primary); box-shadow: 0 0 0 4px rgba(157, 23, 77, 0.1); }
+      .form-group input::placeholder, .form-group textarea::placeholder { color: #aaa; }
+      .submit-btn { background: var(--color-primary); color: white; width: 100%; padding: 14px; border-radius: var(--radius-full); font-weight: 700; font-size: var(--text-base); margin-block-start: var(--space-sm); transition: all var(--transition-base); box-shadow: 0 4px 16px rgba(157, 23, 77, 0.3); touch-action: manipulation; }
+      .submit-btn:hover { background: var(--color-primary-dark); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(157, 23, 77, 0.4); }
+      .submit-btn:active { transform: translateY(0); }
+
+      /* ===== LIGHTBOX ===== */
+      .lightbox { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); backdrop-filter: blur(12px); z-index: 2000; align-items: center; justify-content: center; opacity: 0; transition: opacity var(--transition-base); overflow: hidden; touch-action: none; }
+      .lightbox.active { display: flex; opacity: 1; }
+      .lightbox__stage { position: relative; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+      .lightbox__image-wrapper { position: relative; transform-origin: center center; transition: transform 0.1s ease-out; will-change: transform; cursor: grab; }
+      .lightbox__image-wrapper.grabbing { cursor: grabbing; }
+      .lightbox img { max-width: 90vw; max-height: 85vh; object-fit: contain; border-radius: var(--radius-md); box-shadow: 0 20px 60px rgba(0,0,0,0.5); user-select: none; -webkit-user-select: none; pointer-events: none; }
+      .lightbox__controls { position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%); display: flex; gap: 12px; align-items: center; z-index: 10; background: rgba(0,0,0,0.5); padding: 8px 16px; border-radius: var(--radius-full); backdrop-filter: blur(8px); }
+      .lightbox__btn { width: 44px; height: 44px; border-radius: 50%; background: rgba(255,255,255,0.15); color: white; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; transition: background var(--transition-fast); touch-action: manipulation; }
+      .lightbox__btn:hover { background: rgba(255,255,255,0.3); }
+      .lightbox__btn:active { background: rgba(255,255,255,0.2); transform: scale(0.95); }
+      .lightbox__counter { color: white; font-size: var(--text-sm); font-weight: 500; min-width: 60px; text-align: center; }
+      .close-lightbox { position: absolute; top: var(--space-md); left: var(--space-md); font-size: 2.5rem; color: white; background: rgba(255,255,255,0.1); width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; border-radius: 50%; transition: background var(--transition-fast); touch-action: manipulation; z-index: 10; }
+      .close-lightbox:hover { background: rgba(255,255,255,0.2); }
+      .lightbox__hint { position: absolute; top: 80px; left: 50%; transform: translateX(-50%); color: rgba(255,255,255,0.6); font-size: var(--text-xs); background: rgba(0,0,0,0.4); padding: 6px 14px; border-radius: var(--radius-full); backdrop-filter: blur(4px); pointer-events: none; opacity: 0; transition: opacity 0.5s ease; }
+      .lightbox.active .lightbox__hint { opacity: 1; animation: hintFade 3s ease forwards; }
+    }
+
+    @layer animations {
+      @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+      @keyframes skeleton { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+      @keyframes hintFade { 0% { opacity: 0; } 20% { opacity: 1; } 80% { opacity: 1; } 100% { opacity: 0; } }
+      @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+      @supports (animation-timeline: scroll()) {
+        .gallery-card { animation: fadeInUp 0.6s ease-out backwards; animation-timeline: view(); animation-range: entry 10% cover 30%; }
+      }
+      @supports not (animation-timeline: scroll()) {
+        .gallery-card { opacity: 1; transform: none; }
+      }
+    }
+
+    @layer utilities {
+      @media (max-width: 768px) {
+        .nav-links { display: none; }
+        .mobile-menu-btn { display: block; }
+        .hero h1 { font-size: clamp(2.5rem, 8vw, 3.5rem); }
+        .about-inner { flex-direction: column; text-align: center; }
+        .about-text { text-align: center; }
+        .about-text blockquote { border-right: none; border-top: 3px solid var(--color-primary); padding-right: 0; padding-top: var(--space-sm); }
+        .about-features { justify-content: center; }
+        .gallery-grid { grid-template-columns: repeat(2, 1fr); gap: var(--space-sm); }
+        .section-divider { height: 80px; }
+        .workshops-grid { grid-template-columns: 1fr; }
+        .jerusalem-badge { bottom: 80px; left: 12px; font-size: 0.7rem; padding: 6px 14px; }
+        .whatsapp-float { width: 52px; height: 52px; bottom: 16px; right: 16px; }
+        .modal-card { padding: var(--space-lg); margin: var(--space-sm); }
+        .lightbox img { max-width: 95vw; max-height: 80vh; }
+        .lightbox__controls { bottom: 16px; padding: 6px 12px; }
+        .lightbox__btn { width: 40px; height: 40px; font-size: 1.1rem; }
+      }
+      @media (max-width: 480px) {
+        .gallery-grid { grid-template-columns: 1fr; }
+        .hero-buttons { flex-direction: column; align-items: center; }
+        .btn-primary, .btn-outline { width: min(100%, 280px); justify-content: center; }
+        .category-filter { max-width: 100%; margin-inline: var(--space-sm); }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+        html { scroll-behavior: auto; }
+        .hero__slide { transition: none; }
+      }
+      @media print {
+        .navbar, .jerusalem-badge, .whatsapp-float, .mobile-menu-btn, .hero-buttons, .hero__slideshow { display: none !important; }
+        .hero { min-height: auto; padding: 2rem; background: var(--color-bg-warm) !important; }
+        .hero-content { color: var(--color-text) !important; text-shadow: none !important; }
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="jerusalem-badge">🍰 ירושלים בלבד</div>
+  <div class="whatsapp-float" id="whatsappFloatBtn" role="button" aria-label="פתח צ'אט וואטסאפ">
+    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="white" viewBox="0 0 16 16" aria-hidden="true">
+      <path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"/>
+    </svg>
+  </div>
+
+  <!-- ===== NAVBAR ===== -->
+  <nav class="navbar" id="navbar" role="navigation" aria-label="ניווט ראשי">
+    <div class="nav-container">
+      <div class="logo-area">
+        <img src="./logo.jpg" alt="לוגו נעה" class="logo-img" width="48" height="48" loading="eager" onerror="this.src='https://placehold.co/60x60?text=Logo'">
+        <span class="logo-text">נעה</span>
+      </div>
+      <div class="nav-links">
+        <a href="#home">בית</a>
+        <a href="#gallery">קולקציה</a>
+        <a href="#workshops">סדנאות</a>
+        <a href="#about">אודות</a>
+        <button class="order-nav-btn" id="navOrderBtn" type="button">הזמנות</button>
+      </div>
+      <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="פתח תפריט" aria-expanded="false" aria-controls="mobileDrawer">☰</button>
+    </div>
+  </nav>
+
+  <div class="drawer-overlay" id="drawerOverlay" aria-hidden="true"></div>
+  <div class="mobile-drawer" id="mobileDrawer" role="dialog" aria-label="תפריט נייד" aria-modal="true">
+    <button class="close-drawer" id="closeDrawerBtn" aria-label="סגור תפריט">✕</button>
+    <a href="#home">בית</a>
+    <a href="#gallery">קולקציה</a>
+    <a href="#workshops">סדנאות</a>
+    <a href="#about">אודות</a>
+    <button class="order-nav-btn" id="mobileOrderBtn" type="button">הזמנות</button>
+  </div>
+
+  <!-- ===== HERO ===== -->
+  <section id="home" class="hero" aria-label="ראשי">
+    <div class="hero__slideshow" id="heroSlideshow" aria-hidden="true">
+      <div class="hero__slide active" data-slide="0"><img src="./images/image1.jpeg" alt="" loading="eager"></div>
+      <div class="hero__slide" data-slide="1"><img src="./images/image2.jpeg" alt="" loading="lazy"></div>
+      <div class="hero__slide" data-slide="2"><img src="./images/image3.jpeg" alt="" loading="lazy"></div>
+      <div class="hero__slide" data-slide="3"><img src="./images/image4.jpeg" alt="" loading="lazy"></div>
+      <div class="hero__slide" data-slide="4"><img src="./images/image5.jpeg" alt="" loading="lazy"></div>
+      <div class="hero__slide" data-slide="5"><img src="./images/image6.jpeg" alt="" loading="lazy"></div>
+    </div>
+    <div class="hero__overlay" aria-hidden="true"></div>
+    <div class="hero__vignette" aria-hidden="true"></div>
+    <div class="hero-content">
+      <h1>Made with love</h1>
+      <p>Jerusalem Boutique Patisserie</p>
+      <div class="hero-buttons">
+        <a href="#gallery" class="btn-outline">הקולקציה</a>
+        <button class="btn-primary" id="heroOrderBtn" type="button">הזמנה אישית</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SECTION DIVIDER ===== -->
+  <div class="section-divider" aria-hidden="true"></div>
+
+  <!-- ===== GALLERY ===== -->
+  <section id="gallery" class="gallery-section container" aria-label="גלריית עוגות">
+    <div class="section-header">
+      <h2>הקולקציה שלנו</h2>
+      <p>✨ כל עוגה היא יצירת אמנות – גלו, התאהבו והזמינו ✨</p>
+    </div>
+
+    <div class="category-filter">
+      <select class="category-filter__select" id="categoryFilter" aria-label="סינון קטגוריות">
+        <option value="all">הכל</option>
+        <option value="עוגות מעוצבות">עוגות מעוצבות</option>
+        <option value="עוגות בנטו">עוגות בנטו</option>
+        <option value="בצקים">בצקים</option>
+        <option value="קינוחים">קינוחים</option>
+        <option value="מארזים">מארזים</option>
+      </select>
+      <span class="category-filter__arrow">▼</span>
+    </div>
+    <div class="category-count" id="categoryCount">מציג 42 פריטים</div>
+
+    <div class="gallery-grid" id="galleryGrid">
+      <div class="gallery-card" data-index="1" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגה מספר 1">
+        <div class="gallery-card__image-wrapper">
+          <img src="./images/image1.jpeg" alt="עוגה מעוצבת מספר 1" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+1'" onload="this.parentElement.parentElement.classList.add('loaded')">
+          <div class="gallery-card__zoom-hint">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+            הקישו להגדלה
+          </div>
+        </div>
+        <span class="gallery-card__category-tag">עוגות מעוצבות</span>
+      </div>
+      <div class="gallery-card" data-index="2" data-category="עוגות בנטו" role="button" tabindex="0" aria-label="עוגה מספר 2">
+        <div class="gallery-card__image-wrapper">
+          <img src="./images/image2.jpeg" alt="עוגה מעוצבת מספר 2" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+2'" onload="this.parentElement.parentElement.classList.add('loaded')">
+          <div class="gallery-card__zoom-hint">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+            הקישו להגדלה
+          </div>
+        </div>
+        <span class="gallery-card__category-tag">עוגות בנטו</span>
+      </div>
+      <div class="gallery-card" data-index="3" data-category="בצקים" role="button" tabindex="0" aria-label="עוגה מספר 3">
+        <div class="gallery-card__image-wrapper">
+          <img src="./images/image3.jpeg" alt="עוגה מעוצבת מספר 3" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+3'" onload="this.parentElement.parentElement.classList.add('loaded')">
+          <div class="gallery-card__zoom-hint">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+            הקישו להגדלה
+          </div>
+        </div>
+        <span class="gallery-card__category-tag">בצקים</span>
+      </div>
+      <div class="gallery-card" data-index="4" data-category="קינוחים" role="button" tabindex="0" aria-label="עוגה מספר 4">
+        <div class="gallery-card__image-wrapper">
+          <img src="./images/image4.jpeg" alt="עוגה מעוצבת מספר 4" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+4'" onload="this.parentElement.parentElement.classList.add('loaded')">
+          <div class="gallery-card__zoom-hint">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+            הקישו להגדלה
+          </div>
+        </div>
+        <span class="gallery-card__category-tag">קינוחים</span>
+      </div>
+      <div class="gallery-card" data-index="5" data-category="מארזים" role="button" tabindex="0" aria-label="עוגה מספר 5">
+        <div class="gallery-card__image-wrapper">
+          <img src="./images/image5.jpeg" alt="עוגה מעוצבת מספר 5" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+5'" onload="this.parentElement.parentElement.classList.add('loaded')">
+          <div class="gallery-card__zoom-hint">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+            הקישו להגדלה
+          </div>
+        </div>
+        <span class="gallery-card__category-tag">מארזים</span>
+      </div>
+      <div class="gallery-card" data-index="6" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגה מספר 6">
+        <div class="gallery-card__image-wrapper">
+          <img src="./images/image6.jpeg" alt="עוגה מעוצבת מספר 6" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+6'" onload="this.parentElement.parentElement.classList.add('loaded')">
+          <div class="gallery-card__zoom-hint">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+            הקישו להגדלה
+          </div>
+        </div>
+        <span class="gallery-card__category-tag">עוגות מעוצבות</span>
+      </div>
+      <div class="gallery-card" data-index="7" data-category="עוגות בנטו" role="button" tabindex="0" aria-label="עוגה מספר 7">
+        <div class="gallery-card__image-wrapper">
+          <img src="./images/image7.jpeg" alt="עוגה מעוצבת מספר 7" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+7'" onload="this.parentElement.parentElement.classList.add('loaded')">
+          <div class="gallery-card__zoom-hint">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+            הקישו להגדלה
+          </div>
+        </div>
+        <span class="gallery-card__category-tag">עוגות בנטו</span>
+      </div>
+      <div class="gallery-card" data-index="8" data-category="בצקים" role="button" tabindex="0" aria-label="עוגה מספר 8">
+        <div class="gallery-card__image-wrapper">
+          <img src="./images/image8.jpeg" alt="עוגה מעוצבת מספר 8" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+8'" onload="this.parentElement.parentElement.classList.add('loaded')">
+          <div class="gallery-card__zoom-hint">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+            הקישו להגדלה
+          </div>
+        </div>
+        <span class="gallery-card__category-tag">בצקים</span>
+      </div>
+      <div class="gallery-card" data-index="9" data-category="קינוחים" role="button" tabindex="0" aria-label="עוגה מספר 9">
+        <div class="gallery-card__image-wrapper">
+          <img src="./images/image9.jpeg" alt="עוגה מעוצבת מספר 9" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+9'" onload="this.parentElement.parentElement.classList.add('loaded')">
+          <div class="gallery-card__zoom-hint">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+            הקישו להגדלה
+          </div>
+        </div>
+        <span class="gallery-card__category-tag">קינוחים</span>
+      </div>
+      <div class="gallery-card" data-index="10" data-category="מארזים" role="button" tabindex="0" aria-label="עוגה מספר 10">
+        <div class="gallery-card__image-wrapper">
+          <img src="./images/image10.jpeg" alt="עוגה מעוצבת מספר 10" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+10'" onload="this.parentElement.parentElement.classList.add('loaded')">
+          <div class="gallery-card__zoom-hint">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+            הקישו להגדלה
+          </div>
+        </div>
+        <span class="gallery-card__category-tag">מארזים</span>
+      </div>
+      <div class="gallery-card" data-index="11" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגה מספר 11">
+        <div class="gallery-card__image-wrapper">
+          <img src="./images/image11.jpeg" alt="עוגה מעוצבת מספר 11" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+11'" onload="this.parentElement.parentElement.classList.add('loaded')">
+          <div class="gallery-card__zoom-hint">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+            הקישו להגדלה
+          </div>
+        </div>
+        <span class="gallery-card__category-tag">עוגות מעוצבות</span>
+      </div>
+      <div class="gallery-card" data-index="12" data-category="עוגות בנטו" role="button" tabindex="0" aria-label="עוגה מספר 12">
+        <div class="gallery-card__image-wrapper">
+          <img src="./images/image12.jpeg" alt="עוגה מעוצבת מספר 12" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+12'" onload="this.parentElement.parentElement.classList.add('loaded')">
+          <div class="gallery-card__zoom-hint">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+            הקישו להגדלה
+          </div>
+        </div>
+        <span class="gallery-card__category-tag">עוגות בנטו</span>
+      </div>
+      <div class="gallery-card" data-index="13" data-category="בצקים" role="button" tabindex="0" aria-label="עוגה מספר 13">
+        <div class="gallery-card__image-wrapper">
+          <img src="./images/image13.jpeg" alt="עוגה מעוצבת מספר 13" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+13'" onload="this.parentElement.parentElement.classList.add('loaded')">
+          <div class="gallery-card__zoom-hint">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+            הקישו להגדלה
+          </div>
+        </div>
+        <span class="gallery-card__category-tag">בצקים</span>
+      </div>
+      <div class="gallery-card" data-index="14" data-category="קינוחים" role="button" tabindex="0" aria-label="עוגה מספר 14">
+        <div class="gallery-card__image-wrapper">
+          <img src="./images/image14.jpeg" alt="עוגה מעוצבת מספר 14" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+14'" onload="this.parentElement.parentElement.classList.add('loaded')">
+          <div class="gallery-card__zoom-hint">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+            הקישו להגדלה
+          </div>
+        </div>
+        <span class="gallery-card__category-tag">קינוחים</span>
+      </div>
+      <div class="gallery-card" data-index="15" data-category="מארזים" role="button" tabindex="0" aria-label="עוגה מספר 15">
+        <div class="gallery-card__image-wrapper">
+          <img src="./images/image15.jpeg" alt="עוגה מעוצבת מספר 15" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+15'" onload="this.parentElement.parentElement.classList.add('loaded')">
+          <div class="gallery-card__zoom-hint">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+            הקישו להגדלה
+          </div>
+        </div>
+        <span class="gallery-card__category-tag">מארזים</span>
+      </div>
+      <div class="gallery-card" data-index="16" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגה מספר 16">
+        <div class="gallery-card__image-wrapper">
+          <img src="./images/image16.jpeg" alt="עוגה מעוצבת מספר 16" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+16'" onload="this.parentElement.parentElement.classList.add('loaded')">
+          <div class="gallery-card__zoom-hint">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+            הקישו להגדלה
+          </div>
+        </div>
+        <span class="gallery-card__category-tag">עוגות מעוצבות</span>
+      </div>
+      <div class="gallery-card" data-index="17" data-category="עוגות בנטו" role="button" tabindex="0" aria-label="עוגה מספר 17">
+        <div class="gallery-card__image-wrapper">
+          <img src="./images/image17.jpeg" alt="עוגה מעוצבת מספר 17" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+17'" onload="this.parentElement.parentElement.classList.add('loaded')">
+          <div class="gallery-card__zoom-hint">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+            הקישו להגדלה
+          </div>
+        </div>
+        <span class="gallery-card__category-tag">עוגות בנטו</span>
+      </div>
+      <div class="gallery-card" data-index="18" data-category="בצקים" role="button" tabindex="0" aria-label="עוגה מספר 18">
+        <div class="gallery-card__image-wrapper">
+          <img src="./images/image18.jpeg" alt="עוגה מעוצבת מספר 18" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+18'" onload="this.parentElement.parentElement.classList.add('loaded')">
+          <div class="gallery-card__zoom-hint">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+            הקישו להגדלה
+          </div>
+        </div>
+        <span class="gallery-card__category-tag">בצקים</span>
+      </div>
+      <div class="gallery-card" data-index="19" data-category="קינוחים" role="button" tabindex="0" aria-label="עוגה מספר 19">
+        <div class="gallery-card__image-wrapper">
+          <img src="./images/image19.jpeg" alt="עוגה מעוצבת מספר 19" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+19'" onload="this.parentElement.parentElement.classList.add('loaded')">
+          <div class="gallery-card__zoom-hint">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+            הקישו להגדלה
+          </div>
+        </div>
+        <span class="gallery-card__category-tag">קינוחים</span>
+      </div>
+      <div class="gallery-card" data-index="20" data-category="מארזים" role="button" tabindex="0" aria-label="עוגה מספר 20">
+        <div class="gallery-card__image-wrapper">
+          <img src="./images/image20.jpeg" alt="עוגה מעוצבת מספר 20" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+20'" onload="this.parentElement.parentElement.classList.add('loaded')">
+          <div class="gallery-card__zoom-hint">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+            הקישו להגדלה
+          </div>
+        </div>
+        <span class="gallery-card__category-tag">מארזים</span>
+      </div>
+      <div class="gallery-card" data-index="21" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגה מספר 21">
+        <div class="gallery-card__image-wrapper">
+          <img src="./images/image21.jpeg" alt="עוגה מעוצבת מספר 21" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+21'" onload="this.parentElement.parentElement.classList.add('loaded')">
+          <div class="gallery-card__zoom-hint">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+            הקישו להגדלה
+          </div>
+        </div>
+        <span class="gallery-card__category-tag">עוגות מעוצבות</span>
+      </div>
+      <div class="gallery-card" data-index="22" data-category="עוגות בנטו" role="button" tabindex="0" aria-label="עוגה מספר 22">
+        <div class="gallery-card__image-wrapper">
+          <img src="./images/image22.jpeg" alt="עוגה מעוצבת מספר 22" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+22'" onload="this.parentElement.parentElement.classList.add('loaded')">
+          <div class="gallery-card__zoom-hint">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+            הקישו להגדלה
+          </div>
+        </div>
+        <span class="gallery-card__category-tag">עוגות בנטו</span>
+      </div>
+      <div class="gallery-card" data-index="23" data-category="בצקים" role="button" tabindex="0" aria-label="עוגה מספר 23">
+        <div class="gallery-card__image-wrapper">
+          <img src="./images/image23.jpeg" alt="עוגה מעוצבת מספר 23" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+23'" onload="this.parentElement.parentElement.classList.add('loaded')">
+          <div class="gallery-card__zoom-hint">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+            הקישו להגדלה
+          </div>
+        </div>
+        <span class="gallery-card__category-tag">בצקים</span>
+      </div>
+      <div class="gallery-card" data-index="24" data-category="קינוחים" role="button" tabindex="0" aria-label="עוגה מספר 24">
+        <div class="gallery-card__image-wrapper">
+          <img src="./images/image24.jpeg" alt="עוגה מעוצבת מספר 24" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+24'" onload="this.parentElement.parentElement.classList.add('loaded')">
+          <div class="gallery-card__zoom-hint">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+            הקישו להגדלה
+          </div>
+        </div>
+        <span class="gallery-card__category-tag">קינוחים</span>
+      </div>
+      <div class="gallery-card" data-index="25" data-category="מארזים" role="button" tabindex="0" aria-label="עוגה מספר 25">
+        <div class="gallery-card__image-wrapper">
+          <img src="./images/image25.jpeg" alt="עוגה מעוצבת מספר 25" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+25'" onload="this.parentElement.parentElement.classList.add('loaded')">
+          <div class="gallery-card__zoom-hint">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+            הקישו להגדלה
+          </div>
+        </div>
+        <span class="gallery-card__category-tag">מארזים</span>
+      </div>
+      <div class="gallery-card" data-index="26" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגה מספר 26">
+        <div class="gallery-card__image-wrapper">
+          <img src="./images/image26.jpeg" alt="עוגה מעוצבת מספר 26" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+26'" onload="this.parentElement.parentElement.classList.add('loaded')">
+          <div class="gallery-card__zoom-hint">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+            הקישו להגדלה
+          </div>
+        </div>
+        <span class="gallery-card__category-tag">עוגות מעוצבות</span>
+      </div>
+      <div class="gallery-card" data-index="27" data-category="עוגות בנטו" role="button" tabindex="0" aria-label="עוגה מספר 27">
+        <div class="gallery-card__image-wrapper">
+          <img src="./images/image27.jpeg" alt="עוגה מעוצבת מספר 27" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+27'" onload="this.parentElement.parentElement.classList.add('loaded')">
+          <div class="gallery-card__zoom-hint">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+            הקישו להגדלה
+          </div>
+        </div>
+        <span class="gallery-card__category-tag">עוגות בנטו</span>
+      </div>
+      <div class="gallery-card" data-index="28" data-category="בצקים" role="button" tabindex="0" aria-label="עוגה מספר 28">
+        <div class="gallery-card__image-wrapper">
+          <img src="./images/image28.jpeg" alt="עוגה מעוצבת מספר 28" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+28'" onload="this.parentElement.parentElement.classList.add('loaded')">
+          <div class="gallery-card__zoom-hint">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+            הקישו להגדלה
+          </div>
+        </div>
+        <span class="gallery-card__category-tag">בצקים</span>
+      </div>
+      <div class="gallery-card" data-index="29" data-category="קינוחים" role="button" tabindex="0" aria-label="עוגה מספר 29">
+        <div class="gallery-card__image-wrapper">
+          <img src="./images/image29.jpeg" alt="עוגה מעוצבת מספר 29" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+29'" onload="this.parentElement.parentElement.classList.add('loaded')">
+          <div class="gallery-card__zoom-hint">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+            הקישו להגדלה
+          </div>
+        </div>
+        <span class="gallery-card__category-tag">קינוחים</span>
+      </div>
+      <div class="gallery-card" data-index="30" data-category="מארזים" role="button" tabindex="0" aria-label="עוגה מספר 30">
+        <div class="gallery-card__image-wrapper">
+          <img src="./images/image30.jpeg" alt="עוגה מעוצבת מספר 30" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+30'" onload="this.parentElement.parentElement.classList.add('loaded')">
+          <div class="gallery-card__zoom-hint">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+            הקישו להגדלה
+          </div>
+        </div>
+        <span class="gallery-card__category-tag">מארזים</span>
+      </div>
+      <div class="gallery-card" data-index="31" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגה מספר 31">
+        <div class="gallery-card__image-wrapper">
+          <img src="./images/image31.jpeg" alt="עוגה מעוצבת מספר 31" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+31'" onload="this.parentElement.parentElement.classList.add('loaded')">
+          <div class="gallery-card__zoom-hint">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+            הקישו להגדלה
+          </div>
+        </div>
+        <span class="gallery-card__category-tag">עוגות מעוצבות</span>
+      </div>
+      <div class="gallery-card" data-index="32" data-category="עוגות בנטו" role="button" tabindex="0" aria-label="עוגה מספר 32">
+        <div class="gallery-card__image-wrapper">
+          <img src="./images/image32.jpeg" alt="עוגה מעוצבת מספר 32" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+32'" onload="this.parentElement.parentElement.classList.add('loaded')">
+          <div class="gallery-card__zoom-hint">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+            הקישו להגדלה
+          </div>
+        </div>
+        <span class="gallery-card__category-tag">עוגות בנטו</span>
+      </div>
+      <div class="gallery-card" data-index="33" data-category="בצקים" role="button" tabindex="0" aria-label="עוגה מספר 33">
+        <div class="gallery-card__image-wrapper">
+          <img src="./images/image33.jpeg" alt="עוגה מעוצבת מספר 33" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+33'" onload="this.parentElement.parentElement.classList.add('loaded')">
+          <div class="gallery-card__zoom-hint">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+            הקישו להגדלה
+          </div>
+        </div>
+        <span class="gallery-card__category-tag">בצקים</span>
+      </div>
+      <div class="gallery-card" data-index="34" data-category="קינוחים" role="button" tabindex="0" aria-label="עוגה מספר 34">
+        <div class="gallery-card__image-wrapper">
+          <img src="./images/image34.jpeg" alt="עוגה מעוצבת מספר 34" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+34'" onload="this.parentElement.parentElement.classList.add('loaded')">
+          <div class="gallery-card__zoom-hint">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+            הקישו להגדלה
+          </div>
+        </div>
+        <span class="gallery-card__category-tag">קינוחים</span>
+      </div>
+      <div class="gallery-card" data-index="35" data-category="מארזים" role="button" tabindex="0" aria-label="עוגה מספר 35">
+        <div class="gallery-card__image-wrapper">
+          <img src="./images/image35.jpeg" alt="עוגה מעוצבת מספר 35" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+35'" onload="this.parentElement.parentElement.classList.add('loaded')">
+          <div class="gallery-card__zoom-hint">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+            הקישו להגדלה
+          </div>
+        </div>
+        <span class="gallery-card__category-tag">מארזים</span>
+      </div>
+      <div class="gallery-card" data-index="36" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגה מספר 36">
+        <div class="gallery-card__image-wrapper">
+          <img src="./images/image36.jpeg" alt="עוגה מעוצבת מספר 36" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+36'" onload="this.parentElement.parentElement.classList.add('loaded')">
+          <div class="gallery-card__zoom-hint">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+            הקישו להגדלה
+          </div>
+        </div>
+        <span class="gallery-card__category-tag">עוגות מעוצבות</span>
+      </div>
+      <div class="gallery-card" data-index="37" data-category="עוגות בנטו" role="button" tabindex="0" aria-label="עוגה מספר 37">
+        <div class="gallery-card__image-wrapper">
+          <img src="./images/image37.jpeg" alt="עוגה מעוצבת מספר 37" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+37'" onload="this.parentElement.parentElement.classList.add('loaded')">
+          <div class="gallery-card__zoom-hint">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+            הקישו להגדלה
+          </div>
+        </div>
+        <span class="gallery-card__category-tag">עוגות בנטו</span>
+      </div>
+      <div class="gallery-card" data-index="38" data-category="בצקים" role="button" tabindex="0" aria-label="עוגה מספר 38">
+        <div class="gallery-card__image-wrapper">
+          <img src="./images/image38.jpeg" alt="עוגה מעוצבת מספר 38" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+38'" onload="this.parentElement.parentElement.classList.add('loaded')">
+          <div class="gallery-card__zoom-hint">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+            הקישו להגדלה
+          </div>
+        </div>
+        <span class="gallery-card__category-tag">בצקים</span>
+      </div>
+      <div class="gallery-card" data-index="39" data-category="קינוחים" role="button" tabindex="0" aria-label="עוגה מספר 39">
+        <div class="gallery-card__image-wrapper">
+          <img src="./images/image39.jpeg" alt="עוגה מעוצבת מספר 39" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+39'" onload="this.parentElement.parentElement.classList.add('loaded')">
+          <div class="gallery-card__zoom-hint">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+            הקישו להגדלה
+          </div>
+        </div>
+        <span class="gallery-card__category-tag">קינוחים</span>
+      </div>
+      <div class="gallery-card" data-index="40" data-category="מארזים" role="button" tabindex="0" aria-label="עוגה מספר 40">
+        <div class="gallery-card__image-wrapper">
+          <img src="./images/image40.jpeg" alt="עוגה מעוצבת מספר 40" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+40'" onload="this.parentElement.parentElement.classList.add('loaded')">
+          <div class="gallery-card__zoom-hint">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+            הקישו להגדלה
+          </div>
+        </div>
+        <span class="gallery-card__category-tag">מארזים</span>
+      </div>
+      <div class="gallery-card" data-index="41" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגה מספר 41">
+        <div class="gallery-card__image-wrapper">
+          <img src="./images/image41.jpeg" alt="עוגה מעוצבת מספר 41" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+41'" onload="this.parentElement.parentElement.classList.add('loaded')">
+          <div class="gallery-card__zoom-hint">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+            הקישו להגדלה
+          </div>
+        </div>
+        <span class="gallery-card__category-tag">עוגות מעוצבות</span>
+      </div>
+      <div class="gallery-card" data-index="42" data-category="עוגות בנטו" role="button" tabindex="0" aria-label="עוגה מספר 42">
+        <div class="gallery-card__image-wrapper">
+          <img src="./images/image42.jpeg" alt="עוגה מעוצבת מספר 42" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+42'" onload="this.parentElement.parentElement.classList.add('loaded')">
+          <div class="gallery-card__zoom-hint">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+            הקישו להגדלה
+          </div>
+        </div>
+        <span class="gallery-card__category-tag">עוגות בנטו</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SECTION DIVIDER ===== -->
+  <div class="section-divider" aria-hidden="true"></div>
+
+  <!-- ===== WORKSHOPS ===== -->
+  <section id="workshops" class="workshops-section container" aria-label="סדנאות בוטיק">
+    <div class="section-header">
+      <h2>סדנאות בוטיק</h2>
+      <p>✨ למדו את סודות הקונדיטוריה מנעה עצמה ✨</p>
+    </div>
+    <div class="workshops-grid">
+      <div class="workshop-card">
+        <div class="workshop-card__icon">🎂</div>
+        <h3>סדנת עוגות מעוצבות</h3>
+        <p>למדו לעצב עוגות מרהיבות כמו של נעה. כל הטיפים והטריקים מהמקצוענית.</p>
+        <div class="workshop-card__price">₪350 לאדם</div>
+        <button class="workshop-card__btn" onclick="window.open('https://wa.me/972542345906?text=היי%20נעה,%20אשמח%20לפרטים%20על%20סדנת%20עוגות%20מעוצבות','_blank')">לתיאום סדנה</button>
+      </div>
+      <div class="workshop-card">
+        <div class="workshop-card__icon">🧁</div>
+        <h3>סדנת קאפקייקס</h3>
+        <p>קאפקייקס מעוצבים בצבעים וטעמים — חוויה מתוקה לכל המשפחה.</p>
+        <div class="workshop-card__price">₪280 לאדם</div>
+        <button class="workshop-card__btn" onclick="window.open('https://wa.me/972542345906?text=היי%20נעה,%20אשמח%20לפרטים%20על%20סדנת%20קאפקייקס','_blank')">לתיאום סדנה</button>
+      </div>
+      <div class="workshop-card">
+        <div class="workshop-card__icon">🥐</div>
+        <h3>סדנת בצקים</h3>
+        <p>קרואסונים, שמרים ועוגיות — למדו את אמנות הבצק מהבסיס.</p>
+        <div class="workshop-card__price">₪320 לאדם</div>
+        <button class="workshop-card__btn" onclick="window.open('https://wa.me/972542345906?text=היי%20נעה,%20אשמח%20לפרטים%20על%20סדנת%20בצקים','_blank')">לתיאום סדנה</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SECTION DIVIDER ===== -->
+  <div class="section-divider" aria-hidden="true"></div>
+
+  <!-- ===== ABOUT ===== -->
+  <section id="about" class="about-section" aria-label="אודות נעה">
+    <div class="about-inner container">
+      <div class="about-img">
+        <img src="./noa.jpeg" alt="נעה - האופה והאמנית" width="400" height="400" loading="lazy" decoding="async" onerror="this.src='https://placehold.co/400x400?text=Noa'">
+      </div>
+      <div class="about-text">
+        <h2>אודות נעה</h2>
+        <p>🍰 <strong>נעה</strong>, האופה והאמנית שמאחורי כל עוגה. כאן בירושלים, היא הופכת חלומות למתוקים.</p>
+        <blockquote>
+          "השקט שלי נמצא בין הקמח לסוכר. כל הזמנה היא זכות להכניס אור ושמחה."
+          <footer style="margin-top: 0.5rem; font-size: 0.9em; color: var(--color-text-muted);">– נעה</footer>
+        </blockquote>
+        <div class="about-features">
+          <div class="about-feature">
+            <h4>ניסיון של שנים</h4>
+            <p>מעל 5 שנות ניסיון בקונדיטוריה מעוצבת ובוטיק.</p>
+          </div>
+          <div class="about-feature">
+            <h4>חומרים טבעיים</h4>
+            <p>רק החומרים הטובים ביותר — ללא חומרים משמרים.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer>
+    <p>© 2026 נעה | Made with love | ירושלים</p>
+    <div>
+      <a href="https://www.instagram.com/noa__sweet_/" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="עקוב אחרינו באינסטגרם">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+          <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+          <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+        </svg>
+        Instagram
+      </a>
+    </div>
+    <button class="share-btn" id="shareBtn" type="button">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="18" cy="5" r="3"></circle>
+        <circle cx="6" cy="12" r="3"></circle>
+        <circle cx="18" cy="19" r="3"></circle>
+        <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+        <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+      </svg>
+      שתף את האתר
+    </button>
+  </footer>
+
+  <!-- ===== ORDER MODAL ===== -->
+  <div id="orderModal" class="order-modal" role="dialog" aria-label="טופס הזמנה" aria-modal="true">
+    <div class="modal-card">
+      <button class="close-modal" id="closeModalBtn" aria-label="סגור">&times;</button>
+      <h3>🍰 הזמנה אישית</h3>
+      <p class="modal-badge">✨ נעה עובדת בירושלים בלבד ✨</p>
+      <form id="orderForm" novalidate>
+        <div class="form-group">
+          <label for="cakeType">סוג העוגה *</label>
+          <input type="text" id="cakeType" name="cakeType" placeholder="למשל: עוגת יום הולדת, חתונה..." required>
+        </div>
+        <div class="form-group">
+          <label for="design">עיצוב</label>
+          <input type="text" id="design" name="design" placeholder="תארו את העיצוב הרצוי">
+        </div>
+        <div class="form-group">
+          <label for="date">תאריך אספקה *</label>
+          <input type="date" id="date" name="date" required>
+        </div>
+        <div class="form-group">
+          <label for="inscription">כיתוב על העוגה</label>
+          <input type="text" id="inscription" name="inscription" placeholder="מזל טוב, אהבה...">
+        </div>
+        <div class="form-group">
+          <label for="allergies">הערות והגבלות תזונה</label>
+          <textarea id="allergies" name="allergies" rows="3" placeholder="אלרגיות, העדפות תזונתיות..."></textarea>
+        </div>
+        <div class="form-group">
+          <label for="delivery">איסוף או משלוח</label>
+          <select id="delivery" name="delivery">
+            <option value="pickup">איסוף עצמי (חינם)</option>
+            <option value="delivery">משלוח בתשלום – ירושלים</option>
+          </select>
+        </div>
+        <button type="submit" class="submit-btn">📲 שלחי לוואטסאפ</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===== LIGHTBOX ===== -->
+  <div id="lightbox" class="lightbox" role="dialog" aria-label="תצוגת תמונה מוגדלת" aria-modal="true">
+    <button class="close-lightbox" id="closeLightboxBtn" aria-label="סגור תצוגה">&times;</button>
+    <div class="lightbox__hint">👆 דאבל-טאפ לזום • שני אצבעות לפינץ' • גרירה להזזה</div>
+    <div class="lightbox__stage" id="lightboxStage">
+      <div class="lightbox__image-wrapper" id="lightboxImageWrapper">
+        <img id="lightboxImg" src="" alt="תצוגה מוגדלת של עוגה" loading="eager" draggable="false">
+      </div>
+    </div>
+    <div class="lightbox__controls">
+      <button class="lightbox__btn" id="lightboxPrev" aria-label="תמונה קודמת">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      </button>
+      <span class="lightbox__counter" id="lightboxCounter">1 / 42</span>
+      <button class="lightbox__btn" id="lightboxNext" aria-label="תמונה הבאה">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </button>
+      <button class="lightbox__btn" id="lightboxZoomOut" aria-label="הקטן">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+      </button>
+      <button class="lightbox__btn" id="lightboxZoomIn" aria-label="הגדל">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+      </button>
+      <button class="lightbox__btn" id="lightboxReset" aria-label="איפוס זום">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>
+      </button>
+    </div>
+  </div>
+  <script>
+    (function() {
+      'use strict';
+
+      // ===== NETLIFY IDENTITY =====
+      if (window.netlifyIdentity) {
+        window.netlifyIdentity.on("init", user => {
+          if (!user) {
+            window.netlifyIdentity.on("login", () => {
+              document.location.href = "/admin/";
+            });
+          }
+        });
+      }
+
+      // ===== HERO SLIDESHOW =====
+      const slides = document.querySelectorAll('.hero__slide');
+      let currentSlide = 0;
+      const slideInterval = 5000;
+
+      function nextSlide() {
+        slides[currentSlide].classList.remove('active');
+        currentSlide = (currentSlide + 1) % slides.length;
+        slides[currentSlide].classList.add('active');
+      }
+      setTimeout(() => { setInterval(nextSlide, slideInterval); }, 3000);
+
+      // ===== CATEGORY FILTER =====
+      const categoryFilter = document.getElementById('categoryFilter');
+      const categoryCount = document.getElementById('categoryCount');
+      const galleryCards = document.querySelectorAll('.gallery-card');
+
+      function filterGallery(category) {
+        let visible = 0;
+        galleryCards.forEach(card => {
+          const cardCategory = card.dataset.category;
+          if (category === 'all' || cardCategory === category) {
+            card.classList.remove('hidden');
+            visible++;
+          } else {
+            card.classList.add('hidden');
+          }
+        });
+        const label = category === 'all' ? 'הכל' : category;
+        categoryCount.textContent = `מציג ${visible} פריטים בקטגוריה "${label}"`;
+      }
+
+      if (categoryFilter) {
+        categoryFilter.addEventListener('change', (e) => {
+          filterGallery(e.target.value);
+          // Update URL for sharing
+          const url = new URL(window.location);
+          if (e.target.value === 'all') {
+            url.searchParams.delete('category');
+          } else {
+            url.searchParams.set('category', e.target.value);
+          }
+          window.history.pushState({}, '', url);
+        });
+
+        // Check URL params on load
+        const urlParams = new URLSearchParams(window.location.search);
+        const urlCategory = urlParams.get('category');
+        if (urlCategory) {
+          categoryFilter.value = urlCategory;
+          filterGallery(urlCategory);
+        }
+      }
+
+      // ===== GALLERY & LIGHTBOX =====
+      const lightbox = document.getElementById('lightbox');
+      const lightboxImg = document.getElementById('lightboxImg');
+      const lightboxWrapper = document.getElementById('lightboxImageWrapper');
+      const lightboxStage = document.getElementById('lightboxStage');
+      const closeLightboxBtn = document.getElementById('closeLightboxBtn');
+      const counterEl = document.getElementById('lightboxCounter');
+      const prevBtn = document.getElementById('lightboxPrev');
+      const nextBtn = document.getElementById('lightboxNext');
+      const zoomInBtn = document.getElementById('lightboxZoomIn');
+      const zoomOutBtn = document.getElementById('lightboxZoomOut');
+      const resetBtn = document.getElementById('lightboxReset');
+
+      let currentImageIndex = 0;
+      let visibleCards = Array.from(galleryCards).filter(c => !c.classList.contains('hidden'));
+      let scale = 1, panX = 0, panY = 0;
+      let isDragging = false, startX = 0, startY = 0, lastPanX = 0, lastPanY = 0;
+      let initialPinchDistance = 0, initialScale = 1, isPinching = false;
+
+      function updateVisibleCards() {
+        visibleCards = Array.from(galleryCards).filter(c => !c.classList.contains('hidden'));
+      }
+
+      function updateTransform() {
+        lightboxWrapper.style.transform = `translate(${panX}px, ${panY}px) scale(${scale})`;
+      }
+
+      function resetZoom() {
+        scale = 1; panX = 0; panY = 0;
+        updateTransform();
+      }
+
+      function openLightbox(index) {
+        updateVisibleCards();
+        currentImageIndex = index;
+        const card = visibleCards[index];
+        if (!card) return;
+        const img = card.querySelector('img');
+        if (img && img.src) {
+          lightboxImg.src = img.src;
+          lightbox.classList.add('active');
+          document.body.style.overflow = 'hidden';
+          resetZoom();
+          updateCounter();
+          closeLightboxBtn.focus();
+        }
+      }
+
+      function closeLightbox() {
+        lightbox.classList.remove('active');
+        document.body.style.overflow = '';
+        resetZoom();
+        setTimeout(() => { lightboxImg.src = ''; }, 300);
+      }
+
+      function updateCounter() {
+        counterEl.textContent = `${currentImageIndex + 1} / ${visibleCards.length}`;
+      }
+
+      function navigate(direction) {
+        currentImageIndex = (currentImageIndex + direction + visibleCards.length) % visibleCards.length;
+        const card = visibleCards[currentImageIndex];
+        if (!card) return;
+        const img = card.querySelector('img');
+        if (img && img.src) {
+          lightboxImg.style.opacity = '0';
+          setTimeout(() => {
+            lightboxImg.src = img.src;
+            lightboxImg.style.opacity = '1';
+            resetZoom();
+            updateCounter();
+          }, 150);
+        }
+      }
+
+      galleryCards.forEach((card, index) => {
+        card.addEventListener('click', () => {
+          updateVisibleCards();
+          const visibleIndex = visibleCards.indexOf(card);
+          if (visibleIndex !== -1) openLightbox(visibleIndex);
+        });
+        card.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            updateVisibleCards();
+            const visibleIndex = visibleCards.indexOf(card);
+            if (visibleIndex !== -1) openLightbox(visibleIndex);
+          }
+        });
+      });
+
+      if (closeLightboxBtn) closeLightboxBtn.addEventListener('click', closeLightbox);
+      if (prevBtn) prevBtn.addEventListener('click', () => navigate(-1));
+      if (nextBtn) nextBtn.addEventListener('click', () => navigate(1));
+
+      if (zoomInBtn) zoomInBtn.addEventListener('click', () => { scale = Math.min(scale * 1.4, 5); updateTransform(); });
+      if (zoomOutBtn) zoomOutBtn.addEventListener('click', () => { scale = Math.max(scale / 1.4, 0.5); if (scale <= 1) resetZoom(); else updateTransform(); });
+      if (resetBtn) resetBtn.addEventListener('click', resetZoom);
+
+      lightbox.addEventListener('click', (e) => {
+        if (e.target === lightbox || e.target === lightboxStage) {
+          if (scale <= 1.1) closeLightbox();
+        }
+      });
+
+      // Pinch Zoom
+      function getDistance(touches) {
+        const dx = touches[0].clientX - touches[1].clientX;
+        const dy = touches[0].clientY - touches[1].clientY;
+        return Math.sqrt(dx * dx + dy * dy);
+      }
+
+      lightboxStage.addEventListener('touchstart', (e) => {
+        if (e.touches.length === 2) {
+          isPinching = true;
+          initialPinchDistance = getDistance(e.touches);
+          initialScale = scale;
+          e.preventDefault();
+        } else if (e.touches.length === 1 && scale > 1) {
+          isDragging = true;
+          startX = e.touches[0].clientX;
+          startY = e.touches[0].clientY;
+          lastPanX = panX; lastPanY = panY;
+          lightboxWrapper.classList.add('grabbing');
+        }
+      }, { passive: false });
+
+      lightboxStage.addEventListener('touchmove', (e) => {
+        if (isPinching && e.touches.length === 2) {
+          e.preventDefault();
+          const distance = getDistance(e.touches);
+          scale = Math.min(Math.max(initialScale * (distance / initialPinchDistance), 0.5), 5);
+          updateTransform();
+        } else if (isDragging && e.touches.length === 1) {
+          e.preventDefault();
+          panX = lastPanX + (e.touches[0].clientX - startX);
+          panY = lastPanY + (e.touches[0].clientY - startY);
+          updateTransform();
+        }
+      }, { passive: false });
+
+      lightboxStage.addEventListener('touchend', () => {
+        if (isPinching) { isPinching = false; if (scale < 1) resetZoom(); }
+        if (isDragging) { isDragging = false; lightboxWrapper.classList.remove('grabbing'); }
+      });
+
+      // Double tap
+      let lastTapTime = 0;
+      lightboxStage.addEventListener('touchend', (e) => {
+        const currentTime = new Date().getTime();
+        const tapLength = currentTime - lastTapTime;
+        if (tapLength < 300 && tapLength > 0 && e.touches.length === 0) {
+          if (scale > 1.2) resetZoom(); else { scale = 2.5; updateTransform(); }
+          e.preventDefault();
+        }
+        lastTapTime = currentTime;
+      });
+
+      // Wheel zoom
+      lightboxStage.addEventListener('wheel', (e) => {
+        e.preventDefault();
+        scale = Math.min(Math.max(scale * (e.deltaY > 0 ? 0.9 : 1.1), 0.5), 5);
+        if (scale <= 1) resetZoom(); else updateTransform();
+      }, { passive: false });
+
+      // Mouse drag
+      lightboxStage.addEventListener('mousedown', (e) => {
+        if (scale > 1) {
+          isDragging = true;
+          startX = e.clientX; startY = e.clientY;
+          lastPanX = panX; lastPanY = panY;
+          lightboxWrapper.classList.add('grabbing');
+          e.preventDefault();
+        }
+      });
+      window.addEventListener('mousemove', (e) => {
+        if (isDragging) {
+          panX = lastPanX + (e.clientX - startX);
+          panY = lastPanY + (e.clientY - startY);
+          updateTransform();
+        }
+      });
+      window.addEventListener('mouseup', () => {
+        if (isDragging) { isDragging = false; lightboxWrapper.classList.remove('grabbing'); }
+      });
+
+      // Swipe navigation
+      let touchStartX = 0, touchStartY = 0;
+      lightboxStage.addEventListener('touchstart', (e) => {
+        if (e.touches.length === 1 && scale <= 1.1) {
+          touchStartX = e.touches[0].clientX; touchStartY = e.touches[0].clientY;
+        }
+      }, { passive: true });
+      lightboxStage.addEventListener('touchend', (e) => {
+        if (scale <= 1.1 && !isPinching && e.changedTouches.length === 1) {
+          const dx = e.changedTouches[0].clientX - touchStartX;
+          const dy = e.changedTouches[0].clientY - touchStartY;
+          if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 50) {
+            dx > 0 ? navigate(-1) : navigate(1);
+          }
+        }
+      }, { passive: true });
+
+      // Keyboard
+      document.addEventListener('keydown', (e) => {
+        if (!lightbox.classList.contains('active')) return;
+        if (e.key === 'Escape') closeLightbox();
+        else if (e.key === 'ArrowLeft') navigate(-1);
+        else if (e.key === 'ArrowRight') navigate(1);
+        else if (e.key === '+' || e.key === '=') { scale = Math.min(scale * 1.3, 5); updateTransform(); }
+        else if (e.key === '-') { scale = Math.max(scale / 1.3, 0.5); if (scale <= 1) resetZoom(); else updateTransform(); }
+      });
+
+      // ===== MODAL =====
+      const modal = document.getElementById('orderModal');
+      const openModalBtns = [
+        document.getElementById('navOrderBtn'),
+        document.getElementById('heroOrderBtn'),
+        document.getElementById('mobileOrderBtn')
+      ].filter(Boolean);
+      const closeModalBtn = document.getElementById('closeModalBtn');
+      const orderForm = document.getElementById('orderForm');
+
+      function openModal() { modal.classList.add('active'); document.body.style.overflow = 'hidden'; closeModalBtn.focus(); }
+      function closeModal() { modal.classList.remove('active'); document.body.style.overflow = ''; }
+
+      openModalBtns.forEach(btn => btn.addEventListener('click', openModal));
+      if (closeModalBtn) closeModalBtn.addEventListener('click', closeModal);
+      modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+      document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && modal.classList.contains('active')) closeModal(); });
+
+      if (orderForm) {
+        orderForm.addEventListener('submit', (e) => {
+          e.preventDefault();
+          const cakeType = document.getElementById('cakeType').value.trim();
+          const design = document.getElementById('design').value.trim();
+          const date = document.getElementById('date').value;
+          const inscription = document.getElementById('inscription').value.trim();
+          const allergies = document.getElementById('allergies').value.trim();
+          const delivery = document.getElementById('delivery').value;
+
+          if (!cakeType || !date) { alert('אנא מלאו סוג עוגה ותאריך אספקה'); return; }
+
+          let msg = `🍰 *הזמנה חדשה לנעה* 🍰\n`;
+          msg += `*סוג עוגה:* ${cakeType}\n`;
+          if (design) msg += `*עיצוב:* ${design}\n`;
+          msg += `*תאריך:* ${date}\n`;
+          if (inscription) msg += `*כיתוב:* ${inscription}\n`;
+          if (allergies) msg += `*הערות:* ${allergies}\n`;
+          msg += `*איסוף/משלוח:* ${delivery === 'pickup' ? 'איסוף עצמי (חינם)' : 'משלוח בתשלום – ירושלים'}\n\n`;
+          msg += `*ירושלים בלבד* 🙏`;
+
+          window.open(`https://wa.me/972542345906?text=${encodeURIComponent(msg)}`, '_blank');
+          closeModal();
+          orderForm.reset();
+        });
+      }
+
+      // ===== MOBILE MENU =====
+      const menuBtn = document.getElementById('mobileMenuBtn');
+      const drawer = document.getElementById('mobileDrawer');
+      const closeDrawerBtn = document.getElementById('closeDrawerBtn');
+      const drawerOverlay = document.getElementById('drawerOverlay');
+
+      function openDrawer() {
+        drawer.classList.add('open'); drawerOverlay.classList.add('active');
+        document.body.style.overflow = 'hidden'; menuBtn.setAttribute('aria-expanded', 'true');
+        closeDrawerBtn.focus();
+      }
+      function closeDrawer() {
+        drawer.classList.remove('open'); drawerOverlay.classList.remove('active');
+        document.body.style.overflow = ''; menuBtn.setAttribute('aria-expanded', 'false');
+      }
+      if (menuBtn) menuBtn.addEventListener('click', openDrawer);
+      if (closeDrawerBtn) closeDrawerBtn.addEventListener('click', closeDrawer);
+      if (drawerOverlay) drawerOverlay.addEventListener('click', closeDrawer);
+      drawer.querySelectorAll('a, button').forEach(el => el.addEventListener('click', closeDrawer));
+      document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && drawer.classList.contains('open')) closeDrawer(); });
+
+      // ===== NAVBAR SCROLL =====
+      const navbar = document.getElementById('navbar');
+      window.addEventListener('scroll', () => {
+        navbar.classList.toggle('navbar--scrolled', window.scrollY > 60);
+      }, { passive: true });
+
+      // ===== WHATSAPP =====
+      document.getElementById('whatsappFloatBtn')?.addEventListener('click', () => {
+        window.open(`https://wa.me/972542345906?text=${encodeURIComponent('היי נעה, אשמח לשמוע ממך! 🍰')}`, '_blank');
+      });
+
+      // ===== SMOOTH SCROLL =====
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+          const href = this.getAttribute('href');
+          if (href === '#') return;
+          const target = document.querySelector(href);
+          if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+        });
+      });
+
+      // ===== DATE MIN =====
+      const dateInput = document.getElementById('date');
+      if (dateInput) dateInput.setAttribute('min', new Date().toISOString().split('T')[0]);
+
+      // ===== SHARE BUTTON =====
+      const shareBtn = document.getElementById('shareBtn');
+      if (shareBtn) {
+        shareBtn.addEventListener('click', async () => {
+          const shareData = {
+            title: 'נעה | עוגות מעוצבות – ירושלים',
+            text: 'כדאי לכם להכיר את נעה — עוגות מעוצבות בוטיק בירושלים! 🍰',
+            url: window.location.href
+          };
+
+          if (navigator.share) {
+            try { await navigator.share(shareData); } catch (err) { console.log('Share cancelled'); }
+          } else {
+            try {
+              await navigator.clipboard.writeText(window.location.href);
+              shareBtn.classList.add('copied');
+              shareBtn.innerHTML = '✅ הקישור הועתק!';
+              setTimeout(() => {
+                shareBtn.classList.remove('copied');
+                shareBtn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg> שתף את האתר`;
+              }, 2000);
+            } catch (err) {
+              // Fallback
+              const textArea = document.createElement('textarea');
+              textArea.value = window.location.href;
+              document.body.appendChild(textArea);
+              textArea.select();
+              document.execCommand('copy');
+              document.body.removeChild(textArea);
+              shareBtn.classList.add('copied');
+              shareBtn.innerHTML = '✅ הקישור הועתק!';
+              setTimeout(() => {
+                shareBtn.classList.remove('copied');
+                shareBtn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg> שתף את האתר`;
+              }, 2000);
+            }
+          }
+        });
+      }
+
+      // ===== PARALLAX SCROLL =====
+      const parallaxElements = document.querySelectorAll('.section-divider');
+      window.addEventListener('scroll', () => {
+        const scrollY = window.scrollY;
+        parallaxElements.forEach(el => {
+          const rect = el.getBoundingClientRect();
+          if (rect.top < window.innerHeight && rect.bottom > 0) {
+            const speed = 0.3;
+            el.style.transform = `translateY(${(scrollY - el.offsetTop) * speed}px)`;
+          }
+        });
+      }, { passive: true });
+
+      console.log('✅ נעה website initialized successfully');
+    })();
+  </script>
+</body>
+</html>
