@@ -1,0 +1,11 @@
+[build]
+  publish = "."
+  command = "echo 'Static site'"
+
+[[redirects]]
+  from = "/admin/*"
+  to = "/admin/index.html"
+  status = 200
+
+[template.environment]
+  NETLIFY_SITE_ID = "your-site-id"
