@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
   <meta name="theme-color" content="#9d174d">
-  <meta name="description" content="נעה - עוגות מעוצבות בוטיק בירושלים. עוגות מעוצבות ומתוקים מיוחדים.">
+  <meta name="description" content="נעה - עוגות מעוצבות בוטיק בירושלים. עוגות מעוצבות, עוגות בנטו, בצקים, קינוחים, מארזים ועוגיות מיוחדים. הזמנה אישית לכל אירוע.">
   <meta name="format-detection" content="telephone=no">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta property="og:title" content="נעה | עוגות מעוצבות – ירושלים">
@@ -25,6 +25,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
   <style>
+
     @layer reset, base, layout, components, utilities, animations;
 
     @layer reset {
@@ -116,9 +117,17 @@
       .nav-links a::after { content: ''; position: absolute; inset-block-end: 0; inset-inline: 0; height: 2px; background: var(--color-primary); transform: scaleX(0); transform-origin: right; transition: transform var(--transition-base); }
       .nav-links a:hover { color: var(--color-primary-light); }
       .nav-links a:hover::after { transform: scaleX(1); }
-      .order-nav-btn { background: var(--color-primary); color: white; padding: 10px 28px; border-radius: var(--radius-full); font-weight: 600; font-size: var(--text-sm); transition: all var(--transition-base); box-shadow: 0 4px 14px rgba(157, 23, 77, 0.25); touch-action: manipulation; }
+      .order-nav-btn { background: var(--color-primary); color: white; padding: 10px 28px; border-radius: var(--radius-full); font-weight: 600; font-size: var(--text-sm); transition: all var(--transition-base); box-shadow: 0 4px 14px rgba(157, 23, 77, 0.25); touch-action: manipulation; white-space: nowrap; }
       .order-nav-btn:hover { background: var(--color-primary-dark); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(157, 23, 77, 0.35); }
       .order-nav-btn:active { transform: translateY(0); }
+      .send-photo-nav-btn {
+        background: transparent; color: var(--color-primary); border: 2px solid var(--color-border-light);
+        padding: 10px 20px; border-radius: var(--radius-full); font-weight: 600; font-size: var(--text-sm);
+        transition: all var(--transition-base); display: inline-flex; align-items: center; gap: 6px;
+        touch-action: manipulation; white-space: nowrap;
+      }
+      .send-photo-nav-btn:hover { background: var(--color-bg-pink); border-color: var(--color-primary); transform: translateY(-2px); }
+      .send-photo-nav-btn .icon { font-size: 1.1em; }
       .mobile-menu-btn { display: none; font-size: 1.75rem; color: var(--color-primary); padding: 4px; touch-action: manipulation; }
       .mobile-drawer { position: fixed; inset-block: 0; inset-inline-end: 0; width: min(75%, 300px); background: white; z-index: 1100; transform: translateX(100%); transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1); padding: var(--space-xl); display: flex; flex-direction: column; gap: var(--space-lg); box-shadow: var(--shadow-xl); }
       [dir="rtl"] .mobile-drawer { transform: translateX(-100%); }
@@ -127,8 +136,32 @@
       .mobile-drawer a { font-size: var(--text-lg); font-weight: 500; color: var(--color-text); padding-block: var(--space-xs); transition: color var(--transition-fast); }
       .mobile-drawer a:hover { color: var(--color-primary); }
       .mobile-drawer .order-nav-btn { text-align: center; margin-block-start: var(--space-sm); }
+      .mobile-drawer .send-photo-nav-btn { text-align: center; justify-content: center; margin-block-start: var(--space-xs); }
       .drawer-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1099; backdrop-filter: blur(4px); opacity: 0; transition: opacity var(--transition-base); }
       .drawer-overlay.active { display: block; opacity: 1; }
+
+      /* Preloader */
+      .preloader {
+        position: fixed; inset: 0; z-index: 9999;
+        background: var(--color-bg);
+        display: flex; flex-direction: column; align-items: center; justify-content: center;
+        transition: opacity 0.6s ease, visibility 0.6s ease;
+      }
+      .preloader.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+      .preloader__logo {
+        width: 80px; height: 80px; border-radius: 50%; object-fit: cover;
+        border: 3px solid var(--color-border); box-shadow: var(--shadow-md);
+        animation: preloaderPulse 1.5s ease-in-out infinite;
+      }
+      .preloader__text {
+        margin-top: var(--space-md); font-family: var(--font-display);
+        font-size: var(--text-xl); color: var(--color-primary); font-weight: 500;
+      }
+      .preloader__spinner {
+        margin-top: var(--space-sm); width: 40px; height: 40px;
+        border: 3px solid var(--color-border); border-top-color: var(--color-primary);
+        border-radius: 50%; animation: spin 1s linear infinite;
+      }
 
       .hero {
         min-height: 100dvh;
@@ -144,7 +177,7 @@
       .hero__slideshow { position: absolute; inset: 0; z-index: 0; overflow: hidden; }
       .hero__slide { position: absolute; inset: 0; opacity: 0; transition: opacity 1.5s ease-in-out, transform 8s ease-out; transform: scale(1.1); }
       .hero__slide.active { opacity: 1; transform: scale(1); }
-      .hero__slide img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.35) saturate(0.8); }
+      .hero__slide img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.35) saturate(0.8); will-change: transform; }
       .hero__overlay { position: absolute; inset: 0; background: linear-gradient(145deg, rgba(157,23,77,0.3) 0%, rgba(76,5,25,0.5) 100%); z-index: 1; }
       .hero__vignette { position: absolute; inset: 0; background: radial-gradient(ellipse at center, transparent 0%, rgba(0,0,0,0.4) 100%); z-index: 2; }
       .hero-content { position: relative; z-index: 3; animation: fadeInUp 0.8s ease-out; color: white; text-shadow: 0 2px 20px rgba(0,0,0,0.3); }
@@ -171,8 +204,7 @@
       .section-divider::before {
         content: '';
         position: absolute;
-        top: 50%;
-        left: 50%;
+        top: 50%; left: 50%;
         transform: translate(-50%, -50%);
         width: 40px;
         height: 2px;
@@ -180,52 +212,50 @@
         border-radius: 1px;
       }
 
+      /* Categories System */
+      .categories-section { padding-block: var(--space-2xl); background: var(--color-bg); }
+      .categories-grid {
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        gap: var(--space-md);
+        margin-top: var(--space-xl);
+      }
+      .category-card {
+        position: relative; border-radius: var(--radius-lg); overflow: hidden;
+        aspect-ratio: 1 / 1; cursor: pointer; box-shadow: var(--shadow-md);
+        transition: all var(--transition-base); background: var(--color-bg-warm);
+        border: 2px solid transparent;
+      }
+      .category-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-xl); border-color: var(--color-primary); }
+      .category-card:active { transform: scale(0.98); }
+      .category-card__slideshow { position: absolute; inset: 0; }
+      .category-card__slide { position: absolute; inset: 0; opacity: 0; transition: opacity 1s ease-in-out; }
+      .category-card__slide.active { opacity: 1; }
+      .category-card__slide img { width: 100%; height: 100%; object-fit: cover; }
+      .category-card__overlay {
+        position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.2) 50%, transparent 100%);
+        z-index: 2; display: flex; flex-direction: column; justify-content: flex-end; padding: var(--space-md);
+      }
+      .category-card__name { color: white; font-weight: 700; font-size: var(--text-base); text-shadow: 0 2px 8px rgba(0,0,0,0.5); }
+      .category-card__count { color: rgba(255,255,255,0.8); font-size: var(--text-xs); margin-top: 2px; }
+      .category-card__icon { position: absolute; top: 12px; right: 12px; z-index: 3; background: rgba(157,23,77,0.85); color: white; padding: 4px 10px; border-radius: var(--radius-full); font-size: var(--text-xs); font-weight: 600; backdrop-filter: blur(4px); }
+
+      .back-to-categories {
+        display: none; align-items: center; gap: 8px;
+        background: white; color: var(--color-primary); border: 2px solid var(--color-border-light);
+        padding: 10px 24px; border-radius: var(--radius-full); font-weight: 600; font-size: var(--text-sm);
+        transition: all var(--transition-base); box-shadow: var(--shadow-sm); cursor: pointer;
+        margin-bottom: var(--space-lg); touch-action: manipulation;
+      }
+      .back-to-categories:hover { background: var(--color-primary); color: white; border-color: var(--color-primary); transform: translateY(-2px); }
+      .back-to-categories.visible { display: inline-flex; }
+
       .gallery-section { padding-block: var(--space-2xl); background: var(--color-bg); }
       .section-header { text-align: center; margin-block-end: var(--space-xl); }
       .section-header h2 { font-family: var(--font-display); font-size: var(--text-2xl); margin-block-end: var(--space-sm); font-weight: 400; }
       .section-header p { color: var(--color-text-muted); max-width: 560px; margin-inline: auto; font-size: var(--text-base); }
 
-      .category-filter {
-        max-width: 400px;
-        margin: 0 auto var(--space-xl);
-        position: relative;
-      }
-      .category-filter__select {
-        width: 100%;
-        padding: 14px 20px;
-        border: 2px solid var(--color-border-light);
-        border-radius: var(--radius-full);
-        font-size: var(--text-base);
-        font-weight: 500;
-        color: var(--color-text);
-        background: white;
-        cursor: pointer;
-        appearance: none;
-        -webkit-appearance: none;
-        text-align: center;
-        transition: all var(--transition-fast);
-        box-shadow: var(--shadow-sm);
-      }
-      .category-filter__select:hover, .category-filter__select:focus {
-        border-color: var(--color-primary);
-        box-shadow: 0 0 0 4px rgba(157, 23, 77, 0.1);
-        outline: none;
-      }
-      .category-filter__arrow {
-        position: absolute;
-        left: 20px;
-        top: 50%;
-        transform: translateY(-50%);
-        pointer-events: none;
-        color: var(--color-primary);
-        font-size: 0.8rem;
-      }
-      .category-count {
-        text-align: center;
-        color: var(--color-text-muted);
-        font-size: var(--text-sm);
-        margin-block-end: var(--space-md);
-      }
+      .category-count { text-align: center; color: var(--color-text-muted); font-size: var(--text-sm); margin-block-end: var(--space-md); }
 
       .gallery-grid {
         display: grid;
@@ -271,6 +301,17 @@
         backdrop-filter: blur(4px);
       }
 
+      /* Skeleton */
+      .skeleton {
+        background: linear-gradient(90deg, #f0d8e0 25%, #f8e8e0 50%, #f0d8e0 75%);
+        background-size: 200% 100%;
+        animation: skeletonShimmer 1.5s infinite;
+        border-radius: var(--radius-lg);
+      }
+      .gallery-card.skeleton-card .gallery-card__image-wrapper { background: linear-gradient(90deg, #f0d8e0 25%, #f8e8e0 50%, #f0d8e0 75%); background-size: 200% 100%; animation: skeletonShimmer 1.5s infinite; }
+      .gallery-card.skeleton-card .gallery-card__category-tag { display: none; }
+      .gallery-card.skeleton-card .gallery-card__zoom-hint { display: none; }
+
       .load-more-btn {
         display: none;
         margin: var(--space-xl) auto 0;
@@ -305,29 +346,25 @@
       .about-features { display: flex; gap: var(--space-xl); flex-wrap: wrap; margin-block-start: var(--space-lg); }
       .about-feature h4 { color: var(--color-primary); font-size: var(--text-lg); margin-block-end: var(--space-xs); font-weight: 600; }
 
-      .workshops-section { background: linear-gradient(135deg, var(--color-bg-warm) 0%, var(--color-bg-pink) 100%); padding-block: var(--space-2xl); }
-      .workshops-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: var(--space-lg); margin-top: var(--space-xl); }
-      .workshop-card {
-        background: white; border-radius: var(--radius-lg); padding: var(--space-xl);
-        box-shadow: var(--shadow-md); transition: all var(--transition-base);
-        text-align: center; position: relative; overflow: hidden;
-      }
-      .workshop-card::before {
-        content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
-        background: linear-gradient(90deg, var(--color-primary), var(--color-primary-light));
-      }
-      @media (hover: hover) { .workshop-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-xl); } }
-      .workshop-card__icon { font-size: 3rem; margin-bottom: var(--space-sm); }
-      .workshop-card h3 { font-family: var(--font-display); font-size: var(--text-xl); color: var(--color-primary); margin-bottom: var(--space-sm); }
-      .workshop-card p { color: var(--color-text-muted); margin-bottom: var(--space-md); }
-      .workshop-card__price { font-size: var(--text-lg); font-weight: 700; color: var(--color-primary); margin-bottom: var(--space-sm); }
-      .workshop-card__btn {
-        background: var(--color-primary); color: white; padding: 10px 28px;
-        border-radius: var(--radius-full); font-weight: 600; font-size: var(--text-sm);
-        transition: all var(--transition-base); display: inline-block;
-        box-shadow: 0 4px 14px rgba(157, 23, 77, 0.25);
-      }
-      .workshop-card__btn:hover { background: var(--color-primary-dark); transform: translateY(-2px); }
+      .why-section { padding-block: var(--space-2xl); background: var(--color-bg-warm); }
+      .why-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: var(--space-lg); margin-top: var(--space-xl); }
+      .why-card { background: white; border-radius: var(--radius-lg); padding: var(--space-xl); text-align: center; box-shadow: var(--shadow-md); transition: all var(--transition-base); position: relative; overflow: hidden; }
+      .why-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, var(--color-primary), var(--color-primary-light)); }
+      @media (hover: hover) { .why-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-xl); } }
+      .why-card__icon { font-size: 3rem; margin-bottom: var(--space-sm); }
+      .why-card h3 { font-family: var(--font-display); font-size: var(--text-xl); color: var(--color-primary); margin-bottom: var(--space-sm); }
+      .why-card p { color: var(--color-text-muted); font-size: var(--text-base); line-height: 1.6; }
+
+      .testimonials-section { padding-block: var(--space-2xl); background: var(--color-bg); }
+      .testimonials-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--space-lg); margin-top: var(--space-xl); }
+      .testimonial-card { background: white; border-radius: var(--radius-lg); padding: var(--space-xl); box-shadow: var(--shadow-md); transition: all var(--transition-base); position: relative; }
+      .testimonial-card::before { content: '"'; position: absolute; top: 16px; right: 20px; font-family: var(--font-display); font-size: 4rem; color: var(--color-bg-pink); line-height: 1; opacity: 0.6; }
+      @media (hover: hover) { .testimonial-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); } }
+      .testimonial-stars { font-size: 1.1rem; margin-bottom: var(--space-sm); letter-spacing: 2px; }
+      .testimonial-text { color: var(--color-text); font-size: var(--text-base); line-height: 1.7; margin-bottom: var(--space-md); font-style: italic; position: relative; z-index: 1; }
+      .testimonial-author { display: flex; align-items: center; gap: var(--space-sm); flex-wrap: wrap; }
+      .testimonial-name { font-weight: 600; color: var(--color-primary); }
+      .testimonial-badge { background: var(--color-bg-pink); color: var(--color-primary); padding: 4px 12px; border-radius: var(--radius-full); font-size: var(--text-xs); font-weight: 500; }
 
       footer { text-align: center; padding-block: var(--space-xl); background: white; border-top: 1px solid var(--color-bg-pink); color: var(--color-text-light); }
       footer p { margin-block-end: var(--space-sm); }
@@ -380,26 +417,6 @@
       .close-lightbox:hover { background: rgba(255,255,255,0.2); }
       .lightbox__hint { position: absolute; top: 80px; left: 50%; transform: translateX(-50%); color: rgba(255,255,255,0.6); font-size: var(--text-xs); background: rgba(0,0,0,0.4); padding: 6px 14px; border-radius: var(--radius-full); backdrop-filter: blur(4px); pointer-events: none; opacity: 0; transition: opacity 0.5s ease; }
       .lightbox.active .lightbox__hint { opacity: 1; animation: hintFade 3s ease forwards; }
-
-      .why-section { padding-block: var(--space-2xl); background: var(--color-bg-warm); }
-      .why-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: var(--space-lg); margin-top: var(--space-xl); }
-      .why-card { background: white; border-radius: var(--radius-lg); padding: var(--space-xl); text-align: center; box-shadow: var(--shadow-md); transition: all var(--transition-base); position: relative; overflow: hidden; }
-      .why-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, var(--color-primary), var(--color-primary-light)); }
-      @media (hover: hover) { .why-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-xl); } }
-      .why-card__icon { font-size: 3rem; margin-bottom: var(--space-sm); }
-      .why-card h3 { font-family: var(--font-display); font-size: var(--text-xl); color: var(--color-primary); margin-bottom: var(--space-sm); }
-      .why-card p { color: var(--color-text-muted); font-size: var(--text-base); line-height: 1.6; }
-
-      .testimonials-section { padding-block: var(--space-2xl); background: var(--color-bg); }
-      .testimonials-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--space-lg); margin-top: var(--space-xl); }
-      .testimonial-card { background: white; border-radius: var(--radius-lg); padding: var(--space-xl); box-shadow: var(--shadow-md); transition: all var(--transition-base); position: relative; }
-      .testimonial-card::before { content: '"'; position: absolute; top: 16px; right: 20px; font-family: var(--font-display); font-size: 4rem; color: var(--color-bg-pink); line-height: 1; opacity: 0.6; }
-      @media (hover: hover) { .testimonial-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); } }
-      .testimonial-stars { font-size: 1.1rem; margin-bottom: var(--space-sm); letter-spacing: 2px; }
-      .testimonial-text { color: var(--color-text); font-size: var(--text-base); line-height: 1.7; margin-bottom: var(--space-md); font-style: italic; position: relative; z-index: 1; }
-      .testimonial-author { display: flex; align-items: center; gap: var(--space-sm); flex-wrap: wrap; }
-      .testimonial-name { font-weight: 600; color: var(--color-primary); }
-      .testimonial-badge { background: var(--color-bg-pink); color: var(--color-primary); padding: 4px 12px; border-radius: var(--radius-full); font-size: var(--text-xs); font-weight: 500; }
     }
 
     @layer animations {
@@ -410,6 +427,9 @@
       }
       @keyframes hintFade { 0% { opacity: 0; } 20% { opacity: 1; } 80% { opacity: 1; } 100% { opacity: 0; } }
       @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+      @keyframes spin { to { transform: rotate(360deg); } }
+      @keyframes preloaderPulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+      @keyframes skeletonShimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
       @supports (animation-timeline: scroll()) {
         .gallery-card { animation: fadeInUp 0.6s ease-out backwards; animation-timeline: view(); animation-range: entry 10% cover 30%; }
       }
@@ -431,36 +451,53 @@
         .about-features { justify-content: center; }
         .gallery-grid { grid-template-columns: repeat(2, 1fr); gap: var(--space-sm); }
         .section-divider { height: 60px; }
-        .workshops-grid { grid-template-columns: 1fr; }
         .jerusalem-badge { bottom: max(80px, env(safe-area-inset-bottom, 80px)); left: 12px; font-size: 0.7rem; padding: 6px 14px; }
         .whatsapp-float { width: 52px; height: 52px; bottom: max(16px, env(safe-area-inset-bottom, 16px)); right: 16px; }
         .modal-card { padding: var(--space-lg); margin: var(--space-sm); max-height: 85vh; }
         .lightbox img { max-width: 95vw; max-height: 80vh; }
         .lightbox__controls { bottom: 16px; padding: 6px 12px; }
         .lightbox__btn { width: 40px; height: 40px; font-size: 1.1rem; }
+        .categories-grid { grid-template-columns: repeat(3, 1fr); gap: var(--space-sm); }
+        .category-card__name { font-size: var(--text-sm); }
+        .send-photo-nav-btn { padding: 8px 14px; font-size: 0.8rem; }
+        .send-photo-nav-btn .label-text { display: none; }
+        .send-photo-nav-btn .icon { font-size: 1.2em; }
       }
       @media (max-width: 480px) {
         .gallery-grid { grid-template-columns: 1fr; }
         .hero-buttons { flex-direction: column; align-items: center; }
         .btn-primary, .btn-outline { width: min(100%, 280px); justify-content: center; }
-        .category-filter { max-width: 100%; margin-inline: var(--space-sm); }
         .order-modal { padding: var(--space-sm); }
         .modal-card { padding: var(--space-md); margin: var(--space-xs); }
+        .categories-grid { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+        .category-card__overlay { padding: 8px; }
+        .category-card__name { font-size: 0.8rem; }
+        .category-card__count { font-size: 0.65rem; }
+        .send-photo-nav-btn { display: none; }
+        .nav-container { gap: 8px; }
+        .logo-img { width: 40px; height: 40px; }
+        .logo-text { font-size: 1.3rem; }
+        .order-nav-btn { padding: 8px 18px; font-size: 0.85rem; }
+      }
+      @media (max-width: 360px) {
+        .modal-card { padding: var(--space-sm); }
+        .form-group input, .form-group select, .form-group textarea { padding: 10px 12px; font-size: 16px; }
+        .submit-btn { padding: 12px; font-size: var(--text-sm); }
+        .categories-grid { grid-template-columns: repeat(2, 1fr); }
       }
       @media (prefers-reduced-motion: reduce) {
         *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
         html { scroll-behavior: auto; }
         .hero__slide { transition: none; }
+        .preloader { display: none !important; }
       }
       @media print {
-        .navbar, .jerusalem-badge, .whatsapp-float, .mobile-menu-btn, .hero-buttons, .hero__slideshow { display: none !important; }
+        .navbar, .jerusalem-badge, .whatsapp-float, .mobile-menu-btn, .hero-buttons, .hero__slideshow, .preloader { display: none !important; }
         .hero { min-height: auto; padding: 2rem; background: var(--color-bg-warm) !important; }
         .hero-content { color: var(--color-text) !important; text-shadow: none !important; }
       }
     }
   </style>
-<base target="_blank">
-
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -503,8 +540,15 @@
 <base target="_blank">
 </head>
 <body>
-  <div class="jerusalem-badge">🍰 ירושלים בלבד</div>
-  <div class="whatsapp-float" id="whatsappFloatBtn" role="button" aria-label="פתח צ'אט וואטסאפ">
+  <!-- Preloader -->
+  <div class="preloader" id="preloader" role="status" aria-label="טוען אתר">
+    <img src="./logo.jpg" alt="לוגו נעה" class="preloader__logo" width="80" height="80">
+    <div class="preloader__text">נעה</div>
+    <div class="preloader__spinner" aria-hidden="true"></div>
+  </div>
+
+  <div class="jerusalem-badge" aria-hidden="true">ירושלים בלבד</div>
+  <div class="whatsapp-float" id="whatsappFloatBtn" role="button" aria-label="פתח צאט וואטסאפ" tabindex="0">
     <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="white" viewBox="0 0 16 16" aria-hidden="true">
       <path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"/>
     </svg>
@@ -513,16 +557,21 @@
   <nav class="navbar" id="navbar" role="navigation" aria-label="ניווט ראשי">
     <div class="nav-container">
       <div class="logo-area">
-        <img src="./logo.jpg" alt="לוגו נעה" class="logo-img" width="48" height="48" loading="eager" onerror="this.src='https://placehold.co/60x60?text=Logo'">
+        <img src="./logo.jpg" alt="לוגו נעה עוגות מעוצבות" class="logo-img" width="48" height="48" loading="eager" onerror="this.src='https://placehold.co/60x60?text=Logo'">
         <span class="logo-text">נעה</span>
       </div>
       <div class="nav-links">
-        <a href="#home">בית</a>
-        <a href="#gallery">קולקציה</a>
-        <a href="#why-noa">למה נעה</a>
-        <a href="#testimonials">ביקורות</a>
-        <a href="#about">אודות</a>
-        <button class="order-nav-btn" id="navOrderBtn" type="button">הזמנות</button>
+        <a href="#home" aria-label="עבור לדף הבית">בית</a>
+        <a href="#categories" aria-label="עבור לקטגוריות">קטגוריות</a>
+        <a href="#gallery" aria-label="עבור לקולקציה">קולקציה</a>
+        <a href="#why-noa" aria-label="עבור לסקציה למה נעה">למה נעה</a>
+        <a href="#testimonials" aria-label="עבור לביקורות">ביקורות</a>
+        <a href="#about" aria-label="עבור לאודות">אודות</a>
+        <button class="send-photo-nav-btn" id="navSendPhotoBtn" type="button" aria-label="שלחו תמונה לנעה">
+          <span class="icon" aria-hidden="true">📷</span>
+          <span class="label-text">שלחו תמונה</span>
+        </button>
+        <button class="order-nav-btn" id="navOrderBtn" type="button" aria-label="פתח טופס הזמנה">הזמנות</button>
       </div>
       <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="פתח תפריט" aria-expanded="false" aria-controls="mobileDrawer">☰</button>
     </div>
@@ -532,20 +581,24 @@
   <div class="mobile-drawer" id="mobileDrawer" role="dialog" aria-label="תפריט נייד" aria-modal="true">
     <button class="close-drawer" id="closeDrawerBtn" aria-label="סגור תפריט">✕</button>
     <a href="#home">בית</a>
+    <a href="#categories">קטגוריות</a>
     <a href="#gallery">קולקציה</a>
     <a href="#why-noa">למה נעה</a>
     <a href="#testimonials">ביקורות</a>
     <a href="#about">אודות</a>
-    <button class="order-nav-btn" id="mobileOrderBtn" type="button">הזמנות</button>
+    <button class="send-photo-nav-btn" id="mobileSendPhotoBtn" type="button" aria-label="שלחו תמונה לנעה">
+      <span class="icon" aria-hidden="true">📷</span> שלחו תמונה
+    </button>
+    <button class="order-nav-btn" id="mobileOrderBtn" type="button" aria-label="פתח טופס הזמנה">הזמנות</button>
   </div>
 
   <section id="home" class="hero" aria-label="ראשי">
     <div class="hero__slideshow" id="heroSlideshow" aria-hidden="true">
       <div class="hero__slide active" data-slide="0"><img src="./images/image1.jpeg" alt="עוגת יום הולדת מעוצבת — נעה ירושלים" loading="eager" width="1200" height="800" decoding="async" fetchpriority="high"></div>
-      <div class="hero__slide" data-slide="1"><img src="./images/image5.jpeg" alt="עוגת בנטו מעוצבת — נעה ירושלים" loading="eager" width="1200" height="800" decoding="async"></div>
+      <div class="hero__slide" data-slide="1"><img src="./images/image5.jpeg" alt="בצקים טריים ופריכים — נעה ירושלים" loading="eager" width="1200" height="800" decoding="async"></div>
       <div class="hero__slide" data-slide="2"><img src="./images/image10.jpeg" alt="מארז מתוקים מיוחד — נעה ירושלים" loading="eager" width="1200" height="800" decoding="async"></div>
       <div class="hero__slide" data-slide="3"><img src="./images/image15.jpeg" alt="קינוחים מעוצבים — נעה ירושלים" loading="eager" width="1200" height="800" decoding="async"></div>
-      <div class="hero__slide" data-slide="4"><img src="./images/image20.jpeg" alt="בצקים טריים — נעה ירושלים" loading="eager" width="1200" height="800" decoding="async"></div>
+      <div class="hero__slide" data-slide="4"><img src="./images/image20.jpeg" alt="עוגת אירוע מעוצבת — נעה ירושלים" loading="eager" width="1200" height="800" decoding="async"></div>
     </div>
     <div class="hero__overlay" aria-hidden="true"></div>
     <div class="hero__vignette" aria-hidden="true"></div>
@@ -553,457 +606,539 @@
       <h1>Made with love</h1>
       <p>Jerusalem Boutique Patisserie</p>
       <div class="hero-buttons">
-        <a href="#gallery" class="btn-outline">הקולקציה</a>
-        <button class="btn-primary" id="heroOrderBtn" type="button">הזמנה אישית</button>
+        <a href="#categories" class="btn-outline" aria-label="עבור לקטגוריות">הקולקציה</a>
+        <button class="btn-primary" id="heroOrderBtn" type="button" aria-label="פתח טופס הזמנה אישית">הזמנה אישית</button>
       </div>
     </div>
   </section>
 
   <div class="section-divider" aria-hidden="true"></div>
 
+  <!-- Categories Section -->
+  <section id="categories" class="categories-section container" aria-label="קטגוריות מוצרים">
+    <div class="section-header">
+      <h2>הקטגוריות שלנו</h2>
+      <p>בחרו קטגוריה וגלו את היצירות של נעה</p>
+    </div>
+    <div class="categories-grid" id="categoriesGrid" role="list">
+      <div class="category-card" data-category="עוגות מעוצבות" role="listitem" tabindex="0" aria-label="עוגות מעוצבות, 19 פריטים">
+        <div class="category-card__slideshow" data-category="עוגות מעוצבות">
+          <div class="category-card__slide active"><img src="./images/image4.jpeg" alt="עוגות מעוצבות — דוגמה 1" loading="lazy"></div>
+          <div class="category-card__slide"><img src="./images/image9.jpeg" alt="עוגות מעוצבות — דוגמה 2" loading="lazy"></div>
+          <div class="category-card__slide"><img src="./images/image11.jpeg" alt="עוגות מעוצבות — דוגמה 3" loading="lazy"></div>
+          <div class="category-card__slide"><img src="./images/image18.jpeg" alt="עוגות מעוצבות — דוגמה 4" loading="lazy"></div>
+        </div>
+        <div class="category-card__overlay">
+          <div class="category-card__name">עוגות מעוצבות</div>
+          <div class="category-card__count">19 פריטים</div>
+        </div>
+        <span class="category-card__icon" aria-hidden="true">🎂</span>
+      </div>
+      <div class="category-card" data-category="עוגות בנטו" role="listitem" tabindex="0" aria-label="עוגות בנטו, 4 פריטים">
+        <div class="category-card__slideshow" data-category="עוגות בנטו">
+          <div class="category-card__slide active"><img src="./images/image14.jpeg" alt="עוגות בנטו — דוגמה 1" loading="lazy"></div>
+          <div class="category-card__slide"><img src="./images/image31.jpeg" alt="עוגות בנטו — דוגמה 2" loading="lazy"></div>
+          <div class="category-card__slide"><img src="./images/image40.jpeg" alt="עוגות בנטו — דוגמה 3" loading="lazy"></div>
+          <div class="category-card__slide"><img src="./images/image42.jpeg" alt="עוגות בנטו — דוגמה 4" loading="lazy"></div>
+        </div>
+        <div class="category-card__overlay">
+          <div class="category-card__name">עוגות בנטו</div>
+          <div class="category-card__count">4 פריטים</div>
+        </div>
+        <span class="category-card__icon" aria-hidden="true">🍱</span>
+      </div>
+      <div class="category-card" data-category="בצקים" role="listitem" tabindex="0" aria-label="בצקים, 7 פריטים">
+        <div class="category-card__slideshow" data-category="בצקים">
+          <div class="category-card__slide active"><img src="./images/image5.jpeg" alt="בצקים — דוגמה 1" loading="lazy"></div>
+          <div class="category-card__slide"><img src="./images/image6.jpeg" alt="בצקים — דוגמה 2" loading="lazy"></div>
+          <div class="category-card__slide"><img src="./images/image7.jpeg" alt="בצקים — דוגמה 3" loading="lazy"></div>
+          <div class="category-card__slide"><img src="./images/image10.jpeg" alt="בצקים — דוגמה 4" loading="lazy"></div>
+        </div>
+        <div class="category-card__overlay">
+          <div class="category-card__name">בצקים</div>
+          <div class="category-card__count">7 פריטים</div>
+        </div>
+        <span class="category-card__icon" aria-hidden="true">🥐</span>
+      </div>
+      <div class="category-card" data-category="קינוחים" role="listitem" tabindex="0" aria-label="קינוחים, 5 פריטים">
+        <div class="category-card__slideshow" data-category="קינוחים">
+          <div class="category-card__slide active"><img src="./images/image1.jpeg" alt="קינוחים — דוגמה 1" loading="lazy"></div>
+          <div class="category-card__slide"><img src="./images/image2.jpeg" alt="קינוחים — דוגמה 2" loading="lazy"></div>
+          <div class="category-card__slide"><img src="./images/image3.jpeg" alt="קינוחים — דוגמה 3" loading="lazy"></div>
+          <div class="category-card__slide"><img src="./images/image8.jpeg" alt="קינוחים — דוגמה 4" loading="lazy"></div>
+        </div>
+        <div class="category-card__overlay">
+          <div class="category-card__name">קינוחים</div>
+          <div class="category-card__count">5 פריטים</div>
+        </div>
+        <span class="category-card__icon" aria-hidden="true">🍮</span>
+      </div>
+      <div class="category-card" data-category="מארזים" role="listitem" tabindex="0" aria-label="מארזים, 10 פריטים">
+        <div class="category-card__slideshow" data-category="מארזים">
+          <div class="category-card__slide active"><img src="./images/image21.jpeg" alt="מארזים — דוגמה 1" loading="lazy"></div>
+          <div class="category-card__slide"><img src="./images/image36.jpeg" alt="מארזים — דוגמה 2" loading="lazy"></div>
+          <div class="category-card__slide"><img src="./images/image39.jpeg" alt="מארזים — דוגמה 3" loading="lazy"></div>
+          <div class="category-card__slide"><img src="./images/image41.jpeg" alt="מארזים — דוגמה 4" loading="lazy"></div>
+        </div>
+        <div class="category-card__overlay">
+          <div class="category-card__name">מארזים</div>
+          <div class="category-card__count">10 פריטים</div>
+        </div>
+        <span class="category-card__icon" aria-hidden="true">🎁</span>
+      </div>
+      <div class="category-card" data-category="עוגיות" role="listitem" tabindex="0" aria-label="עוגיות, 4 פריטים">
+        <div class="category-card__slideshow" data-category="עוגיות">
+          <div class="category-card__slide active"><img src="./images/image13.jpeg" alt="עוגיות — דוגמה 1" loading="lazy"></div>
+          <div class="category-card__slide"><img src="./images/image16.jpeg" alt="עוגיות — דוגמה 2" loading="lazy"></div>
+          <div class="category-card__slide"><img src="./images/image22.jpeg" alt="עוגיות — דוגמה 3" loading="lazy"></div>
+          <div class="category-card__slide"><img src="./images/image24.jpeg" alt="עוגיות — דוגמה 4" loading="lazy"></div>
+        </div>
+        <div class="category-card__overlay">
+          <div class="category-card__name">עוגיות</div>
+          <div class="category-card__count">4 פריטים</div>
+        </div>
+        <span class="category-card__icon" aria-hidden="true">🍪</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider" aria-hidden="true"></div>
+
+  <!-- Gallery Section -->
   <section id="gallery" class="gallery-section container" aria-label="גלריית עוגות">
     <div class="section-header">
       <h2>הקולקציה שלנו</h2>
-      <p>✨ כל עוגה היא יצירת אמנות – גלו, התאהבו והזמינו ✨</p>
+      <p>כל עוגה היא יצירת אמנות – גלו, התאהבו והזמינו</p>
     </div>
-
-    <div class="category-filter">
-      <select class="category-filter__select" id="categoryFilter" aria-label="סינון קטגוריות">
-        <option value="all" selected>הכל</option>
-        <option value="עוגות מעוצבות">עוגות מעוצבות</option>
-        <option value="עוגות בנטו">עוגות בנטו</option>
-        <option value="בצקים">בצקים</option>
-        <option value="קינוחים">קינוחים</option>
-        <option value="מארזים">מארזים</option>
-        <option value="עוגיות">עוגיות</option>
-      </select>
-      <span class="category-filter__arrow">▼</span>
-    </div>
+    <button class="back-to-categories" id="backToCategoriesBtn" type="button" aria-label="חזרה לקטגוריות">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      חזרה לקטגוריות
+    </button>
     <div class="category-count" id="categoryCount">מציג 12 מתוך 42 פריטים</div>
 
     <div class="gallery-grid" id="galleryGrid">
-      <div class="gallery-card" data-index="1" data-category="קינוחים,מארזים" role="button" tabindex="0" aria-label="עוגה מספר 1">
+      <div class="gallery-card" data-index="1" data-category="קינוחים,מארזים" role="button" tabindex="0" aria-label="קינוחים ומארזים — תמונה 1">
         <div class="gallery-card__image-wrapper">
-          <img src="./images/image1.jpeg" alt="עוגה מעוצבת מספר 1" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+1'" onload="this.parentElement.parentElement.classList.add('loaded')">
+          <img src="./images/image1.jpeg" alt="קינוחים ומארזים — תמונה 1 — נעה ירושלים" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+1'" onload="this.parentElement.parentElement.classList.add('loaded')">
           <div class="gallery-card__zoom-hint">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
             הקישו להגדלה
           </div>
         </div>
-        <span class="gallery-card__category-tag">קינוחים, מארזים</span>
+        <span class="gallery-card__category-tag">קינוחים ומארזים</span>
       </div>
-      <div class="gallery-card" data-index="2" data-category="קינוחים,מארזים" role="button" tabindex="0" aria-label="עוגה מספר 2">
+      <div class="gallery-card" data-index="2" data-category="קינוחים,מארזים" role="button" tabindex="0" aria-label="קינוחים ומארזים — תמונה 2">
         <div class="gallery-card__image-wrapper">
-          <img src="./images/image2.jpeg" alt="עוגה מעוצבת מספר 2" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+2'" onload="this.parentElement.parentElement.classList.add('loaded')">
+          <img src="./images/image2.jpeg" alt="קינוחים ומארזים — תמונה 2 — נעה ירושלים" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+2'" onload="this.parentElement.parentElement.classList.add('loaded')">
           <div class="gallery-card__zoom-hint">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
             הקישו להגדלה
           </div>
         </div>
-        <span class="gallery-card__category-tag">קינוחים, מארזים</span>
+        <span class="gallery-card__category-tag">קינוחים ומארזים</span>
       </div>
-      <div class="gallery-card" data-index="3" data-category="קינוחים" role="button" tabindex="0" aria-label="עוגה מספר 3">
+      <div class="gallery-card" data-index="3" data-category="קינוחים" role="button" tabindex="0" aria-label="קינוחים — תמונה 3">
         <div class="gallery-card__image-wrapper">
-          <img src="./images/image3.jpeg" alt="עוגה מעוצבת מספר 3" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+3'" onload="this.parentElement.parentElement.classList.add('loaded')">
+          <img src="./images/image3.jpeg" alt="קינוחים — תמונה 3 — נעה ירושלים" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+3'" onload="this.parentElement.parentElement.classList.add('loaded')">
           <div class="gallery-card__zoom-hint">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
-            הקישו להגדלה
-          </div>
-        </div>
-        <span class="gallery-card__category-tag">קינוחים</span>
-      </div>
-      <div class="gallery-card" data-index="4" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגה מספר 4">
-        <div class="gallery-card__image-wrapper">
-          <img src="./images/image4.jpeg" alt="עוגה מעוצבת מספר 4" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+4'" onload="this.parentElement.parentElement.classList.add('loaded')">
-          <div class="gallery-card__zoom-hint">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
-            הקישו להגדלה
-          </div>
-        </div>
-        <span class="gallery-card__category-tag">עוגות מעוצבות</span>
-      </div>
-      <div class="gallery-card" data-index="5" data-category="בצקים" role="button" tabindex="0" aria-label="עוגה מספר 5">
-        <div class="gallery-card__image-wrapper">
-          <img src="./images/image5.jpeg" alt="עוגה מעוצבת מספר 5" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+5'" onload="this.parentElement.parentElement.classList.add('loaded')">
-          <div class="gallery-card__zoom-hint">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
-            הקישו להגדלה
-          </div>
-        </div>
-        <span class="gallery-card__category-tag">בצקים</span>
-      </div>
-      <div class="gallery-card" data-index="6" data-category="בצקים" role="button" tabindex="0" aria-label="עוגה מספר 6">
-        <div class="gallery-card__image-wrapper">
-          <img src="./images/image6.jpeg" alt="עוגה מעוצבת מספר 6" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+6'" onload="this.parentElement.parentElement.classList.add('loaded')">
-          <div class="gallery-card__zoom-hint">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
-            הקישו להגדלה
-          </div>
-        </div>
-        <span class="gallery-card__category-tag">בצקים</span>
-      </div>
-      <div class="gallery-card" data-index="7" data-category="בצקים" role="button" tabindex="0" aria-label="עוגה מספר 7">
-        <div class="gallery-card__image-wrapper">
-          <img src="./images/image7.jpeg" alt="עוגה מעוצבת מספר 7" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+7'" onload="this.parentElement.parentElement.classList.add('loaded')">
-          <div class="gallery-card__zoom-hint">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
-            הקישו להגדלה
-          </div>
-        </div>
-        <span class="gallery-card__category-tag">בצקים</span>
-      </div>
-      <div class="gallery-card" data-index="8" data-category="קינוחים" role="button" tabindex="0" aria-label="עוגה מספר 8">
-        <div class="gallery-card__image-wrapper">
-          <img src="./images/image8.jpeg" alt="עוגה מעוצבת מספר 8" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+8'" onload="this.parentElement.parentElement.classList.add('loaded')">
-          <div class="gallery-card__zoom-hint">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
             הקישו להגדלה
           </div>
         </div>
         <span class="gallery-card__category-tag">קינוחים</span>
       </div>
-      <div class="gallery-card" data-index="9" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגה מספר 9">
+      <div class="gallery-card" data-index="4" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגות מעוצבות — תמונה 4">
         <div class="gallery-card__image-wrapper">
-          <img src="./images/image9.jpeg" alt="עוגה מעוצבת מספר 9" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+9'" onload="this.parentElement.parentElement.classList.add('loaded')">
+          <img src="./images/image4.jpeg" alt="עוגות מעוצבות — תמונה 4 — נעה ירושלים" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+4'" onload="this.parentElement.parentElement.classList.add('loaded')">
           <div class="gallery-card__zoom-hint">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
             הקישו להגדלה
           </div>
         </div>
         <span class="gallery-card__category-tag">עוגות מעוצבות</span>
       </div>
-      <div class="gallery-card" data-index="10" data-category="בצקים" role="button" tabindex="0" aria-label="עוגה מספר 10">
+      <div class="gallery-card" data-index="5" data-category="בצקים" role="button" tabindex="0" aria-label="בצקים — תמונה 5">
         <div class="gallery-card__image-wrapper">
-          <img src="./images/image10.jpeg" alt="עוגה מעוצבת מספר 10" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+10'" onload="this.parentElement.parentElement.classList.add('loaded')">
+          <img src="./images/image5.jpeg" alt="בצקים — תמונה 5 — נעה ירושלים" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+5'" onload="this.parentElement.parentElement.classList.add('loaded')">
           <div class="gallery-card__zoom-hint">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
             הקישו להגדלה
           </div>
         </div>
         <span class="gallery-card__category-tag">בצקים</span>
       </div>
-      <div class="gallery-card" data-index="11" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגה מספר 11">
+      <div class="gallery-card" data-index="6" data-category="בצקים" role="button" tabindex="0" aria-label="בצקים — תמונה 6">
         <div class="gallery-card__image-wrapper">
-          <img src="./images/image11.jpeg" alt="עוגה מעוצבת מספר 11" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+11'" onload="this.parentElement.parentElement.classList.add('loaded')">
+          <img src="./images/image6.jpeg" alt="בצקים — תמונה 6 — נעה ירושלים" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+6'" onload="this.parentElement.parentElement.classList.add('loaded')">
           <div class="gallery-card__zoom-hint">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
-            הקישו להגדלה
-          </div>
-        </div>
-        <span class="gallery-card__category-tag">עוגות מעוצבות</span>
-      </div>
-      <div class="gallery-card" data-index="12" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגה מספר 12">
-        <div class="gallery-card__image-wrapper">
-          <img src="./images/image12.jpeg" alt="עוגה מעוצבת מספר 12" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+12'" onload="this.parentElement.parentElement.classList.add('loaded')">
-          <div class="gallery-card__zoom-hint">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
-            הקישו להגדלה
-          </div>
-        </div>
-        <span class="gallery-card__category-tag">עוגות מעוצבות</span>
-      </div>
-      <div class="gallery-card" data-index="13" data-category="עוגיות" role="button" tabindex="0" aria-label="עוגה מספר 13">
-        <div class="gallery-card__image-wrapper">
-          <img src="./images/image13.jpeg" alt="עוגה מעוצבת מספר 13" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+13'" onload="this.parentElement.parentElement.classList.add('loaded')">
-          <div class="gallery-card__zoom-hint">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
-            הקישו להגדלה
-          </div>
-        </div>
-        <span class="gallery-card__category-tag">עוגיות</span>
-      </div>
-      <div class="gallery-card" data-index="14" data-category="עוגות בנטו,מארזים" role="button" tabindex="0" aria-label="עוגה מספר 14">
-        <div class="gallery-card__image-wrapper">
-          <img src="./images/image14.jpeg" alt="עוגה מעוצבת מספר 14" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+14'" onload="this.parentElement.parentElement.classList.add('loaded')">
-          <div class="gallery-card__zoom-hint">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
-            הקישו להגדלה
-          </div>
-        </div>
-        <span class="gallery-card__category-tag">עוגות בנטו, מארזים</span>
-      </div>
-      <div class="gallery-card" data-index="15" data-category="בצקים" role="button" tabindex="0" aria-label="עוגה מספר 15">
-        <div class="gallery-card__image-wrapper">
-          <img src="./images/image15.jpeg" alt="עוגה מעוצבת מספר 15" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+15'" onload="this.parentElement.parentElement.classList.add('loaded')">
-          <div class="gallery-card__zoom-hint">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
             הקישו להגדלה
           </div>
         </div>
         <span class="gallery-card__category-tag">בצקים</span>
       </div>
-      <div class="gallery-card" data-index="16" data-category="עוגיות" role="button" tabindex="0" aria-label="עוגה מספר 16">
+      <div class="gallery-card" data-index="7" data-category="בצקים" role="button" tabindex="0" aria-label="בצקים — תמונה 7">
         <div class="gallery-card__image-wrapper">
-          <img src="./images/image16.jpeg" alt="עוגה מעוצבת מספר 16" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+16'" onload="this.parentElement.parentElement.classList.add('loaded')">
+          <img src="./images/image7.jpeg" alt="בצקים — תמונה 7 — נעה ירושלים" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+7'" onload="this.parentElement.parentElement.classList.add('loaded')">
           <div class="gallery-card__zoom-hint">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
-            הקישו להגדלה
-          </div>
-        </div>
-        <span class="gallery-card__category-tag">עוגיות</span>
-      </div>
-      <div class="gallery-card" data-index="17" data-category="בצקים" role="button" tabindex="0" aria-label="עוגה מספר 17">
-        <div class="gallery-card__image-wrapper">
-          <img src="./images/image17.jpeg" alt="עוגה מעוצבת מספר 17" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+17'" onload="this.parentElement.parentElement.classList.add('loaded')">
-          <div class="gallery-card__zoom-hint">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
             הקישו להגדלה
           </div>
         </div>
         <span class="gallery-card__category-tag">בצקים</span>
       </div>
-      <div class="gallery-card" data-index="18" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגה מספר 18">
+      <div class="gallery-card" data-index="8" data-category="קינוחים" role="button" tabindex="0" aria-label="קינוחים — תמונה 8">
         <div class="gallery-card__image-wrapper">
-          <img src="./images/image18.jpeg" alt="עוגה מעוצבת מספר 18" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+18'" onload="this.parentElement.parentElement.classList.add('loaded')">
+          <img src="./images/image8.jpeg" alt="קינוחים — תמונה 8 — נעה ירושלים" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+8'" onload="this.parentElement.parentElement.classList.add('loaded')">
           <div class="gallery-card__zoom-hint">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+            הקישו להגדלה
+          </div>
+        </div>
+        <span class="gallery-card__category-tag">קינוחים</span>
+      </div>
+      <div class="gallery-card" data-index="9" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגות מעוצבות — תמונה 9">
+        <div class="gallery-card__image-wrapper">
+          <img src="./images/image9.jpeg" alt="עוגות מעוצבות — תמונה 9 — נעה ירושלים" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+9'" onload="this.parentElement.parentElement.classList.add('loaded')">
+          <div class="gallery-card__zoom-hint">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
             הקישו להגדלה
           </div>
         </div>
         <span class="gallery-card__category-tag">עוגות מעוצבות</span>
       </div>
-      <div class="gallery-card" data-index="19" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגה מספר 19">
+      <div class="gallery-card" data-index="10" data-category="בצקים" role="button" tabindex="0" aria-label="בצקים — תמונה 10">
         <div class="gallery-card__image-wrapper">
-          <img src="./images/image19.jpeg" alt="עוגה מעוצבת מספר 19" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+19'" onload="this.parentElement.parentElement.classList.add('loaded')">
+          <img src="./images/image10.jpeg" alt="בצקים — תמונה 10 — נעה ירושלים" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+10'" onload="this.parentElement.parentElement.classList.add('loaded')">
           <div class="gallery-card__zoom-hint">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
-            הקישו להגדלה
-          </div>
-        </div>
-        <span class="gallery-card__category-tag">עוגות מעוצבות</span>
-      </div>
-      <div class="gallery-card" data-index="20" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגה מספר 20">
-        <div class="gallery-card__image-wrapper">
-          <img src="./images/image20.jpeg" alt="עוגה מעוצבת מספר 20" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+20'" onload="this.parentElement.parentElement.classList.add('loaded')">
-          <div class="gallery-card__zoom-hint">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
-            הקישו להגדלה
-          </div>
-        </div>
-        <span class="gallery-card__category-tag">עוגות מעוצבות</span>
-      </div>
-      <div class="gallery-card" data-index="21" data-category="קינוחים,מארזים" role="button" tabindex="0" aria-label="עוגה מספר 21">
-        <div class="gallery-card__image-wrapper">
-          <img src="./images/image21.jpeg" alt="עוגה מעוצבת מספר 21" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+21'" onload="this.parentElement.parentElement.classList.add('loaded')">
-          <div class="gallery-card__zoom-hint">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
-            הקישו להגדלה
-          </div>
-        </div>
-        <span class="gallery-card__category-tag">קינוחים, מארזים</span>
-      </div>
-      <div class="gallery-card" data-index="22" data-category="עוגיות" role="button" tabindex="0" aria-label="עוגה מספר 22">
-        <div class="gallery-card__image-wrapper">
-          <img src="./images/image22.jpeg" alt="עוגה מעוצבת מספר 22" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+22'" onload="this.parentElement.parentElement.classList.add('loaded')">
-          <div class="gallery-card__zoom-hint">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
-            הקישו להגדלה
-          </div>
-        </div>
-        <span class="gallery-card__category-tag">עוגיות</span>
-      </div>
-      <div class="gallery-card" data-index="23" data-category="עוגות מעוצבות,מארזים" role="button" tabindex="0" aria-label="עוגה מספר 23">
-        <div class="gallery-card__image-wrapper">
-          <img src="./images/image23.jpeg" alt="עוגה מעוצבת מספר 23" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+23'" onload="this.parentElement.parentElement.classList.add('loaded')">
-          <div class="gallery-card__zoom-hint">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
-            הקישו להגדלה
-          </div>
-        </div>
-        <span class="gallery-card__category-tag">עוגות מעוצבות, מארזים</span>
-      </div>
-      <div class="gallery-card" data-index="24" data-category="עוגיות" role="button" tabindex="0" aria-label="עוגה מספר 24">
-        <div class="gallery-card__image-wrapper">
-          <img src="./images/image24.jpeg" alt="עוגה מעוצבת מספר 24" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+24'" onload="this.parentElement.parentElement.classList.add('loaded')">
-          <div class="gallery-card__zoom-hint">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
-            הקישו להגדלה
-          </div>
-        </div>
-        <span class="gallery-card__category-tag">עוגיות</span>
-      </div>
-      <div class="gallery-card" data-index="25" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגה מספר 25">
-        <div class="gallery-card__image-wrapper">
-          <img src="./images/image25.jpeg" alt="עוגה מעוצבת מספר 25" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+25'" onload="this.parentElement.parentElement.classList.add('loaded')">
-          <div class="gallery-card__zoom-hint">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
-            הקישו להגדלה
-          </div>
-        </div>
-        <span class="gallery-card__category-tag">עוגות מעוצבות</span>
-      </div>
-      <div class="gallery-card" data-index="26" data-category="בצקים" role="button" tabindex="0" aria-label="עוגה מספר 26">
-        <div class="gallery-card__image-wrapper">
-          <img src="./images/image26.jpeg" alt="עוגה מעוצבת מספר 26" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+26'" onload="this.parentElement.parentElement.classList.add('loaded')">
-          <div class="gallery-card__zoom-hint">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
             הקישו להגדלה
           </div>
         </div>
         <span class="gallery-card__category-tag">בצקים</span>
       </div>
-      <div class="gallery-card" data-index="27" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגה מספר 27">
+      <div class="gallery-card" data-index="11" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגות מעוצבות — תמונה 11">
         <div class="gallery-card__image-wrapper">
-          <img src="./images/image27.jpeg" alt="עוגה מעוצבת מספר 27" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+27'" onload="this.parentElement.parentElement.classList.add('loaded')">
+          <img src="./images/image11.jpeg" alt="עוגות מעוצבות — תמונה 11 — נעה ירושלים" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+11'" onload="this.parentElement.parentElement.classList.add('loaded')">
           <div class="gallery-card__zoom-hint">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
             הקישו להגדלה
           </div>
         </div>
         <span class="gallery-card__category-tag">עוגות מעוצבות</span>
       </div>
-      <div class="gallery-card" data-index="28" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגה מספר 28">
+      <div class="gallery-card" data-index="12" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגות מעוצבות — תמונה 12">
         <div class="gallery-card__image-wrapper">
-          <img src="./images/image28.jpeg" alt="עוגה מעוצבת מספר 28" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+28'" onload="this.parentElement.parentElement.classList.add('loaded')">
+          <img src="./images/image12.jpeg" alt="עוגות מעוצבות — תמונה 12 — נעה ירושלים" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+12'" onload="this.parentElement.parentElement.classList.add('loaded')">
           <div class="gallery-card__zoom-hint">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
             הקישו להגדלה
           </div>
         </div>
         <span class="gallery-card__category-tag">עוגות מעוצבות</span>
       </div>
-      <div class="gallery-card" data-index="29" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגה מספר 29">
+      <div class="gallery-card" data-index="13" data-category="עוגיות" role="button" tabindex="0" aria-label="עוגיות — תמונה 13">
         <div class="gallery-card__image-wrapper">
-          <img src="./images/image29.jpeg" alt="עוגה מעוצבת מספר 29" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+29'" onload="this.parentElement.parentElement.classList.add('loaded')">
+          <img src="./images/image13.jpeg" alt="עוגיות — תמונה 13 — נעה ירושלים" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+13'" onload="this.parentElement.parentElement.classList.add('loaded')">
           <div class="gallery-card__zoom-hint">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+            הקישו להגדלה
+          </div>
+        </div>
+        <span class="gallery-card__category-tag">עוגיות</span>
+      </div>
+      <div class="gallery-card" data-index="14" data-category="עוגות בנטו,מארזים" role="button" tabindex="0" aria-label="עוגות בנטו ומארזים — תמונה 14">
+        <div class="gallery-card__image-wrapper">
+          <img src="./images/image14.jpeg" alt="עוגות בנטו ומארזים — תמונה 14 — נעה ירושלים" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+14'" onload="this.parentElement.parentElement.classList.add('loaded')">
+          <div class="gallery-card__zoom-hint">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+            הקישו להגדלה
+          </div>
+        </div>
+        <span class="gallery-card__category-tag">עוגות בנטו ומארזים</span>
+      </div>
+      <div class="gallery-card" data-index="15" data-category="בצקים" role="button" tabindex="0" aria-label="בצקים — תמונה 15">
+        <div class="gallery-card__image-wrapper">
+          <img src="./images/image15.jpeg" alt="בצקים — תמונה 15 — נעה ירושלים" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+15'" onload="this.parentElement.parentElement.classList.add('loaded')">
+          <div class="gallery-card__zoom-hint">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+            הקישו להגדלה
+          </div>
+        </div>
+        <span class="gallery-card__category-tag">בצקים</span>
+      </div>
+      <div class="gallery-card" data-index="16" data-category="עוגיות" role="button" tabindex="0" aria-label="עוגיות — תמונה 16">
+        <div class="gallery-card__image-wrapper">
+          <img src="./images/image16.jpeg" alt="עוגיות — תמונה 16 — נעה ירושלים" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+16'" onload="this.parentElement.parentElement.classList.add('loaded')">
+          <div class="gallery-card__zoom-hint">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+            הקישו להגדלה
+          </div>
+        </div>
+        <span class="gallery-card__category-tag">עוגיות</span>
+      </div>
+      <div class="gallery-card" data-index="17" data-category="בצקים" role="button" tabindex="0" aria-label="בצקים — תמונה 17">
+        <div class="gallery-card__image-wrapper">
+          <img src="./images/image17.jpeg" alt="בצקים — תמונה 17 — נעה ירושלים" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+17'" onload="this.parentElement.parentElement.classList.add('loaded')">
+          <div class="gallery-card__zoom-hint">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+            הקישו להגדלה
+          </div>
+        </div>
+        <span class="gallery-card__category-tag">בצקים</span>
+      </div>
+      <div class="gallery-card" data-index="18" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגות מעוצבות — תמונה 18">
+        <div class="gallery-card__image-wrapper">
+          <img src="./images/image18.jpeg" alt="עוגות מעוצבות — תמונה 18 — נעה ירושלים" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+18'" onload="this.parentElement.parentElement.classList.add('loaded')">
+          <div class="gallery-card__zoom-hint">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
             הקישו להגדלה
           </div>
         </div>
         <span class="gallery-card__category-tag">עוגות מעוצבות</span>
       </div>
-      <div class="gallery-card" data-index="30" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגה מספר 30">
+      <div class="gallery-card" data-index="19" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגות מעוצבות — תמונה 19">
         <div class="gallery-card__image-wrapper">
-          <img src="./images/image30.jpeg" alt="עוגה מעוצבת מספר 30" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+30'" onload="this.parentElement.parentElement.classList.add('loaded')">
+          <img src="./images/image19.jpeg" alt="עוגות מעוצבות — תמונה 19 — נעה ירושלים" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+19'" onload="this.parentElement.parentElement.classList.add('loaded')">
           <div class="gallery-card__zoom-hint">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
             הקישו להגדלה
           </div>
         </div>
         <span class="gallery-card__category-tag">עוגות מעוצבות</span>
       </div>
-      <div class="gallery-card" data-index="31" data-category="עוגות בנטו,מארזים" role="button" tabindex="0" aria-label="עוגה מספר 31">
+      <div class="gallery-card" data-index="20" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגות מעוצבות — תמונה 20">
         <div class="gallery-card__image-wrapper">
-          <img src="./images/image31.jpeg" alt="עוגה מעוצבת מספר 31" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+31'" onload="this.parentElement.parentElement.classList.add('loaded')">
+          <img src="./images/image20.jpeg" alt="עוגות מעוצבות — תמונה 20 — נעה ירושלים" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+20'" onload="this.parentElement.parentElement.classList.add('loaded')">
           <div class="gallery-card__zoom-hint">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
-            הקישו להגדלה
-          </div>
-        </div>
-        <span class="gallery-card__category-tag">עוגות בנטו, מארזים</span>
-      </div>
-      <div class="gallery-card" data-index="32" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגה מספר 32">
-        <div class="gallery-card__image-wrapper">
-          <img src="./images/image32.jpeg" alt="עוגה מעוצבת מספר 32" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+32'" onload="this.parentElement.parentElement.classList.add('loaded')">
-          <div class="gallery-card__zoom-hint">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
             הקישו להגדלה
           </div>
         </div>
         <span class="gallery-card__category-tag">עוגות מעוצבות</span>
       </div>
-      <div class="gallery-card" data-index="33" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגה מספר 33">
+      <div class="gallery-card" data-index="21" data-category="קינוחים,מארזים" role="button" tabindex="0" aria-label="קינוחים ומארזים — תמונה 21">
         <div class="gallery-card__image-wrapper">
-          <img src="./images/image33.jpeg" alt="עוגה מעוצבת מספר 33" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+33'" onload="this.parentElement.parentElement.classList.add('loaded')">
+          <img src="./images/image21.jpeg" alt="קינוחים ומארזים — תמונה 21 — נעה ירושלים" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+21'" onload="this.parentElement.parentElement.classList.add('loaded')">
           <div class="gallery-card__zoom-hint">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+            הקישו להגדלה
+          </div>
+        </div>
+        <span class="gallery-card__category-tag">קינוחים ומארזים</span>
+      </div>
+      <div class="gallery-card" data-index="22" data-category="עוגיות" role="button" tabindex="0" aria-label="עוגיות — תמונה 22">
+        <div class="gallery-card__image-wrapper">
+          <img src="./images/image22.jpeg" alt="עוגיות — תמונה 22 — נעה ירושלים" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+22'" onload="this.parentElement.parentElement.classList.add('loaded')">
+          <div class="gallery-card__zoom-hint">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+            הקישו להגדלה
+          </div>
+        </div>
+        <span class="gallery-card__category-tag">עוגיות</span>
+      </div>
+      <div class="gallery-card" data-index="23" data-category="עוגות מעוצבות,מארזים" role="button" tabindex="0" aria-label="עוגות מעוצבות ומארזים — תמונה 23">
+        <div class="gallery-card__image-wrapper">
+          <img src="./images/image23.jpeg" alt="עוגות מעוצבות ומארזים — תמונה 23 — נעה ירושלים" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+23'" onload="this.parentElement.parentElement.classList.add('loaded')">
+          <div class="gallery-card__zoom-hint">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+            הקישו להגדלה
+          </div>
+        </div>
+        <span class="gallery-card__category-tag">עוגות מעוצבות ומארזים</span>
+      </div>
+      <div class="gallery-card" data-index="24" data-category="עוגיות" role="button" tabindex="0" aria-label="עוגיות — תמונה 24">
+        <div class="gallery-card__image-wrapper">
+          <img src="./images/image24.jpeg" alt="עוגיות — תמונה 24 — נעה ירושלים" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+24'" onload="this.parentElement.parentElement.classList.add('loaded')">
+          <div class="gallery-card__zoom-hint">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+            הקישו להגדלה
+          </div>
+        </div>
+        <span class="gallery-card__category-tag">עוגיות</span>
+      </div>
+      <div class="gallery-card" data-index="25" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגות מעוצבות — תמונה 25">
+        <div class="gallery-card__image-wrapper">
+          <img src="./images/image25.jpeg" alt="עוגות מעוצבות — תמונה 25 — נעה ירושלים" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+25'" onload="this.parentElement.parentElement.classList.add('loaded')">
+          <div class="gallery-card__zoom-hint">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
             הקישו להגדלה
           </div>
         </div>
         <span class="gallery-card__category-tag">עוגות מעוצבות</span>
       </div>
-      <div class="gallery-card" data-index="34" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגה מספר 34">
+      <div class="gallery-card" data-index="26" data-category="בצקים" role="button" tabindex="0" aria-label="בצקים — תמונה 26">
         <div class="gallery-card__image-wrapper">
-          <img src="./images/image34.jpeg" alt="עוגה מעוצבת מספר 34" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+34'" onload="this.parentElement.parentElement.classList.add('loaded')">
+          <img src="./images/image26.jpeg" alt="בצקים — תמונה 26 — נעה ירושלים" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+26'" onload="this.parentElement.parentElement.classList.add('loaded')">
           <div class="gallery-card__zoom-hint">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+            הקישו להגדלה
+          </div>
+        </div>
+        <span class="gallery-card__category-tag">בצקים</span>
+      </div>
+      <div class="gallery-card" data-index="27" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגות מעוצבות — תמונה 27">
+        <div class="gallery-card__image-wrapper">
+          <img src="./images/image27.jpeg" alt="עוגות מעוצבות — תמונה 27 — נעה ירושלים" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+27'" onload="this.parentElement.parentElement.classList.add('loaded')">
+          <div class="gallery-card__zoom-hint">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
             הקישו להגדלה
           </div>
         </div>
         <span class="gallery-card__category-tag">עוגות מעוצבות</span>
       </div>
-      <div class="gallery-card" data-index="35" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגה מספר 35">
+      <div class="gallery-card" data-index="28" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגות מעוצבות — תמונה 28">
         <div class="gallery-card__image-wrapper">
-          <img src="./images/image35.jpeg" alt="עוגה מעוצבת מספר 35" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+35'" onload="this.parentElement.parentElement.classList.add('loaded')">
+          <img src="./images/image28.jpeg" alt="עוגות מעוצבות — תמונה 28 — נעה ירושלים" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+28'" onload="this.parentElement.parentElement.classList.add('loaded')">
           <div class="gallery-card__zoom-hint">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
             הקישו להגדלה
           </div>
         </div>
         <span class="gallery-card__category-tag">עוגות מעוצבות</span>
       </div>
-      <div class="gallery-card" data-index="36" data-category="מארזים" role="button" tabindex="0" aria-label="עוגה מספר 36">
+      <div class="gallery-card" data-index="29" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגות מעוצבות — תמונה 29">
         <div class="gallery-card__image-wrapper">
-          <img src="./images/image36.jpeg" alt="עוגה מעוצבת מספר 36" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+36'" onload="this.parentElement.parentElement.classList.add('loaded')">
+          <img src="./images/image29.jpeg" alt="עוגות מעוצבות — תמונה 29 — נעה ירושלים" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+29'" onload="this.parentElement.parentElement.classList.add('loaded')">
           <div class="gallery-card__zoom-hint">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+            הקישו להגדלה
+          </div>
+        </div>
+        <span class="gallery-card__category-tag">עוגות מעוצבות</span>
+      </div>
+      <div class="gallery-card" data-index="30" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגות מעוצבות — תמונה 30">
+        <div class="gallery-card__image-wrapper">
+          <img src="./images/image30.jpeg" alt="עוגות מעוצבות — תמונה 30 — נעה ירושלים" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+30'" onload="this.parentElement.parentElement.classList.add('loaded')">
+          <div class="gallery-card__zoom-hint">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+            הקישו להגדלה
+          </div>
+        </div>
+        <span class="gallery-card__category-tag">עוגות מעוצבות</span>
+      </div>
+      <div class="gallery-card" data-index="31" data-category="עוגות בנטו,מארזים" role="button" tabindex="0" aria-label="עוגות בנטו ומארזים — תמונה 31">
+        <div class="gallery-card__image-wrapper">
+          <img src="./images/image31.jpeg" alt="עוגות בנטו ומארזים — תמונה 31 — נעה ירושלים" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+31'" onload="this.parentElement.parentElement.classList.add('loaded')">
+          <div class="gallery-card__zoom-hint">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+            הקישו להגדלה
+          </div>
+        </div>
+        <span class="gallery-card__category-tag">עוגות בנטו ומארזים</span>
+      </div>
+      <div class="gallery-card" data-index="32" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגות מעוצבות — תמונה 32">
+        <div class="gallery-card__image-wrapper">
+          <img src="./images/image32.jpeg" alt="עוגות מעוצבות — תמונה 32 — נעה ירושלים" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+32'" onload="this.parentElement.parentElement.classList.add('loaded')">
+          <div class="gallery-card__zoom-hint">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+            הקישו להגדלה
+          </div>
+        </div>
+        <span class="gallery-card__category-tag">עוגות מעוצבות</span>
+      </div>
+      <div class="gallery-card" data-index="33" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגות מעוצבות — תמונה 33">
+        <div class="gallery-card__image-wrapper">
+          <img src="./images/image33.jpeg" alt="עוגות מעוצבות — תמונה 33 — נעה ירושלים" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+33'" onload="this.parentElement.parentElement.classList.add('loaded')">
+          <div class="gallery-card__zoom-hint">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+            הקישו להגדלה
+          </div>
+        </div>
+        <span class="gallery-card__category-tag">עוגות מעוצבות</span>
+      </div>
+      <div class="gallery-card" data-index="34" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגות מעוצבות — תמונה 34">
+        <div class="gallery-card__image-wrapper">
+          <img src="./images/image34.jpeg" alt="עוגות מעוצבות — תמונה 34 — נעה ירושלים" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+34'" onload="this.parentElement.parentElement.classList.add('loaded')">
+          <div class="gallery-card__zoom-hint">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+            הקישו להגדלה
+          </div>
+        </div>
+        <span class="gallery-card__category-tag">עוגות מעוצבות</span>
+      </div>
+      <div class="gallery-card" data-index="35" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגות מעוצבות — תמונה 35">
+        <div class="gallery-card__image-wrapper">
+          <img src="./images/image35.jpeg" alt="עוגות מעוצבות — תמונה 35 — נעה ירושלים" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+35'" onload="this.parentElement.parentElement.classList.add('loaded')">
+          <div class="gallery-card__zoom-hint">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+            הקישו להגדלה
+          </div>
+        </div>
+        <span class="gallery-card__category-tag">עוגות מעוצבות</span>
+      </div>
+      <div class="gallery-card" data-index="36" data-category="מארזים" role="button" tabindex="0" aria-label="מארזים — תמונה 36">
+        <div class="gallery-card__image-wrapper">
+          <img src="./images/image36.jpeg" alt="מארזים — תמונה 36 — נעה ירושלים" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+36'" onload="this.parentElement.parentElement.classList.add('loaded')">
+          <div class="gallery-card__zoom-hint">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
             הקישו להגדלה
           </div>
         </div>
         <span class="gallery-card__category-tag">מארזים</span>
       </div>
-      <div class="gallery-card" data-index="37" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגה מספר 37">
+      <div class="gallery-card" data-index="37" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגות מעוצבות — תמונה 37">
         <div class="gallery-card__image-wrapper">
-          <img src="./images/image37.jpeg" alt="עוגה מעוצבת מספר 37" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+37'" onload="this.parentElement.parentElement.classList.add('loaded')">
+          <img src="./images/image37.jpeg" alt="עוגות מעוצבות — תמונה 37 — נעה ירושלים" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+37'" onload="this.parentElement.parentElement.classList.add('loaded')">
           <div class="gallery-card__zoom-hint">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
             הקישו להגדלה
           </div>
         </div>
         <span class="gallery-card__category-tag">עוגות מעוצבות</span>
       </div>
-      <div class="gallery-card" data-index="38" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגה מספר 38">
+      <div class="gallery-card" data-index="38" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגות מעוצבות — תמונה 38">
         <div class="gallery-card__image-wrapper">
-          <img src="./images/image38.jpeg" alt="עוגה מעוצבת מספר 38" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+38'" onload="this.parentElement.parentElement.classList.add('loaded')">
+          <img src="./images/image38.jpeg" alt="עוגות מעוצבות — תמונה 38 — נעה ירושלים" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+38'" onload="this.parentElement.parentElement.classList.add('loaded')">
           <div class="gallery-card__zoom-hint">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
             הקישו להגדלה
           </div>
         </div>
         <span class="gallery-card__category-tag">עוגות מעוצבות</span>
       </div>
-      <div class="gallery-card" data-index="39" data-category="מארזים" role="button" tabindex="0" aria-label="עוגה מספר 39">
+      <div class="gallery-card" data-index="39" data-category="מארזים" role="button" tabindex="0" aria-label="מארזים — תמונה 39">
         <div class="gallery-card__image-wrapper">
-          <img src="./images/image39.jpeg" alt="עוגה מעוצבת מספר 39" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+39'" onload="this.parentElement.parentElement.classList.add('loaded')">
+          <img src="./images/image39.jpeg" alt="מארזים — תמונה 39 — נעה ירושלים" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+39'" onload="this.parentElement.parentElement.classList.add('loaded')">
           <div class="gallery-card__zoom-hint">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
             הקישו להגדלה
           </div>
         </div>
         <span class="gallery-card__category-tag">מארזים</span>
       </div>
-      <div class="gallery-card" data-index="40" data-category="עוגות בנטו,מארזים" role="button" tabindex="0" aria-label="עוגה מספר 40">
+      <div class="gallery-card" data-index="40" data-category="עוגות בנטו,מארזים" role="button" tabindex="0" aria-label="עוגות בנטו ומארזים — תמונה 40">
         <div class="gallery-card__image-wrapper">
-          <img src="./images/image40.jpeg" alt="עוגה מעוצבת מספר 40" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+40'" onload="this.parentElement.parentElement.classList.add('loaded')">
+          <img src="./images/image40.jpeg" alt="עוגות בנטו ומארזים — תמונה 40 — נעה ירושלים" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+40'" onload="this.parentElement.parentElement.classList.add('loaded')">
           <div class="gallery-card__zoom-hint">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
             הקישו להגדלה
           </div>
         </div>
-        <span class="gallery-card__category-tag">עוגות בנטו, מארזים</span>
+        <span class="gallery-card__category-tag">עוגות בנטו ומארזים</span>
       </div>
-      <div class="gallery-card" data-index="41" data-category="מארזים" role="button" tabindex="0" aria-label="עוגה מספר 41">
+      <div class="gallery-card" data-index="41" data-category="מארזים" role="button" tabindex="0" aria-label="מארזים — תמונה 41">
         <div class="gallery-card__image-wrapper">
-          <img src="./images/image41.jpeg" alt="עוגה מעוצבת מספר 41" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+41'" onload="this.parentElement.parentElement.classList.add('loaded')">
+          <img src="./images/image41.jpeg" alt="מארזים — תמונה 41 — נעה ירושלים" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+41'" onload="this.parentElement.parentElement.classList.add('loaded')">
           <div class="gallery-card__zoom-hint">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
             הקישו להגדלה
           </div>
         </div>
         <span class="gallery-card__category-tag">מארזים</span>
       </div>
-      <div class="gallery-card" data-index="42" data-category="עוגות בנטו" role="button" tabindex="0" aria-label="עוגה מספר 42">
+      <div class="gallery-card" data-index="42" data-category="עוגות בנטו" role="button" tabindex="0" aria-label="עוגות בנטו — תמונה 42">
         <div class="gallery-card__image-wrapper">
-          <img src="./images/image42.jpeg" alt="עוגה מעוצבת מספר 42" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+42'" onload="this.parentElement.parentElement.classList.add('loaded')">
+          <img src="./images/image42.jpeg" alt="עוגות בנטו — תמונה 42 — נעה ירושלים" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+42'" onload="this.parentElement.parentElement.classList.add('loaded')">
           <div class="gallery-card__zoom-hint">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
             הקישו להגדלה
           </div>
         </div>
         <span class="gallery-card__category-tag">עוגות בנטו</span>
       </div>
     </div>
-    <button class="load-more-btn" id="loadMoreBtn" type="button">טען עוד</button>
+    <button class="load-more-btn" id="loadMoreBtn" type="button" aria-label="טען עוד פריטים">טען עוד</button>
   </section>
   <div class="section-divider" aria-hidden="true"></div>
 
@@ -1011,21 +1146,21 @@
     <div class="container">
       <div class="section-header">
         <h2>למה נעה?</h2>
-        <p>✨ מה שמייחד אותנו מכל השאר ✨</p>
+        <p>מה שמייחד אותנו מכל השאר</p>
       </div>
       <div class="why-grid">
         <div class="why-card">
-          <div class="why-card__icon">👩‍🍳</div>
+          <div class="why-card__icon" aria-hidden="true">👩‍🍳</div>
           <h3>עשוי ביד</h3>
           <p>כל עוגה מעוצבת ומוכנה ידנית — אין שני עוגות זהות. תשומת לב לכל פרט, מעיצוב ועד טעם.</p>
         </div>
         <div class="why-card">
-          <div class="why-card__icon">🌿</div>
+          <div class="why-card__icon" aria-hidden="true">🌿</div>
           <h3>חומרים איכותיים</h3>
           <p>רק חומרים טריים ואיכותיים — שוקולד אמיתי, שמנת טבעית, ופירות טריים. אין פשרות על טעם.</p>
         </div>
         <div class="why-card">
-          <div class="why-card__icon">💝</div>
+          <div class="why-card__icon" aria-hidden="true">💝</div>
           <h3>תהליך אדיב ואישי</h3>
           <p>נעה דואגת לכל לקוחה כאילו היא המשפחה שלה. מהרגע הראשון ועד שהעוגה מגיעה מושלמת — עם לב, סבלנות ותשומת לב לכל פרט.</p>
         </div>
@@ -1038,11 +1173,11 @@
     <div class="container">
       <div class="section-header">
         <h2>מה הלקוחות אומרים</h2>
-        <p>✨ חוויות אמיתיות מלקוחות מרוצים ✨</p>
+        <p>חוויות אמיתיות מלקוחות מרוצים</p>
       </div>
       <div class="testimonials-grid" id="testimonialsGrid">
         <div class="testimonial-card">
-          <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
+          <div class="testimonial-stars" aria-label="5 כוכבים">⭐⭐⭐⭐⭐</div>
           <p class="testimonial-text">"העוגה הייתה פשוט מדהימה! לא רק שנראתה כמו יצירת אמנות — הטעם היה עוד יותר טוב. כל האורחים לא הפסיקו לדבר עליה."</p>
           <div class="testimonial-author">
             <span class="testimonial-name">— שירה ל.</span>
@@ -1050,7 +1185,7 @@
           </div>
         </div>
         <div class="testimonial-card">
-          <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
+          <div class="testimonial-stars" aria-label="5 כוכבים">⭐⭐⭐⭐⭐</div>
           <p class="testimonial-text">"הזמנתי מארז מתוקים לאירוע משפחתי והיה פשוט מושלם. הכל טרי, מעוצב בקפידה, והטעמים — בלתי נשכחים."</p>
           <div class="testimonial-author">
             <span class="testimonial-name">— רונית מ.</span>
@@ -1058,7 +1193,7 @@
           </div>
         </div>
         <div class="testimonial-card">
-          <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
+          <div class="testimonial-stars" aria-label="5 כוכבים">⭐⭐⭐⭐⭐</div>
           <p class="testimonial-text">"נעה הכינה לנו עוגת חתונה חלומית. כל פרט תוכנן איתה, והתוצאה עלתה על כל ציפייה. גם טעם וגם יופי — בלתי רגיל!"</p>
           <div class="testimonial-author">
             <span class="testimonial-name">— דנה ויובל</span>
@@ -1072,11 +1207,11 @@
   <section id="about" class="about-section" aria-label="אודות נעה">
     <div class="about-inner container">
       <div class="about-img">
-        <img src="./noa.jpeg" alt="נעה - האופה והאמנית" width="280" height="280" loading="lazy" decoding="async" onerror="this.src='https://placehold.co/280x280?text=Noa'">
+        <img src="./noa.jpeg" alt="נעה - האופה והאמנית מאחורי כל עוגה" width="280" height="280" loading="lazy" decoding="async" onerror="this.src='https://placehold.co/280x280?text=Noa'">
       </div>
       <div class="about-text">
         <h2>אודות</h2>
-        <p>🍰 האופה והאמנית שמאחורי כל עוגה. כאן בירושלים, היא הופכת חלומות למתוקים.</p>
+        <p>האופה והאמנית שמאחורי כל עוגה. כאן בירושלים, היא הופכת חלומות למתוקים.</p>
         <blockquote>
           "השקט שלי נמצא בין הקמח לסוכר. כל הזמנה היא זכות להכניס אור ושמחה."
         </blockquote>
@@ -1086,6 +1221,9 @@
             <p>ניסיון רב בתחום הקונדיטוריה המעוצבת והבוטיק.</p>
           </div>
         </div>
+        <button class="send-photo-nav-btn" id="aboutSendPhotoBtn" type="button" aria-label="שלחו תמונה לנעה" style="margin-top: var(--space-lg); display: inline-flex;">
+          <span class="icon" aria-hidden="true">📷</span> שלחו לי תמונה
+        </button>
       </div>
     </div>
   </section>
@@ -1102,7 +1240,7 @@
         Instagram
       </a>
     </div>
-    <button class="share-btn" id="shareBtn" type="button">
+    <button class="share-btn" id="shareBtn" type="button" aria-label="שתף את האתר">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <circle cx="18" cy="5" r="3"></circle>
         <circle cx="6" cy="12" r="3"></circle>
@@ -1116,13 +1254,13 @@
 
   <div id="orderModal" class="order-modal" role="dialog" aria-label="טופס הזמנה" aria-modal="true">
     <div class="modal-card">
-      <button class="close-modal" id="closeModalBtn" aria-label="סגור">&times;</button>
-      <h3>🍰 הזמנה אישית</h3>
-      <p class="modal-badge">✨ נעה עובדת בירושלים בלבד ✨</p>
+      <button class="close-modal" id="closeModalBtn" aria-label="סגור טופס">&times;</button>
+      <h3>הזמנה אישית</h3>
+      <p class="modal-badge">נעה עובדת בירושלים בלבד</p>
       <form id="orderForm" novalidate>
         <div class="form-group">
           <label for="cakeType">סוג העוגה *</label>
-          <input type="text" id="cakeType" name="cakeType" placeholder="למשל: עוגת יום הולדת, חתונה..." required>
+          <input type="text" id="cakeType" name="cakeType" placeholder="למשל: עוגת יום הולדת, חתונה..." required aria-required="true">
         </div>
         <div class="form-group">
           <label for="design">עיצוב</label>
@@ -1130,7 +1268,7 @@
         </div>
         <div class="form-group">
           <label for="date">תאריך אספקה *</label>
-          <input type="date" id="date" name="date" required>
+          <input type="date" id="date" name="date" required aria-required="true">
         </div>
         <div class="form-group">
           <label for="inscription">כיתוב על העוגה</label>
@@ -1147,31 +1285,31 @@
             <option value="delivery">משלוח בתשלום – ירושלים</option>
           </select>
         </div>
-        <button type="submit" class="submit-btn">📲 שלחי לוואטסאפ</button>
+        <button type="submit" class="submit-btn" aria-label="שלח הזמנה בוואטסאפ">שלחי לוואטסאפ</button>
       </form>
     </div>
   </div>
 
   <div id="lightbox" class="lightbox" role="dialog" aria-label="תצוגת תמונה מוגדלת" aria-modal="true">
     <button class="close-lightbox" id="closeLightboxBtn" aria-label="סגור תצוגה">&times;</button>
-    <div class="lightbox__hint">👆 דאבל-טאפ לזום • שני אצבעות לפינץ' • גרירה להזזה</div>
+    <div class="lightbox__hint">דאבל-טאפ לזום • שני אצבעות לפינץ' • גרירה להזזה</div>
     <div class="lightbox__stage" id="lightboxStage">
       <div class="lightbox__image-wrapper" id="lightboxImageWrapper">
-        <img id="lightboxImg" src="" alt="תצוגה מוגדלת של עוגה" loading="eager" draggable="false">
+        <img id="lightboxImg" src="" alt="תצוגה מוגדלת" loading="eager" draggable="false">
       </div>
     </div>
     <div class="lightbox__controls">
       <button class="lightbox__btn" id="lightboxPrev" aria-label="תמונה קודמת">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
       </button>
-      <span class="lightbox__counter" id="lightboxCounter">1 / 42</span>
+      <span class="lightbox__counter" id="lightboxCounter" aria-live="polite">1 / 42</span>
       <button class="lightbox__btn" id="lightboxNext" aria-label="תמונה הבאה">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
       </button>
-      <button class="lightbox__btn" id="lightboxZoomOut" aria-label="הקטן">
+      <button class="lightbox__btn" id="lightboxZoomOut" aria-label="הקטן תמונה">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
       </button>
-      <button class="lightbox__btn" id="lightboxZoomIn" aria-label="הגדל">
+      <button class="lightbox__btn" id="lightboxZoomIn" aria-label="הגדל תמונה">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
       </button>
       <button class="lightbox__btn" id="lightboxReset" aria-label="איפוס זום">
@@ -1179,525 +1317,595 @@
       </button>
     </div>
   </div>
+
   <script>
-    (function() {
-      'use strict';
 
-      // Hero Slideshow
-      var slides = document.querySelectorAll('.hero__slide');
-      var currentSlide = 0;
-      var slideInterval = 5000;
+  (function() {
+    'use strict';
 
-      function nextSlide() {
-        slides[currentSlide].classList.remove('active');
-        currentSlide = (currentSlide + 1) % slides.length;
-        slides[currentSlide].classList.add('active');
+    // ===== PRELOADER =====
+    var preloader = document.getElementById('preloader');
+    function hidePreloader() {
+      if (preloader) {
+        preloader.classList.add('hidden');
+        setTimeout(function() {
+          if (preloader.parentNode) preloader.parentNode.removeChild(preloader);
+        }, 700);
       }
-      setTimeout(function() { setInterval(nextSlide, slideInterval); }, 3000);
+    }
+    window.addEventListener('load', function() {
+      setTimeout(hidePreloader, 800);
+    });
+    setTimeout(hidePreloader, 4000); // Fallback
 
-      // Category Filter & Pagination
-      var categoryFilter = document.getElementById('categoryFilter');
-      var categoryCount = document.getElementById('categoryCount');
-      var galleryCards = document.querySelectorAll('.gallery-card');
-      var loadMoreBtn = document.getElementById('loadMoreBtn');
-      var ITEMS_PER_PAGE = 12;
-      var currentPage = 1;
+    // ===== HERO SLIDESHOW =====
+    var slides = document.querySelectorAll('.hero__slide');
+    var currentSlide = 0;
+    var slideInterval = 5000;
 
-      function applyPagination() {
-        var visibleCards = Array.from(galleryCards).filter(function(c) { return !c.classList.contains('hidden'); });
-        var totalVisible = visibleCards.length;
-        var maxToShow = currentPage * ITEMS_PER_PAGE;
+    function nextSlide() {
+      slides[currentSlide].classList.remove('active');
+      currentSlide = (currentSlide + 1) % slides.length;
+      slides[currentSlide].classList.add('active');
+    }
+    setTimeout(function() { setInterval(nextSlide, slideInterval); }, 3000);
 
-        visibleCards.forEach(function(card, index) {
-          if (index < maxToShow) {
-            card.classList.remove('paginated-hidden');
-          } else {
-            card.classList.add('paginated-hidden');
-          }
-        });
+    // ===== CATEGORY SLIDESHOWS =====
+    var categorySlideshows = document.querySelectorAll('.category-card__slideshow');
+    categorySlideshows.forEach(function(slideshow) {
+      var catSlides = slideshow.querySelectorAll('.category-card__slide');
+      var currentCatSlide = 0;
+      setInterval(function() {
+        catSlides[currentCatSlide].classList.remove('active');
+        currentCatSlide = (currentCatSlide + 1) % catSlides.length;
+        catSlides[currentCatSlide].classList.add('active');
+      }, 10000);
+    });
 
-        if (loadMoreBtn) {
-          if (totalVisible > maxToShow) {
-            loadMoreBtn.style.display = 'block';
-            loadMoreBtn.textContent = 'טען עוד (' + (totalVisible - maxToShow) + ' נותרו)';
-          } else {
-            loadMoreBtn.style.display = 'none';
-          }
-        }
+    // ===== CATEGORY FILTER & GALLERY =====
+    var galleryCards = document.querySelectorAll('.gallery-card');
+    var categoryCount = document.getElementById('categoryCount');
+    var loadMoreBtn = document.getElementById('loadMoreBtn');
+    var backToCategoriesBtn = document.getElementById('backToCategoriesBtn');
+    var categoriesSection = document.getElementById('categories');
+    var ITEMS_PER_PAGE = 12;
+    var currentPage = 1;
+    var currentCategory = 'all';
 
-        var showing = Math.min(maxToShow, totalVisible);
-        var label = categoryFilter.value === 'all' ? 'הכל' : categoryFilter.value;
-        categoryCount.textContent = 'מציג ' + showing + ' מתוך ' + totalVisible + ' פריטים בקטגוריה "' + label + '"';
-      }
+    function applyPagination() {
+      var visibleCards = Array.from(galleryCards).filter(function(c) { return !c.classList.contains('hidden'); });
+      var totalVisible = visibleCards.length;
+      var maxToShow = currentPage * ITEMS_PER_PAGE;
 
-      function filterGallery(category) {
-        currentPage = 1;
-        galleryCards.forEach(function(card) {
-          var cardCategories = card.dataset.category || '';
-          var categoryList = cardCategories.split(',');
-          if (category === 'all' || categoryList.indexOf(category) !== -1) {
-            card.classList.remove('hidden');
-          } else {
-            card.classList.add('hidden');
-          }
-        });
-        applyPagination();
-        var url = new URL(window.location);
-        if (category === 'all') {
-          url.searchParams.delete('category');
+      visibleCards.forEach(function(card, index) {
+        if (index < maxToShow) {
+          card.classList.remove('paginated-hidden');
         } else {
-          url.searchParams.set('category', category);
+          card.classList.add('paginated-hidden');
         }
-        window.history.pushState({}, '', url);
-      }
-
-      if (categoryFilter) {
-        categoryFilter.addEventListener('change', function(e) {
-          filterGallery(e.target.value);
-        });
-
-        var urlParams = new URLSearchParams(window.location.search);
-        var urlCategory = urlParams.get('category');
-        if (urlCategory) {
-          categoryFilter.value = urlCategory;
-          filterGallery(urlCategory);
-        } else {
-          applyPagination();
-        }
-      }
+      });
 
       if (loadMoreBtn) {
-        loadMoreBtn.addEventListener('click', function() {
-          currentPage++;
-          applyPagination();
-        });
+        if (totalVisible > maxToShow) {
+          loadMoreBtn.style.display = 'block';
+          loadMoreBtn.textContent = 'טען עוד (' + (totalVisible - maxToShow) + ' נותרו)';
+        } else {
+          loadMoreBtn.style.display = 'none';
+        }
       }
 
-      // Gallery & Lightbox
-      var lightbox = document.getElementById('lightbox');
-      var lightboxImg = document.getElementById('lightboxImg');
-      var lightboxWrapper = document.getElementById('lightboxImageWrapper');
-      var lightboxStage = document.getElementById('lightboxStage');
-      var closeLightboxBtn = document.getElementById('closeLightboxBtn');
-      var counterEl = document.getElementById('lightboxCounter');
-      var prevBtn = document.getElementById('lightboxPrev');
-      var nextBtn = document.getElementById('lightboxNext');
-      var zoomInBtn = document.getElementById('lightboxZoomIn');
-      var zoomOutBtn = document.getElementById('lightboxZoomOut');
-      var resetBtn = document.getElementById('lightboxReset');
+      var showing = Math.min(maxToShow, totalVisible);
+      var label = currentCategory === 'all' ? 'הכל' : currentCategory;
+      categoryCount.textContent = 'מציג ' + showing + ' מתוך ' + totalVisible + ' פריטים בקטגוריה "' + label + '"';
+    }
 
-      var currentImageIndex = 0;
-      var visibleCards = Array.from(galleryCards).filter(function(c) { return !c.classList.contains('hidden') && !c.classList.contains('paginated-hidden'); });
-      var scale = 1, panX = 0, panY = 0;
-      var isDragging = false, startX = 0, startY = 0, lastPanX = 0, lastPanY = 0;
-      var initialPinchDistance = 0, initialScale = 1, isPinching = false;
+    function filterGallery(category) {
+      currentPage = 1;
+      currentCategory = category;
+      galleryCards.forEach(function(card) {
+        var cardCategories = card.dataset.category || '';
+        var categoryList = cardCategories.split(',');
+        if (category === 'all' || categoryList.indexOf(category) !== -1) {
+          card.classList.remove('hidden');
+        } else {
+          card.classList.add('hidden');
+        }
+      });
+      applyPagination();
 
-      function updateVisibleCards() {
-        visibleCards = Array.from(galleryCards).filter(function(c) { return !c.classList.contains('hidden') && !c.classList.contains('paginated-hidden'); });
+      if (backToCategoriesBtn) {
+        if (category !== 'all') {
+          backToCategoriesBtn.classList.add('visible');
+        } else {
+          backToCategoriesBtn.classList.remove('visible');
+        }
       }
 
-      function updateTransform() {
-        lightboxWrapper.style.transform = 'translate(' + panX + 'px, ' + panY + 'px) scale(' + scale + ')';
+      var url = new URL(window.location);
+      if (category === 'all') {
+        url.searchParams.delete('category');
+      } else {
+        url.searchParams.set('category', category);
       }
+      window.history.pushState({}, '', url);
+    }
 
-      function resetZoom() {
-        scale = 1; panX = 0; panY = 0;
-        updateTransform();
+    // Category card clicks
+    var categoryCards = document.querySelectorAll('.category-card');
+    categoryCards.forEach(function(card) {
+      card.addEventListener('click', function() {
+        var cat = card.dataset.category;
+        filterGallery(cat);
+        document.getElementById('gallery').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+      card.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          var cat = card.dataset.category;
+          filterGallery(cat);
+          document.getElementById('gallery').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+
+    // Back to categories
+    if (backToCategoriesBtn) {
+      backToCategoriesBtn.addEventListener('click', function() {
+        filterGallery('all');
+        categoriesSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    }
+
+    // Load more
+    if (loadMoreBtn) {
+      loadMoreBtn.addEventListener('click', function() {
+        currentPage++;
+        applyPagination();
+      });
+    }
+
+    // URL params on load
+    var urlParams = new URLSearchParams(window.location.search);
+    var urlCategory = urlParams.get('category');
+    if (urlCategory) {
+      filterGallery(urlCategory);
+    } else {
+      applyPagination();
+    }
+
+    // ===== LIGHTBOX =====
+    var lightbox = document.getElementById('lightbox');
+    var lightboxImg = document.getElementById('lightboxImg');
+    var lightboxWrapper = document.getElementById('lightboxImageWrapper');
+    var lightboxStage = document.getElementById('lightboxStage');
+    var closeLightboxBtn = document.getElementById('closeLightboxBtn');
+    var counterEl = document.getElementById('lightboxCounter');
+    var prevBtn = document.getElementById('lightboxPrev');
+    var nextBtn = document.getElementById('lightboxNext');
+    var zoomInBtn = document.getElementById('lightboxZoomIn');
+    var zoomOutBtn = document.getElementById('lightboxZoomOut');
+    var resetBtn = document.getElementById('lightboxReset');
+
+    var currentImageIndex = 0;
+    var visibleCards = [];
+    var scale = 1, panX = 0, panY = 0;
+    var isDragging = false, startX = 0, startY = 0, lastPanX = 0, lastPanY = 0;
+    var initialPinchDistance = 0, initialScale = 1, isPinching = false;
+
+    function updateVisibleCards() {
+      visibleCards = Array.from(galleryCards).filter(function(c) {
+        return !c.classList.contains('hidden') && !c.classList.contains('paginated-hidden');
+      });
+    }
+
+    function updateTransform() {
+      lightboxWrapper.style.transform = 'translate(' + panX + 'px, ' + panY + 'px) scale(' + scale + ')';
+    }
+
+    function resetZoom() {
+      scale = 1; panX = 0; panY = 0;
+      updateTransform();
+    }
+
+    function openLightbox(index) {
+      updateVisibleCards();
+      currentImageIndex = index;
+      var card = visibleCards[index];
+      if (!card) return;
+      var img = card.querySelector('img');
+      if (img && img.src) {
+        lightboxImg.src = img.src;
+        lightboxImg.alt = img.alt || 'תצוגה מוגדלת';
+        lightbox.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        resetZoom();
+        updateCounter();
+        closeLightboxBtn.focus();
       }
+    }
 
-      function openLightbox(index) {
-        updateVisibleCards();
-        currentImageIndex = index;
-        var card = visibleCards[index];
-        if (!card) return;
-        var img = card.querySelector('img');
-        if (img && img.src) {
+    function closeLightbox() {
+      lightbox.classList.remove('active');
+      document.body.style.overflow = '';
+      resetZoom();
+      setTimeout(function() { lightboxImg.src = ''; }, 300);
+    }
+
+    function updateCounter() {
+      counterEl.textContent = (currentImageIndex + 1) + ' / ' + visibleCards.length;
+    }
+
+    function navigate(direction) {
+      currentImageIndex = (currentImageIndex + direction + visibleCards.length) % visibleCards.length;
+      var card = visibleCards[currentImageIndex];
+      if (!card) return;
+      var img = card.querySelector('img');
+      if (img && img.src) {
+        lightboxImg.style.opacity = '0';
+        setTimeout(function() {
           lightboxImg.src = img.src;
-          lightbox.classList.add('active');
-          document.body.style.overflow = 'hidden';
+          lightboxImg.alt = img.alt || 'תצוגה מוגדלת';
+          lightboxImg.style.opacity = '1';
           resetZoom();
           updateCounter();
-          closeLightboxBtn.focus();
-        }
+        }, 150);
       }
+    }
 
-      function closeLightbox() {
-        lightbox.classList.remove('active');
-        document.body.style.overflow = '';
-        resetZoom();
-        setTimeout(function() { lightboxImg.src = ''; }, 300);
-      }
-
-      function updateCounter() {
-        counterEl.textContent = (currentImageIndex + 1) + ' / ' + visibleCards.length;
-      }
-
-      function navigate(direction) {
-        currentImageIndex = (currentImageIndex + direction + visibleCards.length) % visibleCards.length;
-        var card = visibleCards[currentImageIndex];
-        if (!card) return;
-        var img = card.querySelector('img');
-        if (img && img.src) {
-          lightboxImg.style.opacity = '0';
-          setTimeout(function() {
-            lightboxImg.src = img.src;
-            lightboxImg.style.opacity = '1';
-            resetZoom();
-            updateCounter();
-          }, 150);
-        }
-      }
-
-      galleryCards.forEach(function(card) {
-        card.addEventListener('click', function() {
+    galleryCards.forEach(function(card) {
+      card.addEventListener('click', function() {
+        updateVisibleCards();
+        var visibleIndex = visibleCards.indexOf(card);
+        if (visibleIndex !== -1) openLightbox(visibleIndex);
+      });
+      card.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
           updateVisibleCards();
           var visibleIndex = visibleCards.indexOf(card);
           if (visibleIndex !== -1) openLightbox(visibleIndex);
-        });
-        card.addEventListener('keydown', function(e) {
-          if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            updateVisibleCards();
-            var visibleIndex = visibleCards.indexOf(card);
-            if (visibleIndex !== -1) openLightbox(visibleIndex);
-          }
-        });
-      });
-
-      if (closeLightboxBtn) closeLightboxBtn.addEventListener('click', closeLightbox);
-      if (prevBtn) prevBtn.addEventListener('click', function() { navigate(-1); });
-      if (nextBtn) nextBtn.addEventListener('click', function() { navigate(1); });
-
-      if (zoomInBtn) zoomInBtn.addEventListener('click', function() { scale = Math.min(scale * 1.4, 5); updateTransform(); });
-      if (zoomOutBtn) zoomOutBtn.addEventListener('click', function() { scale = Math.max(scale / 1.4, 0.5); if (scale <= 1) resetZoom(); else updateTransform(); });
-      if (resetBtn) resetBtn.addEventListener('click', resetZoom);
-
-      lightbox.addEventListener('click', function(e) {
-        if (e.target === lightbox || e.target === lightboxStage) {
-          if (scale <= 1.1) closeLightbox();
         }
       });
+    });
 
-      // Pinch Zoom
-      function getDistance(touches) {
-        var dx = touches[0].clientX - touches[1].clientX;
-        var dy = touches[0].clientY - touches[1].clientY;
-        return Math.sqrt(dx * dx + dy * dy);
+    if (closeLightboxBtn) closeLightboxBtn.addEventListener('click', closeLightbox);
+    if (prevBtn) prevBtn.addEventListener('click', function() { navigate(-1); });
+    if (nextBtn) nextBtn.addEventListener('click', function() { navigate(1); });
+
+    if (zoomInBtn) zoomInBtn.addEventListener('click', function() { scale = Math.min(scale * 1.4, 5); updateTransform(); });
+    if (zoomOutBtn) zoomOutBtn.addEventListener('click', function() { scale = Math.max(scale / 1.4, 0.5); if (scale <= 1) resetZoom(); else updateTransform(); });
+    if (resetBtn) resetBtn.addEventListener('click', resetZoom);
+
+    lightbox.addEventListener('click', function(e) {
+      if (e.target === lightbox || e.target === lightboxStage) {
+        if (scale <= 1.1) closeLightbox();
       }
+    });
 
-      lightboxStage.addEventListener('touchstart', function(e) {
-        if (e.touches.length === 2) {
-          isPinching = true;
-          initialPinchDistance = getDistance(e.touches);
-          initialScale = scale;
-          e.preventDefault();
-        } else if (e.touches.length === 1 && scale > 1) {
-          isDragging = true;
-          startX = e.touches[0].clientX;
-          startY = e.touches[0].clientY;
-          lastPanX = panX; lastPanY = panY;
-          lightboxWrapper.classList.add('grabbing');
-        }
-      }, { passive: false });
+    // Pinch Zoom
+    function getDistance(touches) {
+      var dx = touches[0].clientX - touches[1].clientX;
+      var dy = touches[0].clientY - touches[1].clientY;
+      return Math.sqrt(dx * dx + dy * dy);
+    }
 
-      lightboxStage.addEventListener('touchmove', function(e) {
-        if (isPinching && e.touches.length === 2) {
-          e.preventDefault();
-          var distance = getDistance(e.touches);
-          scale = Math.min(Math.max(initialScale * (distance / initialPinchDistance), 0.5), 5);
-          updateTransform();
-        } else if (isDragging && e.touches.length === 1) {
-          e.preventDefault();
-          panX = lastPanX + (e.touches[0].clientX - startX);
-          panY = lastPanY + (e.touches[0].clientY - startY);
-          updateTransform();
-        }
-      }, { passive: false });
-
-      lightboxStage.addEventListener('touchend', function() {
-        if (isPinching) { isPinching = false; if (scale < 1) resetZoom(); }
-        if (isDragging) { isDragging = false; lightboxWrapper.classList.remove('grabbing'); }
-      });
-
-      // Double tap
-      var lastTapTime = 0;
-      lightboxStage.addEventListener('touchend', function(e) {
-        var currentTime = new Date().getTime();
-        var tapLength = currentTime - lastTapTime;
-        if (tapLength < 300 && tapLength > 0 && e.touches.length === 0) {
-          if (scale > 1.2) resetZoom(); else { scale = 2.5; updateTransform(); }
-          e.preventDefault();
-        }
-        lastTapTime = currentTime;
-      });
-
-      // Wheel zoom
-      lightboxStage.addEventListener('wheel', function(e) {
+    lightboxStage.addEventListener('touchstart', function(e) {
+      if (e.touches.length === 2) {
+        isPinching = true;
+        initialPinchDistance = getDistance(e.touches);
+        initialScale = scale;
         e.preventDefault();
-        scale = Math.min(Math.max(scale * (e.deltaY > 0 ? 0.9 : 1.1), 0.5), 5);
-        if (scale <= 1) resetZoom(); else updateTransform();
-      }, { passive: false });
-
-      // Mouse drag
-      lightboxStage.addEventListener('mousedown', function(e) {
-        if (scale > 1) {
-          isDragging = true;
-          startX = e.clientX; startY = e.clientY;
-          lastPanX = panX; lastPanY = panY;
-          lightboxWrapper.classList.add('grabbing');
-          e.preventDefault();
-        }
-      });
-      window.addEventListener('mousemove', function(e) {
-        if (isDragging) {
-          panX = lastPanX + (e.clientX - startX);
-          panY = lastPanY + (e.clientY - startY);
-          updateTransform();
-        }
-      });
-      window.addEventListener('mouseup', function() {
-        if (isDragging) { isDragging = false; lightboxWrapper.classList.remove('grabbing'); }
-      });
-
-      // Swipe navigation
-      var touchStartX = 0, touchStartY = 0;
-      lightboxStage.addEventListener('touchstart', function(e) {
-        if (e.touches.length === 1 && scale <= 1.1) {
-          touchStartX = e.touches[0].clientX; touchStartY = e.touches[0].clientY;
-        }
-      }, { passive: true });
-      lightboxStage.addEventListener('touchend', function(e) {
-        if (scale <= 1.1 && !isPinching && e.changedTouches.length === 1) {
-          var dx = e.changedTouches[0].clientX - touchStartX;
-          var dy = e.changedTouches[0].clientY - touchStartY;
-          if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 50) {
-            dx > 0 ? navigate(-1) : navigate(1);
-          }
-        }
-      }, { passive: true });
-
-      // Keyboard
-      document.addEventListener('keydown', function(e) {
-        if (!lightbox.classList.contains('active')) return;
-        if (e.key === 'Escape') closeLightbox();
-        else if (e.key === 'ArrowLeft') navigate(-1);
-        else if (e.key === 'ArrowRight') navigate(1);
-        else if (e.key === '+' || e.key === '=') { scale = Math.min(scale * 1.3, 5); updateTransform(); }
-        else if (e.key === '-') { scale = Math.max(scale / 1.3, 0.5); if (scale <= 1) resetZoom(); else updateTransform(); }
-      });
-
-      // Modal
-      var modal = document.getElementById('orderModal');
-      var openModalBtns = [
-        document.getElementById('navOrderBtn'),
-        document.getElementById('heroOrderBtn'),
-        document.getElementById('mobileOrderBtn')
-      ].filter(Boolean);
-      var closeModalBtn = document.getElementById('closeModalBtn');
-      var orderForm = document.getElementById('orderForm');
-
-      function openModal() { modal.classList.add('active'); document.body.style.overflow = 'hidden'; closeModalBtn.focus(); }
-      function closeModal() { modal.classList.remove('active'); document.body.style.overflow = ''; }
-
-      openModalBtns.forEach(function(btn) { btn.addEventListener('click', openModal); });
-      if (closeModalBtn) closeModalBtn.addEventListener('click', closeModal);
-      modal.addEventListener('click', function(e) { if (e.target === modal) closeModal(); });
-      document.addEventListener('keydown', function(e) { if (e.key === 'Escape' && modal.classList.contains('active')) closeModal(); });
-
-      if (orderForm) {
-        orderForm.addEventListener('submit', function(e) {
-          e.preventDefault();
-          var cakeType = document.getElementById('cakeType').value.trim();
-          var design = document.getElementById('design').value.trim();
-          var date = document.getElementById('date').value;
-          var inscription = document.getElementById('inscription').value.trim();
-          var allergies = document.getElementById('allergies').value.trim();
-          var delivery = document.getElementById('delivery').value;
-
-          if (!cakeType || !date) { alert('אנא מלאו סוג עוגה ותאריך אספקה'); return; }
-
-          var msg = '*הזמנה חדשה לנעה*' + '\n';
-          msg += '*סוג עוגה:* ' + cakeType + '\n';
-          if (design) msg += '*עיצוב:* ' + design + '\n';
-          msg += '*תאריך:* ' + date + '\n';
-          if (inscription) msg += '*כיתוב:* ' + inscription + '\n';
-          if (allergies) msg += '*הערות:* ' + allergies + '\n';
-          msg += '*איסוף/משלוח:* ' + (delivery === 'pickup' ? 'איסוף עצמי (חינם)' : 'משלוח בתשלום – ירושלים') + '\n';
-          msg += '*ירושלים בלבד*';
-
-          window.open('https://wa.me/972542345906?text=' + encodeURIComponent(msg), '_blank');
-          closeModal();
-          orderForm.reset();
-        });
+      } else if (e.touches.length === 1 && scale > 1) {
+        isDragging = true;
+        startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
+        lastPanX = panX; lastPanY = panY;
+        lightboxWrapper.classList.add('grabbing');
       }
+    }, { passive: false });
 
-      // Mobile Menu
-      var menuBtn = document.getElementById('mobileMenuBtn');
-      var drawer = document.getElementById('mobileDrawer');
-      var closeDrawerBtn = document.getElementById('closeDrawerBtn');
-      var drawerOverlay = document.getElementById('drawerOverlay');
-
-      function openDrawer() {
-        drawer.classList.add('open'); drawerOverlay.classList.add('active');
-        document.body.style.overflow = 'hidden'; menuBtn.setAttribute('aria-expanded', 'true');
-        closeDrawerBtn.focus();
+    lightboxStage.addEventListener('touchmove', function(e) {
+      if (isPinching && e.touches.length === 2) {
+        e.preventDefault();
+        var distance = getDistance(e.touches);
+        scale = Math.min(Math.max(initialScale * (distance / initialPinchDistance), 0.5), 5);
+        updateTransform();
+      } else if (isDragging && e.touches.length === 1) {
+        e.preventDefault();
+        panX = lastPanX + (e.touches[0].clientX - startX);
+        panY = lastPanY + (e.touches[0].clientY - startY);
+        updateTransform();
       }
-      function closeDrawer() {
-        drawer.classList.remove('open'); drawerOverlay.classList.remove('active');
-        document.body.style.overflow = ''; menuBtn.setAttribute('aria-expanded', 'false');
+    }, { passive: false });
+
+    lightboxStage.addEventListener('touchend', function() {
+      if (isPinching) { isPinching = false; if (scale < 1) resetZoom(); }
+      if (isDragging) { isDragging = false; lightboxWrapper.classList.remove('grabbing'); }
+    });
+
+    // Double tap
+    var lastTapTime = 0;
+    lightboxStage.addEventListener('touchend', function(e) {
+      var currentTime = new Date().getTime();
+      var tapLength = currentTime - lastTapTime;
+      if (tapLength < 300 && tapLength > 0 && e.touches.length === 0) {
+        if (scale > 1.2) resetZoom(); else { scale = 2.5; updateTransform(); }
+        e.preventDefault();
       }
-      if (menuBtn) menuBtn.addEventListener('click', openDrawer);
-      if (closeDrawerBtn) closeDrawerBtn.addEventListener('click', closeDrawer);
-      if (drawerOverlay) drawerOverlay.addEventListener('click', closeDrawer);
-      drawer.querySelectorAll('a, button').forEach(function(el) { el.addEventListener('click', closeDrawer); });
-      document.addEventListener('keydown', function(e) { if (e.key === 'Escape' && drawer.classList.contains('open')) closeDrawer(); });
+      lastTapTime = currentTime;
+    });
 
-      // Navbar scroll
-      var navbar = document.getElementById('navbar');
-      window.addEventListener('scroll', function() {
-        navbar.classList.toggle('navbar--scrolled', window.scrollY > 60);
-      }, { passive: true });
+    // Wheel zoom
+    lightboxStage.addEventListener('wheel', function(e) {
+      e.preventDefault();
+      scale = Math.min(Math.max(scale * (e.deltaY > 0 ? 0.9 : 1.1), 0.5), 5);
+      if (scale <= 1) resetZoom(); else updateTransform();
+    }, { passive: false });
 
-      // WhatsApp
-      document.getElementById('whatsappFloatBtn').addEventListener('click', function() {
-        window.open('https://wa.me/972542345906?text=' + encodeURIComponent('היי נעה, אשמח לשמוע ממך!'), '_blank');
+    // Mouse drag
+    lightboxStage.addEventListener('mousedown', function(e) {
+      if (scale > 1) {
+        isDragging = true;
+        startX = e.clientX; startY = e.clientY;
+        lastPanX = panX; lastPanY = panY;
+        lightboxWrapper.classList.add('grabbing');
+        e.preventDefault();
+      }
+    });
+    window.addEventListener('mousemove', function(e) {
+      if (isDragging) {
+        panX = lastPanX + (e.clientX - startX);
+        panY = lastPanY + (e.clientY - startY);
+        updateTransform();
+      }
+    });
+    window.addEventListener('mouseup', function() {
+      if (isDragging) { isDragging = false; lightboxWrapper.classList.remove('grabbing'); }
+    });
+
+    // Swipe navigation
+    var touchStartX = 0, touchStartY = 0;
+    lightboxStage.addEventListener('touchstart', function(e) {
+      if (e.touches.length === 1 && scale <= 1.1) {
+        touchStartX = e.touches[0].clientX; touchStartY = e.touches[0].clientY;
+      }
+    }, { passive: true });
+    lightboxStage.addEventListener('touchend', function(e) {
+      if (scale <= 1.1 && !isPinching && e.changedTouches.length === 1) {
+        var dx = e.changedTouches[0].clientX - touchStartX;
+        var dy = e.changedTouches[0].clientY - touchStartY;
+        if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 50) {
+          dx > 0 ? navigate(-1) : navigate(1);
+        }
+      }
+    }, { passive: true });
+
+    // Keyboard
+    document.addEventListener('keydown', function(e) {
+      if (!lightbox.classList.contains('active')) return;
+      if (e.key === 'Escape') closeLightbox();
+      else if (e.key === 'ArrowLeft') navigate(-1);
+      else if (e.key === 'ArrowRight') navigate(1);
+      else if (e.key === '+' || e.key === '=') { scale = Math.min(scale * 1.3, 5); updateTransform(); }
+      else if (e.key === '-') { scale = Math.max(scale / 1.3, 0.5); if (scale <= 1) resetZoom(); else updateTransform(); }
+    });
+
+    // ===== MODAL =====
+    var modal = document.getElementById('orderModal');
+    var openModalBtns = [
+      document.getElementById('navOrderBtn'),
+      document.getElementById('heroOrderBtn'),
+      document.getElementById('mobileOrderBtn')
+    ].filter(Boolean);
+    var closeModalBtn = document.getElementById('closeModalBtn');
+    var orderForm = document.getElementById('orderForm');
+
+    function openModal() { modal.classList.add('active'); document.body.style.overflow = 'hidden'; closeModalBtn.focus(); }
+    function closeModal() { modal.classList.remove('active'); document.body.style.overflow = ''; }
+
+    openModalBtns.forEach(function(btn) { btn.addEventListener('click', openModal); });
+    if (closeModalBtn) closeModalBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', function(e) { if (e.target === modal) closeModal(); });
+    document.addEventListener('keydown', function(e) { if (e.key === 'Escape' && modal.classList.contains('active')) closeModal(); });
+
+    if (orderForm) {
+      orderForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        var cakeType = document.getElementById('cakeType').value.trim();
+        var design = document.getElementById('design').value.trim();
+        var date = document.getElementById('date').value;
+        var inscription = document.getElementById('inscription').value.trim();
+        var allergies = document.getElementById('allergies').value.trim();
+        var delivery = document.getElementById('delivery').value;
+
+        if (!cakeType || !date) { alert('אנא מלאו סוג עוגה ותאריך אספקה'); return; }
+
+        var msg = '*הזמנה חדשה לנעה*' + '%0A';
+        msg += '*סוג עוגה:* ' + cakeType + '%0A';
+        if (design) msg += '*עיצוב:* ' + design + '%0A';
+        msg += '*תאריך:* ' + date + '%0A';
+        if (inscription) msg += '*כיתוב:* ' + inscription + '%0A';
+        if (allergies) msg += '*הערות:* ' + allergies + '%0A';
+        msg += '*איסוף/משלוח:* ' + (delivery === 'pickup' ? 'איסוף עצמי (חינם)' : 'משלוח בתשלום – ירושלים') + '%0A';
+        msg += '*ירושלים בלבד*';
+
+        window.open('https://wa.me/972542345906?text=' + encodeURIComponent(msg), '_blank');
+        closeModal();
+        orderForm.reset();
       });
+    }
 
-      // WhatsApp attention animation after 5 seconds
+    // ===== SEND PHOTO =====
+    var sendPhotoBtns = [
+      document.getElementById('navSendPhotoBtn'),
+      document.getElementById('mobileSendPhotoBtn'),
+      document.getElementById('aboutSendPhotoBtn')
+    ].filter(Boolean);
+
+    sendPhotoBtns.forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var msg = 'היי נעה, אשמח לשלוח לך תמונה להשראה!%0A';
+        msg += 'אני מעוניין/ת בעוגה מעוצבת.%0A';
+        msg += 'אשלח תמונה בצאט.';
+        window.open('https://wa.me/972542345906?text=' + encodeURIComponent(msg), '_blank');
+      });
+    });
+
+    // ===== MOBILE MENU =====
+    var menuBtn = document.getElementById('mobileMenuBtn');
+    var drawer = document.getElementById('mobileDrawer');
+    var closeDrawerBtn = document.getElementById('closeDrawerBtn');
+    var drawerOverlay = document.getElementById('drawerOverlay');
+
+    function openDrawer() {
+      drawer.classList.add('open'); drawerOverlay.classList.add('active');
+      document.body.style.overflow = 'hidden'; menuBtn.setAttribute('aria-expanded', 'true');
+      closeDrawerBtn.focus();
+    }
+    function closeDrawer() {
+      drawer.classList.remove('open'); drawerOverlay.classList.remove('active');
+      document.body.style.overflow = ''; menuBtn.setAttribute('aria-expanded', 'false');
+    }
+    if (menuBtn) menuBtn.addEventListener('click', openDrawer);
+    if (closeDrawerBtn) closeDrawerBtn.addEventListener('click', closeDrawer);
+    if (drawerOverlay) drawerOverlay.addEventListener('click', closeDrawer);
+    drawer.querySelectorAll('a, button').forEach(function(el) { el.addEventListener('click', closeDrawer); });
+    document.addEventListener('keydown', function(e) { if (e.key === 'Escape' && drawer.classList.contains('open')) closeDrawer(); });
+
+    // ===== NAVBAR SCROLL =====
+    var navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', function() {
+      navbar.classList.toggle('navbar--scrolled', window.scrollY > 60);
+    }, { passive: true });
+
+    // ===== WHATSAPP FLOAT =====
+    document.getElementById('whatsappFloatBtn').addEventListener('click', function() {
+      window.open('https://wa.me/972542345906?text=' + encodeURIComponent('היי נעה, אשמח לשמוע ממך!'), '_blank');
+    });
+
+    // WhatsApp attention animation after 5 seconds
+    setTimeout(function() {
+      var waBtn = document.getElementById('whatsappFloatBtn');
+      if (waBtn) {
+        waBtn.style.animation = 'waPulse 2s ease-in-out 3';
+      }
+    }, 5000);
+
+    // ===== SMOOTH SCROLL =====
+    document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+      anchor.addEventListener('click', function(e) {
+        var href = this.getAttribute('href');
+        if (href === '#') return;
+        var target = document.querySelector(href);
+        if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+      });
+    });
+
+    // ===== DATE MIN =====
+    var dateInput = document.getElementById('date');
+    if (dateInput) dateInput.setAttribute('min', new Date().toISOString().split('T')[0]);
+
+    // ===== SHARE BUTTON =====
+    var shareBtn = document.getElementById('shareBtn');
+    var shareBtnOriginalHTML = shareBtn ? shareBtn.innerHTML : '';
+
+    function showCopiedMessage(btn) {
+      btn.classList.add('copied');
+      btn.innerHTML = 'הכתובת הועתקה!';
       setTimeout(function() {
-        var waBtn = document.getElementById('whatsappFloatBtn');
-        if (waBtn) {
-          waBtn.style.animation = 'waPulse 2s ease-in-out 3';
+        btn.classList.remove('copied');
+        btn.innerHTML = shareBtnOriginalHTML;
+      }, 2500);
+    }
+
+    if (shareBtn) {
+      shareBtn.addEventListener('click', function() {
+        var url = window.location.href;
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(url).then(function() {
+            showCopiedMessage(shareBtn);
+          }).catch(function() {
+            fallbackCopy(url);
+          });
+        } else {
+          fallbackCopy(url);
         }
-      }, 5000);
-
-      // Smooth scroll
-      document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
-        anchor.addEventListener('click', function(e) {
-          var href = this.getAttribute('href');
-          if (href === '#') return;
-          var target = document.querySelector(href);
-          if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
-        });
       });
+    }
 
-      // Date min
-      var dateInput = document.getElementById('date');
-      if (dateInput) dateInput.setAttribute('min', new Date().toISOString().split('T')[0]);
-
-      // Share button - always copy link to clipboard
-      var shareBtn = document.getElementById('shareBtn');
-      var shareBtnOriginalHTML = shareBtn ? shareBtn.innerHTML : '';
-
-      function showCopiedMessage(btn) {
-        btn.classList.add('copied');
-        btn.innerHTML = 'הכתובת הועתקה!';
-        setTimeout(function() {
-          btn.classList.remove('copied');
-          btn.innerHTML = shareBtnOriginalHTML;
-        }, 2500);
+    function fallbackCopy(url) {
+      var textArea = document.createElement('textarea');
+      textArea.value = url;
+      textArea.style.position = 'fixed';
+      textArea.style.left = '-9999px';
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+      try {
+        document.execCommand('copy');
+        showCopiedMessage(shareBtn);
+      } catch (err) {
+        alert('לא ניתן להעתיק את הכתובת. אנא העתק ידנית: ' + url);
       }
+      document.body.removeChild(textArea);
+    }
 
-      if (shareBtn) {
-        shareBtn.addEventListener('click', function() {
-          var url = window.location.href;
+    // ===== TESTIMONIALS =====
+    var testimonialsData = [
+      {"text": "העוגה הייתה פשוט מדהימה! לא רק שנראתה כמו יצירת אמנות — הטעם היה עוד יותר טוב. כל האורחים לא הפסיקו לדבר עליה.", "name": "— שירה ל.", "badge": "עוגת יום הולדת"},
+      {"text": "הזמנתי מארז מתוקים לאירוע משפחתי והיה פשוט מושלם. הכל טרי, מעוצב בקפידה, והטעמים — בלתי נשכחים.", "name": "— רונית מ.", "badge": "מארז מתוקים"},
+      {"text": "נעה הכינה לנו עוגת חתונה חלומית. כל פרט תוכנן איתה, והתוצאה עלתה על כל ציפייה. גם טעם וגם יופי — בלתי רגיל!", "name": "— דנה ויובל", "badge": "עוגת חתונה"},
+      {"text": "הקאפקייקס שהזמנו לברית היו הכי יפים שראיתי. כל אחד מעוצב בדיוק כמו שביקשנו. הילדים התלהבו!", "name": "— מיכל ש.", "badge": "קאפקייקס מעוצבים"},
+      {"text": "העוגה ליום ההולדת של אמא הייתה מרגשת. נעה הקשיבה לכל בקשה והתוצאה הייתה מושלמת. תודה על הלב!", "name": "— אורי כ.", "badge": "עוגת יום הולדת"},
+      {"text": "המקרונים היו פשוט divine! טעמים מדויקים, מרקם מושלם, ועיצוב שמח. כבר הזמנתי שוב לשבוע הבא.", "name": "— נועה ר.", "badge": "מקרונים"},
+      {"text": "עוגת השכבות ליום הנישואין שלנו הייתה חלום. נעה ידעה בדיוק מה אנחנו רוצים אפילו שלא ידענו להסביר.", "name": "— אביגיל ורועי", "badge": "עוגת שכבות"},
+      {"text": "העוגיות המעוצבות לחג היו פשוט קסם. כל אחת כמו תמונה קטנה. המשפחה התרגשה מאוד.", "name": "— חנה ג.", "badge": "עוגיות מעוצבות"},
+      {"text": "הזמנתי בקושרונה ונעה דאגה שאקבל את העוגה בזמן ושהיא תגיע בשלמות. השירות לפני הטעם — וגם הטעם מעולה!", "name": "— ליאת פ.", "badge": "עוגת אירוע"},
+      {"text": "עוגת הבר מצווה של הבן שלי הייתה מדהימה. עיצוב ספורטיבי בדיוק כמו שביקשנו, והטעם — כל הילדים אכלו ולא הפסיקו!", "name": "— רחל א.", "badge": "עוגת בר מצווה"},
+      {"text": "העוגה ליום הולדת 60 של אבא הייתה מרגשת. נעה שילבה את כל התחביבים שלו בעיצוב. הוא בכה מרוב התרגשות.", "name": "— יובל מ.", "badge": "עוגת יום הולדת"},
+      {"text": "הבצקים של נעה הם פשוט הקטע הכי טוב בבוקר. קרואסונים פריכים, שמרים אווריריים — אין כמוה בירושלים!", "name": "— אלון ד.", "badge": "בצקים"},
+      {"text": "הזמנתי עוגה ליום הולדת של חברה והיא פשוט לא האמינה. העיצוב היה כל כך מדויק לסגנון שלה. נעה — קוסמת!", "name": "— מאיה ת.", "badge": "עוגת יום הולדת"},
+      {"text": "עוגת הבנטו שהזמנתי הייתה מתוקה ויפהפייה. המארז היה מושלם למתנה. כבר הזמנתי עוד אחת לאמא שלי.", "name": "— שירן ב.", "badge": "עוגת בנטו"},
+      {"text": "הקינוחים לסוף שנה של הצוות היו פשוט יצירות אמנות קטנות. כל אחד טעם אחר, כולם מדהימים. תודה נעה!", "name": "— אורנה ח.", "badge": "קינוחים מעוצבים"},
+      {"text": "נעה הכינה לנו עוגה לחגיגת 10 שנים לעסק. העיצוב כלל את הלוגו שלנו — פשוט מושלם! מקצועיות ברמה אחרת.", "name": "— דוד ושלומי", "badge": "עוגת אירוע עסקי"},
+      {"text": "העוגה לבת המצווה שלי הייתה החלום שלה. נסיכות, ורוד, נצנצים — נעה הבינה בדיוק מה היא רוצה. הייתה מושלמת!", "name": "— מירב ק.", "badge": "עוגת בת מצווה"},
+      {"text": "המארז המתוקים לשבת היה פשוט קסום. כל דבר טרי וטעים, והעיצוב — שולחן חג ממש. תודה על הכל!", "name": "— שרה ל.", "badge": "מארז שבת"},
+      {"text": "הזמנתי עוגה ליום הולדת של אחי והיא הייתה מטורפת. עיצוב גיימינג מדויק, והטעם — שוקולד שמיים. תודה נעה!", "name": "— טל י.", "badge": "עוגת יום הולדת"},
+      {"text": "עוגת הפרחים שהזמנתי לאמא הייתה כל כך עדינה ויפה. נעה השקיעה בכל עלה וכל צבע. אמא בכתה מרוב התרגשות.", "name": "— רותם ש.", "badge": "עוגת פרחים"},
+      {"text": "העוגה לבריתה של הנכדה הייתה ורודה ומתוקה בדיוק כמו שהיינו רוצים. נעה דאגה לכל פרט — אפילו לסרט המתנה.", "name": "— רבקה א.", "badge": "עוגת בריתה"},
+      {"text": "הזמנתי עוגה ליום נישואין והיא הייתה רומנטית ומושלמת. נעה ידעה לתפוס את הרוח שלנו בלי מילים. מומלצת בחום!", "name": "— ניר וגלית", "badge": "עוגת יום נישואין"},
+      {"text": "העוגיות לסוף שנה של הכיתה היו פשוט קסומות. כל ילד קיבל עוגייה עם השם שלו. נעה — את מדהימה!", "name": "— מורן פ.", "badge": "עוגיות מעוצבות"},
+      {"text": "עוגת היום הולדת שלי הייתה הפתעה מבן הזוג. הוא אמר שדיבר עם נעה שעה על מה אני אוהבת. והיא פגעה בול!", "name": "— ליאור א.", "badge": "עוגת יום הולדת"},
+      {"text": "המארז לחג הפסח היה מרשים. כל הדברים כשרים, טעימים, ומעוצבים בקפידה. כבר הזמנתי לשנה הבאה!", "name": "— משה ורחל", "badge": "מארז חג"},
+      {"text": "נעה הכינה לנו עוגה ליום הולדת של הכלב! כן, הכלב! והיא הייתה מושלמת — עם עיצוב של כף רגל וקשת בענן. מדהים!", "name": "— ניצן ואור", "badge": "עוגת יום הולדת"},
+      {"text": "העוגה לחתונת הזהב של ההורים הייתה מרגשת ומלכותית. נעה שילבה את התמונה המקורית שלהם מהחתונה. פשוט מדהים!", "name": "— אפרת מ.", "badge": "עוגת חתונת זהב"},
+      {"text": "הזמנתי עוגה ליום הולדת של חבר ונעה עשתה עיצוב של ספרים כי הוא אוהב לקרוא. הוא לא האמין שזו עוגה אמיתית!", "name": "— אלמוג ש.", "badge": "עוגת יום הולדת"},
+      {"text": "הקינוחים לכנס העסקי היו מקוריים וטעימים. כל אורח שאל מאיפה הזמנו. נעה — את מקצוענית ברמה אחרת!", "name": "— איילת ר.", "badge": "קינוחים לאירוע"},
+      {"text": "עוגת היום הולדת של הבת שלי הייתה מלאה בחיות הים שהיא אוהבת. נעה ציירה כל דג ביד! אין עלייך נעה, תודה!", "name": "— טליה ג.", "badge": "עוגת יום הולדת"}
+    ];
 
-          if (navigator.clipboard && navigator.clipboard.writeText) {
-            navigator.clipboard.writeText(url).then(function() {
-              showCopiedMessage(shareBtn);
-            }).catch(function() {
-              var textArea = document.createElement('textarea');
-              textArea.value = url;
-              textArea.style.position = 'fixed';
-              textArea.style.left = '-9999px';
-              document.body.appendChild(textArea);
-              textArea.focus();
-              textArea.select();
-              try {
-                document.execCommand('copy');
-                showCopiedMessage(shareBtn);
-              } catch (err) {
-                alert('לא ניתן להעתיק את הכתובת. אנא העתק ידנית: ' + url);
-              }
-              document.body.removeChild(textArea);
-            });
-          } else {
-            var textArea = document.createElement('textarea');
-            textArea.value = url;
-            textArea.style.position = 'fixed';
-            textArea.style.left = '-9999px';
-            document.body.appendChild(textArea);
-            textArea.focus();
-            textArea.select();
-            try {
-              document.execCommand('copy');
-              showCopiedMessage(shareBtn);
-            } catch (err) {
-              alert('לא ניתן להעתיק את הכתובת. אנא העתק ידנית: ' + url);
-            }
-            document.body.removeChild(textArea);
-          }
-        });
-      }
+    function renderTestimonials() {
+      var grid = document.getElementById('testimonialsGrid');
+      if (!grid) return;
+      var shuffled = testimonialsData.slice().sort(function() { return 0.5 - Math.random(); });
+      var selected = shuffled.slice(0, 3);
+      grid.innerHTML = selected.map(function(t) {
+        return '<div class="testimonial-card">' +
+          '<div class="testimonial-stars" aria-label="5 כוכבים">⭐⭐⭐⭐⭐</div>' +
+          '<p class="testimonial-text">"' + t.text + '"</p>' +
+          '<div class="testimonial-author">' +
+            '<span class="testimonial-name">' + t.name + '</span>' +
+            '<span class="testimonial-badge">' + t.badge + '</span>' +
+          '</div>' +
+        '</div>';
+      }).join('');
+    }
 
-      // Testimonials data - 30 reviews
-      var testimonialsData = [
-        {"text": "העוגה הייתה פשוט מדהימה! לא רק שנראתה כמו יצירת אמנות — הטעם היה עוד יותר טוב. כל האורחים לא הפסיקו לדבר עליה.", "name": "— שירה ל.", "badge": "עוגת יום הולדת"},
-        {"text": "הזמנתי מארז מתוקים לאירוע משפחתי והיה פשוט מושלם. הכל טרי, מעוצב בקפידה, והטעמים — בלתי נשכחים.", "name": "— רונית מ.", "badge": "מארז מתוקים"},
-        {"text": "נעה הכינה לנו עוגת חתונה חלומית. כל פרט תוכנן איתה, והתוצאה עלתה על כל ציפייה. גם טעם וגם יופי — בלתי רגיל!", "name": "— דנה ויובל", "badge": "עוגת חתונה"},
-        {"text": "הקאפקייקס שהזמנו לברית היו הכי יפים שראיתי. כל אחד מעוצב בדיוק כמו שביקשנו. הילדים התלהבו!", "name": "— מיכל ש.", "badge": "קאפקייקס מעוצבים"},
-        {"text": "העוגה ליום ההולדת של אמא הייתה מרגשת. נעה הקשיבה לכל בקשה והתוצאה הייתה מושלמת. תודה על הלב!", "name": "— אורי כ.", "badge": "עוגת יום הולדת"},
-        {"text": "המקרונים היו פשוט divine! טעמים מדויקים, מרקם מושלם, ועיצוב שמח. כבר הזמנתי שוב לשבוע הבא.", "name": "— נועה ר.", "badge": "מקרונים"},
-        {"text": "עוגת השכבות ליום הנישואין שלנו הייתה חלום. נעה ידעה בדיוק מה אנחנו רוצים אפילו שלא ידענו להסביר.", "name": "— אביגיל ורועי", "badge": "עוגת שכבות"},
-        {"text": "העוגיות המעוצבות לחג היו פשוט קסם. כל אחת כמו תמונה קטנה. המשפחה התרגשה מאוד.", "name": "— חנה ג.", "badge": "עוגיות מעוצבות"},
-        {"text": "הזמנתי בקושרונה ונעה דאגה שאקבל את העוגה בזמן ושהיא תגיע בשלמות. השירות לפני הטעם — וגם הטעם מעולה!", "name": "— ליאת פ.", "badge": "עוגת אירוע"},
-        {"text": "עוגת הבר מצווה של הבן שלי הייתה מדהימה. עיצוב ספורטיבי בדיוק כמו שביקשנו, והטעם — כל הילדים אכלו ולא הפסיקו!", "name": "— רחל א.", "badge": "עוגת בר מצווה"},
-        {"text": "העוגה ליום הולדת 60 של אבא הייתה מרגשת. נעה שילבה את כל התחביבים שלו בעיצוב. הוא בכה מרוב התרגשות.", "name": "— יובל מ.", "badge": "עוגת יום הולדת"},
-        {"text": "הבצקים של נעה הם פשוט הקטע הכי טוב בבוקר. קרואסונים פריכים, שמרים אווריריים — אין כמוה בירושלים!", "name": "— אלון ד.", "badge": "בצקים"},
-        {"text": "הזמנתי עוגה ליום הולדת של חברה והיא פשוט לא האמינה. העיצוב היה כל כך מדויק לסגנון שלה. נעה — קוסמת!", "name": "— מאיה ת.", "badge": "עוגת יום הולדת"},
-        {"text": "עוגת הבנטו שהזמנתי הייתה מתוקה ויפהפייה. המארז היה מושלם למתנה. כבר הזמנתי עוד אחת לאמא שלי.", "name": "— שירן ב.", "badge": "עוגת בנטו"},
-        {"text": "הקינוחים לסוף שנה של הצוות היו פשוט יצירות אמנות קטנות. כל אחד טעם אחר, כולם מדהימים. תודה נעה!", "name": "— אורנה ח.", "badge": "קינוחים מעוצבים"},
-        {"text": "נעה הכינה לנו עוגה לחגיגת 10 שנים לעסק. העיצוב כלל את הלוגו שלנו — פשוט מושלם! מקצועיות ברמה אחרת.", "name": "— דוד ושלומי", "badge": "עוגת אירוע עסקי"},
-        {"text": "העוגה לבת המצווה שלי הייתה החלום שלה. נסיכות, ורוד, נצנצים — נעה הבינה בדיוק מה היא רוצה. הייתה מושלמת!", "name": "— מירב ק.", "badge": "עוגת בת מצווה"},
-        {"text": "המארז המתוקים לשבת היה פשוט קסום. כל דבר טרי וטעים, והעיצוב — שולחן חג ממש. תודה על הכל!", "name": "— שרה ל.", "badge": "מארז שבת"},
-        {"text": "הזמנתי עוגה ליום הולדת של אחי והיא הייתה מטורפת. עיצוב גיימינג מדויק, והטעם — שוקולד שמיים. תודה נעה!", "name": "— טל י.", "badge": "עוגת יום הולדת"},
-        {"text": "עוגת הפרחים שהזמנתי לאמא הייתה כל כך עדינה ויפה. נעה השקיעה בכל עלה וכל צבע. אמא בכתה מרוב התרגשות.", "name": "— רותם ש.", "badge": "עוגת פרחים"},
-        {"text": "העוגה לבריתה של הנכדה הייתה ורודה ומתוקה בדיוק כמו שהיינו רוצים. נעה דאגה לכל פרט — אפילו לסרט המתנה.", "name": "— רבקה א.", "badge": "עוגת בריתה"},
-        {"text": "הזמנתי עוגה ליום נישואין והיא הייתה רומנטית ומושלמת. נעה ידעה לתפוס את הרוח שלנו בלי מילים. מומלצת בחום!", "name": "— ניר וגלית", "badge": "עוגת יום נישואין"},
-        {"text": "העוגיות לסוף שנה של הכיתה היו פשוט קסומות. כל ילד קיבל עוגייה עם השם שלו. נעה — את מדהימה!", "name": "— מורן פ.", "badge": "עוגיות מעוצבות"},
-        {"text": "עוגת היום הולדת שלי הייתה הפתעה מבן הזוג. הוא אמר שדיבר עם נעה שעה על מה אני אוהבת. והיא פגעה בול!", "name": "— ליאור א.", "badge": "עוגת יום הולדת"},
-        {"text": "המארז לחג הפסח היה מרשים. כל הדברים כשרים, טעימים, ומעוצבים בקפידה. כבר הזמנתי לשנה הבאה!", "name": "— משה ורחל", "badge": "מארז חג"},
-        {"text": "נעה הכינה לנו עוגה ליום הולדת של הכלב! כן, הכלב! והיא הייתה מושלמת — עם עיצוב של כף רגל וקשת בענן. מדהים!", "name": "— ניצן ואור", "badge": "עוגת יום הולדת"},
-        {"text": "העוגה לחתונת הזהב של ההורים הייתה מרגשת ומלכותית. נעה שילבה את התמונה המקורית שלהם מהחתונה. פשוט מדהים!", "name": "— אפרת מ.", "badge": "עוגת חתונת זהב"},
-        {"text": "הזמנתי עוגה ליום הולדת של חבר ונעה עשתה עיצוב של ספרים כי הוא אוהב לקרוא. הוא לא האמין שזו עוגה אמיתית!", "name": "— אלמוג ש.", "badge": "עוגת יום הולדת"},
-        {"text": "הקינוחים לכנס העסקי היו מקוריים וטעימים. כל אורח שאל מאיפה הזמנו. נעה — את מקצוענית ברמה אחרת!", "name": "— איילת ר.", "badge": "קינוחים לאירוע"},
-        {"text": "עוגת היום הולדת של הבת שלי הייתה מלאה בחיות הים שהיא אוהבת. נעה ציירה כל דג ביד! אין עלייך נעה, תודה!", "name": "— טליה ג.", "badge": "עוגת יום הולדת"}
-      ];
+    renderTestimonials();
+    setInterval(renderTestimonials, 120000);
 
-      // Render 3 random testimonials
-      function renderTestimonials() {
-        var grid = document.getElementById('testimonialsGrid');
-        if (!grid) return;
-
-        var shuffled = testimonialsData.slice().sort(function() { return 0.5 - Math.random(); });
-        var selected = shuffled.slice(0, 3);
-
-        grid.innerHTML = selected.map(function(t) {
-          return '<div class="testimonial-card">' +
-            '<div class="testimonial-stars">⭐⭐⭐⭐⭐</div>' +
-            '<p class="testimonial-text">"' + t.text + '"</p>' +
-            '<div class="testimonial-author">' +
-              '<span class="testimonial-name">' + t.name + '</span>' +
-              '<span class="testimonial-badge">' + t.badge + '</span>' +
-            '</div>' +
-          '</div>';
-        }).join('');
-      }
-
-      renderTestimonials();
-      setInterval(renderTestimonials, 120000);
-      console.log('נעה website initialized successfully');
-    })();
+    console.log('נעה website initialized successfully');
+  })();
   </script>
 
   <noscript>
