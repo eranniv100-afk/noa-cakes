@@ -177,8 +177,8 @@
       .hero__slideshow { position: absolute; inset: 0; z-index: 0; overflow: hidden; }
       .hero__slide { position: absolute; inset: 0; opacity: 0; transition: opacity 1.5s ease-in-out, transform 8s ease-out; transform: scale(1.1); }
       .hero__slide.active { opacity: 1; transform: scale(1); }
-      .hero__slide img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.35) saturate(0.8); will-change: transform; }
-      .hero__overlay { position: absolute; inset: 0; background: linear-gradient(145deg, rgba(157,23,77,0.3) 0%, rgba(76,5,25,0.5) 100%); z-index: 1; }
+      .hero__slide img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.45) saturate(0.85); will-change: transform; }
+      .hero__overlay { position: absolute; inset: 0; background: linear-gradient(145deg, rgba(157,23,77,0.2) 0%, rgba(76,5,25,0.35) 100%); z-index: 1; }
       .hero__vignette { position: absolute; inset: 0; background: radial-gradient(ellipse at center, transparent 0%, rgba(0,0,0,0.4) 100%); z-index: 2; }
       .hero-content { position: relative; z-index: 3; animation: fadeInUp 0.8s ease-out; color: white; text-shadow: 0 2px 20px rgba(0,0,0,0.3); }
       .hero h1 { font-family: var(--font-display); font-size: var(--text-3xl); font-weight: 300; line-height: 1.1; margin-block-end: var(--space-sm); letter-spacing: -0.02em; }
@@ -445,6 +445,8 @@
         .nav-links { display: none; }
         .mobile-menu-btn { display: block; }
         .hero h1 { font-size: clamp(2.5rem, 8vw, 3.5rem); }
+        .hero__slide img { filter: brightness(0.55) saturate(0.85); }
+        .hero__overlay { background: linear-gradient(145deg, rgba(157,23,77,0.15) 0%, rgba(76,5,25,0.25) 100%); }
         .about-inner { flex-direction: column; text-align: center; }
         .about-text { text-align: center; }
         .about-text blockquote { border-right: none; border-top: 3px solid var(--color-primary); padding-right: 0; padding-top: var(--space-sm); }
@@ -1720,14 +1722,14 @@
 
         if (!cakeType || !date) { alert('אנא מלאו סוג עוגה ותאריך אספקה'); return; }
 
-        var msg = '*הזמנה חדשה לנעה*' + '%0A';
-        msg += '*סוג עוגה:* ' + cakeType + '%0A';
-        if (design) msg += '*עיצוב:* ' + design + '%0A';
-        msg += '*תאריך:* ' + date + '%0A';
-        if (inscription) msg += '*כיתוב:* ' + inscription + '%0A';
-        if (allergies) msg += '*הערות:* ' + allergies + '%0A';
-        msg += '*איסוף/משלוח:* ' + (delivery === 'pickup' ? 'איסוף עצמי (חינם)' : 'משלוח בתשלום – ירושלים') + '%0A';
-        msg += '*ירושלים בלבד*';
+        var msg = '*הזמנה חדשה לנעה*' + '\n' +
+          '*סוג עוגה:* ' + cakeType + '\n' +
+          (design ? '*עיצוב:* ' + design + '\n' : '') +
+          '*תאריך:* ' + date + '\n' +
+          (inscription ? '*כיתוב:* ' + inscription + '\n' : '') +
+          (allergies ? '*הערות:* ' + allergies + '\n' : '') +
+          '*איסוף/משלוח:* ' + (delivery === 'pickup' ? 'איסוף עצמי (חינם)' : 'משלוח בתשלום – ירושלים') + '\n' +
+          '*ירושלים בלבד*';
 
         window.open('https://wa.me/972542345906?text=' + encodeURIComponent(msg), '_blank');
         closeModal();
@@ -1744,9 +1746,9 @@
 
     sendPhotoBtns.forEach(function(btn) {
       btn.addEventListener('click', function() {
-        var msg = 'היי נעה, אשמח לשלוח לך תמונה להשראה!%0A';
-        msg += 'אני מעוניין/ת בעוגה מעוצבת.%0A';
-        msg += 'אשלח תמונה בצאט.';
+        var msg = 'היי נעה, אשמח לשלוח לך תמונה להשראה!\n' +
+          'אני מעוניין/ת בעוגה מעוצבת.\n' +
+          'אשלח תמונה בצאט.';
         window.open('https://wa.me/972542345906?text=' + encodeURIComponent(msg), '_blank');
       });
     });
