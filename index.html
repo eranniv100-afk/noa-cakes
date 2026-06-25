@@ -247,6 +247,7 @@
         position: relative;
       }
       .gallery-card.hidden { display: none; }
+      .gallery-card.paginated-hidden { display: none; }
       @media (hover: hover) { .gallery-card:hover { transform: translateY(-8px); box-shadow: var(--shadow-xl); } }
       .gallery-card:active { transform: scale(0.98); }
       .gallery-card__image-wrapper { position: relative; aspect-ratio: 1 / 1; overflow: hidden; background: linear-gradient(135deg, #f8e8e0 0%, #f0d8e0 100%); }
@@ -269,6 +270,29 @@
         font-size: 0.75rem; font-weight: 600;
         backdrop-filter: blur(4px);
       }
+
+      .load-more-btn {
+        display: none;
+        margin: var(--space-xl) auto 0;
+        background: white;
+        color: var(--color-primary);
+        border: 2px solid var(--color-border-light);
+        padding: 12px 32px;
+        border-radius: var(--radius-full);
+        font-weight: 600;
+        font-size: var(--text-base);
+        transition: all var(--transition-base);
+        box-shadow: var(--shadow-sm);
+        cursor: pointer;
+      }
+      .load-more-btn:hover {
+        background: var(--color-primary);
+        color: white;
+        border-color: var(--color-primary);
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-md);
+      }
+      .load-more-btn:active { transform: translateY(0); }
 
       .about-section { background: var(--color-bg-cream); padding-block: var(--space-2xl); }
       .about-inner { max-width: 1100px; margin-inline: auto; display: flex; flex-wrap: wrap; gap: var(--space-xl); align-items: center; justify-content: center; }
@@ -326,7 +350,7 @@
 
       .order-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); z-index: 1500; align-items: center; justify-content: center; padding: var(--space-md); opacity: 0; transition: opacity var(--transition-base); }
       .order-modal.active { display: flex; opacity: 1; }
-      .modal-card { background: white; max-width: 520px; width: 100%; border-radius: var(--radius-lg); padding: var(--space-xl); position: relative; text-align: right; box-shadow: var(--shadow-xl); transform: scale(0.9) translateY(20px); transition: transform var(--transition-base); }
+      .modal-card { background: white; max-width: 520px; width: 100%; border-radius: var(--radius-lg); padding: var(--space-xl); position: relative; text-align: right; box-shadow: var(--shadow-xl); transform: scale(0.9) translateY(20px); transition: transform var(--transition-base); max-height: 90vh; overflow-y: auto; }
       .order-modal.active .modal-card { transform: scale(1) translateY(0); }
       .close-modal { position: absolute; left: var(--space-md); top: var(--space-sm); font-size: 1.75rem; color: var(--color-text-muted); transition: color var(--transition-fast); touch-action: manipulation; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 50%; }
       .close-modal:hover { color: var(--color-text); background: var(--color-bg-warm); }
@@ -378,7 +402,7 @@
       .testimonial-badge { background: var(--color-bg-pink); color: var(--color-primary); padding: 4px 12px; border-radius: var(--radius-full); font-size: var(--text-xs); font-weight: 500; }
     }
 
-        @layer animations {
+    @layer animations {
       @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
       @keyframes waPulse {
         0%, 100% { transform: scale(1); box-shadow: 0 4px 16px rgba(0,0,0,0.2); }
@@ -410,7 +434,7 @@
         .workshops-grid { grid-template-columns: 1fr; }
         .jerusalem-badge { bottom: max(80px, env(safe-area-inset-bottom, 80px)); left: 12px; font-size: 0.7rem; padding: 6px 14px; }
         .whatsapp-float { width: 52px; height: 52px; bottom: max(16px, env(safe-area-inset-bottom, 16px)); right: 16px; }
-        .modal-card { padding: var(--space-lg); margin: var(--space-sm); }
+        .modal-card { padding: var(--space-lg); margin: var(--space-sm); max-height: 85vh; }
         .lightbox img { max-width: 95vw; max-height: 80vh; }
         .lightbox__controls { bottom: 16px; padding: 6px 12px; }
         .lightbox__btn { width: 40px; height: 40px; font-size: 1.1rem; }
@@ -420,6 +444,8 @@
         .hero-buttons { flex-direction: column; align-items: center; }
         .btn-primary, .btn-outline { width: min(100%, 280px); justify-content: center; }
         .category-filter { max-width: 100%; margin-inline: var(--space-sm); }
+        .order-modal { padding: var(--space-sm); }
+        .modal-card { padding: var(--space-md); margin: var(--space-xs); }
       }
       @media (prefers-reduced-motion: reduce) {
         *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
@@ -475,7 +501,6 @@
   }
   </script>
 <base target="_blank">
-<base target="_blank">
 </head>
 <body>
   <div class="jerusalem-badge">🍰 ירושלים בלבד</div>
@@ -521,7 +546,7 @@
       <div class="hero__slide" data-slide="2"><img src="./images/image10.jpeg" alt="מארז מתוקים מיוחד — נעה ירושלים" loading="eager" width="1200" height="800" decoding="async"></div>
       <div class="hero__slide" data-slide="3"><img src="./images/image15.jpeg" alt="קינוחים מעוצבים — נעה ירושלים" loading="eager" width="1200" height="800" decoding="async"></div>
       <div class="hero__slide" data-slide="4"><img src="./images/image20.jpeg" alt="בצקים טריים — נעה ירושלים" loading="eager" width="1200" height="800" decoding="async"></div>
-    </div></div>
+    </div>
     <div class="hero__overlay" aria-hidden="true"></div>
     <div class="hero__vignette" aria-hidden="true"></div>
     <div class="hero-content">
@@ -545,18 +570,19 @@
     <div class="category-filter">
       <select class="category-filter__select" id="categoryFilter" aria-label="סינון קטגוריות">
         <option value="all" selected>הכל</option>
-                <option value="עוגות מעוצבות">עוגות מעוצבות</option>
+        <option value="עוגות מעוצבות">עוגות מעוצבות</option>
         <option value="עוגות בנטו">עוגות בנטו</option>
         <option value="בצקים">בצקים</option>
         <option value="קינוחים">קינוחים</option>
         <option value="מארזים">מארזים</option>
+        <option value="עוגיות">עוגיות</option>
       </select>
       <span class="category-filter__arrow">▼</span>
     </div>
-    <div class="category-count" id="categoryCount">מציג 42 פריטים בקטגוריה "הכל"</div>
+    <div class="category-count" id="categoryCount">מציג 12 מתוך 42 פריטים</div>
 
     <div class="gallery-grid" id="galleryGrid">
-      <div class="gallery-card" data-index="1" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגה מספר 1">
+      <div class="gallery-card" data-index="1" data-category="קינוחים מארזים" role="button" tabindex="0" aria-label="עוגה מספר 1">
         <div class="gallery-card__image-wrapper">
           <img src="./images/image1.jpeg" alt="עוגה מעוצבת מספר 1" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+1'" onload="this.parentElement.parentElement.classList.add('loaded')">
           <div class="gallery-card__zoom-hint">
@@ -564,9 +590,9 @@
             הקישו להגדלה
           </div>
         </div>
-        <span class="gallery-card__category-tag">עוגות מעוצבות</span>
+        <span class="gallery-card__category-tag">קינוחים, מארזים</span>
       </div>
-      <div class="gallery-card" data-index="2" data-category="עוגות בנטו" role="button" tabindex="0" aria-label="עוגה מספר 2">
+      <div class="gallery-card" data-index="2" data-category="קינוחים מארזים" role="button" tabindex="0" aria-label="עוגה מספר 2">
         <div class="gallery-card__image-wrapper">
           <img src="./images/image2.jpeg" alt="עוגה מעוצבת מספר 2" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+2'" onload="this.parentElement.parentElement.classList.add('loaded')">
           <div class="gallery-card__zoom-hint">
@@ -574,9 +600,9 @@
             הקישו להגדלה
           </div>
         </div>
-        <span class="gallery-card__category-tag">עוגות בנטו</span>
+        <span class="gallery-card__category-tag">קינוחים, מארזים</span>
       </div>
-      <div class="gallery-card" data-index="3" data-category="בצקים" role="button" tabindex="0" aria-label="עוגה מספר 3">
+      <div class="gallery-card" data-index="3" data-category="קינוחים" role="button" tabindex="0" aria-label="עוגה מספר 3">
         <div class="gallery-card__image-wrapper">
           <img src="./images/image3.jpeg" alt="עוגה מעוצבת מספר 3" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+3'" onload="this.parentElement.parentElement.classList.add('loaded')">
           <div class="gallery-card__zoom-hint">
@@ -584,9 +610,9 @@
             הקישו להגדלה
           </div>
         </div>
-        <span class="gallery-card__category-tag">בצקים</span>
+        <span class="gallery-card__category-tag">קינוחים</span>
       </div>
-      <div class="gallery-card" data-index="4" data-category="קינוחים" role="button" tabindex="0" aria-label="עוגה מספר 4">
+      <div class="gallery-card" data-index="4" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגה מספר 4">
         <div class="gallery-card__image-wrapper">
           <img src="./images/image4.jpeg" alt="עוגה מעוצבת מספר 4" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+4'" onload="this.parentElement.parentElement.classList.add('loaded')">
           <div class="gallery-card__zoom-hint">
@@ -594,9 +620,9 @@
             הקישו להגדלה
           </div>
         </div>
-        <span class="gallery-card__category-tag">קינוחים</span>
+        <span class="gallery-card__category-tag">עוגות מעוצבות</span>
       </div>
-      <div class="gallery-card" data-index="5" data-category="מארזים" role="button" tabindex="0" aria-label="עוגה מספר 5">
+      <div class="gallery-card" data-index="5" data-category="בצקים" role="button" tabindex="0" aria-label="עוגה מספר 5">
         <div class="gallery-card__image-wrapper">
           <img src="./images/image5.jpeg" alt="עוגה מעוצבת מספר 5" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+5'" onload="this.parentElement.parentElement.classList.add('loaded')">
           <div class="gallery-card__zoom-hint">
@@ -604,9 +630,9 @@
             הקישו להגדלה
           </div>
         </div>
-        <span class="gallery-card__category-tag">מארזים</span>
+        <span class="gallery-card__category-tag">בצקים</span>
       </div>
-      <div class="gallery-card" data-index="6" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגה מספר 6">
+      <div class="gallery-card" data-index="6" data-category="בצקים" role="button" tabindex="0" aria-label="עוגה מספר 6">
         <div class="gallery-card__image-wrapper">
           <img src="./images/image6.jpeg" alt="עוגה מעוצבת מספר 6" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+6'" onload="this.parentElement.parentElement.classList.add('loaded')">
           <div class="gallery-card__zoom-hint">
@@ -614,9 +640,9 @@
             הקישו להגדלה
           </div>
         </div>
-        <span class="gallery-card__category-tag">עוגות מעוצבות</span>
+        <span class="gallery-card__category-tag">בצקים</span>
       </div>
-      <div class="gallery-card" data-index="7" data-category="עוגות בנטו" role="button" tabindex="0" aria-label="עוגה מספר 7">
+      <div class="gallery-card" data-index="7" data-category="בצקים" role="button" tabindex="0" aria-label="עוגה מספר 7">
         <div class="gallery-card__image-wrapper">
           <img src="./images/image7.jpeg" alt="עוגה מעוצבת מספר 7" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+7'" onload="this.parentElement.parentElement.classList.add('loaded')">
           <div class="gallery-card__zoom-hint">
@@ -624,9 +650,9 @@
             הקישו להגדלה
           </div>
         </div>
-        <span class="gallery-card__category-tag">עוגות בנטו</span>
+        <span class="gallery-card__category-tag">בצקים</span>
       </div>
-      <div class="gallery-card" data-index="8" data-category="בצקים" role="button" tabindex="0" aria-label="עוגה מספר 8">
+      <div class="gallery-card" data-index="8" data-category="קינוחים" role="button" tabindex="0" aria-label="עוגה מספר 8">
         <div class="gallery-card__image-wrapper">
           <img src="./images/image8.jpeg" alt="עוגה מעוצבת מספר 8" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+8'" onload="this.parentElement.parentElement.classList.add('loaded')">
           <div class="gallery-card__zoom-hint">
@@ -634,9 +660,9 @@
             הקישו להגדלה
           </div>
         </div>
-        <span class="gallery-card__category-tag">בצקים</span>
+        <span class="gallery-card__category-tag">קינוחים</span>
       </div>
-      <div class="gallery-card" data-index="9" data-category="קינוחים" role="button" tabindex="0" aria-label="עוגה מספר 9">
+      <div class="gallery-card" data-index="9" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגה מספר 9">
         <div class="gallery-card__image-wrapper">
           <img src="./images/image9.jpeg" alt="עוגה מעוצבת מספר 9" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+9'" onload="this.parentElement.parentElement.classList.add('loaded')">
           <div class="gallery-card__zoom-hint">
@@ -644,9 +670,9 @@
             הקישו להגדלה
           </div>
         </div>
-        <span class="gallery-card__category-tag">קינוחים</span>
+        <span class="gallery-card__category-tag">עוגות מעוצבות</span>
       </div>
-      <div class="gallery-card" data-index="10" data-category="מארזים" role="button" tabindex="0" aria-label="עוגה מספר 10">
+      <div class="gallery-card" data-index="10" data-category="בצקים" role="button" tabindex="0" aria-label="עוגה מספר 10">
         <div class="gallery-card__image-wrapper">
           <img src="./images/image10.jpeg" alt="עוגה מעוצבת מספר 10" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+10'" onload="this.parentElement.parentElement.classList.add('loaded')">
           <div class="gallery-card__zoom-hint">
@@ -654,7 +680,7 @@
             הקישו להגדלה
           </div>
         </div>
-        <span class="gallery-card__category-tag">מארזים</span>
+        <span class="gallery-card__category-tag">בצקים</span>
       </div>
       <div class="gallery-card" data-index="11" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגה מספר 11">
         <div class="gallery-card__image-wrapper">
@@ -666,7 +692,7 @@
         </div>
         <span class="gallery-card__category-tag">עוגות מעוצבות</span>
       </div>
-      <div class="gallery-card" data-index="12" data-category="עוגות בנטו" role="button" tabindex="0" aria-label="עוגה מספר 12">
+      <div class="gallery-card" data-index="12" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגה מספר 12">
         <div class="gallery-card__image-wrapper">
           <img src="./images/image12.jpeg" alt="עוגה מעוצבת מספר 12" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+12'" onload="this.parentElement.parentElement.classList.add('loaded')">
           <div class="gallery-card__zoom-hint">
@@ -674,9 +700,9 @@
             הקישו להגדלה
           </div>
         </div>
-        <span class="gallery-card__category-tag">עוגות בנטו</span>
+        <span class="gallery-card__category-tag">עוגות מעוצבות</span>
       </div>
-      <div class="gallery-card" data-index="13" data-category="בצקים" role="button" tabindex="0" aria-label="עוגה מספר 13">
+      <div class="gallery-card" data-index="13" data-category="עוגיות" role="button" tabindex="0" aria-label="עוגה מספר 13">
         <div class="gallery-card__image-wrapper">
           <img src="./images/image13.jpeg" alt="עוגה מעוצבת מספר 13" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+13'" onload="this.parentElement.parentElement.classList.add('loaded')">
           <div class="gallery-card__zoom-hint">
@@ -684,9 +710,9 @@
             הקישו להגדלה
           </div>
         </div>
-        <span class="gallery-card__category-tag">בצקים</span>
+        <span class="gallery-card__category-tag">עוגיות</span>
       </div>
-      <div class="gallery-card" data-index="14" data-category="קינוחים" role="button" tabindex="0" aria-label="עוגה מספר 14">
+      <div class="gallery-card" data-index="14" data-category="עוגות בנטו מארזים" role="button" tabindex="0" aria-label="עוגה מספר 14">
         <div class="gallery-card__image-wrapper">
           <img src="./images/image14.jpeg" alt="עוגה מעוצבת מספר 14" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+14'" onload="this.parentElement.parentElement.classList.add('loaded')">
           <div class="gallery-card__zoom-hint">
@@ -694,9 +720,9 @@
             הקישו להגדלה
           </div>
         </div>
-        <span class="gallery-card__category-tag">קינוחים</span>
+        <span class="gallery-card__category-tag">עוגות בנטו, מארזים</span>
       </div>
-      <div class="gallery-card" data-index="15" data-category="מארזים" role="button" tabindex="0" aria-label="עוגה מספר 15">
+      <div class="gallery-card" data-index="15" data-category="בצקים" role="button" tabindex="0" aria-label="עוגה מספר 15">
         <div class="gallery-card__image-wrapper">
           <img src="./images/image15.jpeg" alt="עוגה מעוצבת מספר 15" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+15'" onload="this.parentElement.parentElement.classList.add('loaded')">
           <div class="gallery-card__zoom-hint">
@@ -704,9 +730,9 @@
             הקישו להגדלה
           </div>
         </div>
-        <span class="gallery-card__category-tag">מארזים</span>
+        <span class="gallery-card__category-tag">בצקים</span>
       </div>
-      <div class="gallery-card" data-index="16" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגה מספר 16">
+      <div class="gallery-card" data-index="16" data-category="עוגיות" role="button" tabindex="0" aria-label="עוגה מספר 16">
         <div class="gallery-card__image-wrapper">
           <img src="./images/image16.jpeg" alt="עוגה מעוצבת מספר 16" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+16'" onload="this.parentElement.parentElement.classList.add('loaded')">
           <div class="gallery-card__zoom-hint">
@@ -714,9 +740,9 @@
             הקישו להגדלה
           </div>
         </div>
-        <span class="gallery-card__category-tag">עוגות מעוצבות</span>
+        <span class="gallery-card__category-tag">עוגיות</span>
       </div>
-      <div class="gallery-card" data-index="17" data-category="עוגות בנטו" role="button" tabindex="0" aria-label="עוגה מספר 17">
+      <div class="gallery-card" data-index="17" data-category="בצקים" role="button" tabindex="0" aria-label="עוגה מספר 17">
         <div class="gallery-card__image-wrapper">
           <img src="./images/image17.jpeg" alt="עוגה מעוצבת מספר 17" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+17'" onload="this.parentElement.parentElement.classList.add('loaded')">
           <div class="gallery-card__zoom-hint">
@@ -724,9 +750,9 @@
             הקישו להגדלה
           </div>
         </div>
-        <span class="gallery-card__category-tag">עוגות בנטו</span>
+        <span class="gallery-card__category-tag">בצקים</span>
       </div>
-      <div class="gallery-card" data-index="18" data-category="בצקים" role="button" tabindex="0" aria-label="עוגה מספר 18">
+      <div class="gallery-card" data-index="18" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגה מספר 18">
         <div class="gallery-card__image-wrapper">
           <img src="./images/image18.jpeg" alt="עוגה מעוצבת מספר 18" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+18'" onload="this.parentElement.parentElement.classList.add('loaded')">
           <div class="gallery-card__zoom-hint">
@@ -734,9 +760,9 @@
             הקישו להגדלה
           </div>
         </div>
-        <span class="gallery-card__category-tag">בצקים</span>
+        <span class="gallery-card__category-tag">עוגות מעוצבות</span>
       </div>
-      <div class="gallery-card" data-index="19" data-category="קינוחים" role="button" tabindex="0" aria-label="עוגה מספר 19">
+      <div class="gallery-card" data-index="19" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגה מספר 19">
         <div class="gallery-card__image-wrapper">
           <img src="./images/image19.jpeg" alt="עוגה מעוצבת מספר 19" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+19'" onload="this.parentElement.parentElement.classList.add('loaded')">
           <div class="gallery-card__zoom-hint">
@@ -744,9 +770,9 @@
             הקישו להגדלה
           </div>
         </div>
-        <span class="gallery-card__category-tag">קינוחים</span>
+        <span class="gallery-card__category-tag">עוגות מעוצבות</span>
       </div>
-      <div class="gallery-card" data-index="20" data-category="מארזים" role="button" tabindex="0" aria-label="עוגה מספר 20">
+      <div class="gallery-card" data-index="20" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגה מספר 20">
         <div class="gallery-card__image-wrapper">
           <img src="./images/image20.jpeg" alt="עוגה מעוצבת מספר 20" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+20'" onload="this.parentElement.parentElement.classList.add('loaded')">
           <div class="gallery-card__zoom-hint">
@@ -754,9 +780,9 @@
             הקישו להגדלה
           </div>
         </div>
-        <span class="gallery-card__category-tag">מארזים</span>
+        <span class="gallery-card__category-tag">עוגות מעוצבות</span>
       </div>
-      <div class="gallery-card" data-index="21" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגה מספר 21">
+      <div class="gallery-card" data-index="21" data-category="קינוחים מארזים" role="button" tabindex="0" aria-label="עוגה מספר 21">
         <div class="gallery-card__image-wrapper">
           <img src="./images/image21.jpeg" alt="עוגה מעוצבת מספר 21" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+21'" onload="this.parentElement.parentElement.classList.add('loaded')">
           <div class="gallery-card__zoom-hint">
@@ -764,9 +790,9 @@
             הקישו להגדלה
           </div>
         </div>
-        <span class="gallery-card__category-tag">עוגות מעוצבות</span>
+        <span class="gallery-card__category-tag">קינוחים, מארזים</span>
       </div>
-      <div class="gallery-card" data-index="22" data-category="עוגות בנטו" role="button" tabindex="0" aria-label="עוגה מספר 22">
+      <div class="gallery-card" data-index="22" data-category="עוגיות" role="button" tabindex="0" aria-label="עוגה מספר 22">
         <div class="gallery-card__image-wrapper">
           <img src="./images/image22.jpeg" alt="עוגה מעוצבת מספר 22" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+22'" onload="this.parentElement.parentElement.classList.add('loaded')">
           <div class="gallery-card__zoom-hint">
@@ -774,9 +800,9 @@
             הקישו להגדלה
           </div>
         </div>
-        <span class="gallery-card__category-tag">עוגות בנטו</span>
+        <span class="gallery-card__category-tag">עוגיות</span>
       </div>
-      <div class="gallery-card" data-index="23" data-category="בצקים" role="button" tabindex="0" aria-label="עוגה מספר 23">
+      <div class="gallery-card" data-index="23" data-category="עוגות מעוצבות מארזים" role="button" tabindex="0" aria-label="עוגה מספר 23">
         <div class="gallery-card__image-wrapper">
           <img src="./images/image23.jpeg" alt="עוגה מעוצבת מספר 23" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+23'" onload="this.parentElement.parentElement.classList.add('loaded')">
           <div class="gallery-card__zoom-hint">
@@ -784,9 +810,9 @@
             הקישו להגדלה
           </div>
         </div>
-        <span class="gallery-card__category-tag">בצקים</span>
+        <span class="gallery-card__category-tag">עוגות מעוצבות, מארזים</span>
       </div>
-      <div class="gallery-card" data-index="24" data-category="קינוחים" role="button" tabindex="0" aria-label="עוגה מספר 24">
+      <div class="gallery-card" data-index="24" data-category="עוגיות" role="button" tabindex="0" aria-label="עוגה מספר 24">
         <div class="gallery-card__image-wrapper">
           <img src="./images/image24.jpeg" alt="עוגה מעוצבת מספר 24" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+24'" onload="this.parentElement.parentElement.classList.add('loaded')">
           <div class="gallery-card__zoom-hint">
@@ -794,9 +820,9 @@
             הקישו להגדלה
           </div>
         </div>
-        <span class="gallery-card__category-tag">קינוחים</span>
+        <span class="gallery-card__category-tag">עוגיות</span>
       </div>
-      <div class="gallery-card" data-index="25" data-category="מארזים" role="button" tabindex="0" aria-label="עוגה מספר 25">
+      <div class="gallery-card" data-index="25" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגה מספר 25">
         <div class="gallery-card__image-wrapper">
           <img src="./images/image25.jpeg" alt="עוגה מעוצבת מספר 25" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+25'" onload="this.parentElement.parentElement.classList.add('loaded')">
           <div class="gallery-card__zoom-hint">
@@ -804,9 +830,9 @@
             הקישו להגדלה
           </div>
         </div>
-        <span class="gallery-card__category-tag">מארזים</span>
+        <span class="gallery-card__category-tag">עוגות מעוצבות</span>
       </div>
-      <div class="gallery-card" data-index="26" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגה מספר 26">
+      <div class="gallery-card" data-index="26" data-category="בצקים" role="button" tabindex="0" aria-label="עוגה מספר 26">
         <div class="gallery-card__image-wrapper">
           <img src="./images/image26.jpeg" alt="עוגה מעוצבת מספר 26" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+26'" onload="this.parentElement.parentElement.classList.add('loaded')">
           <div class="gallery-card__zoom-hint">
@@ -814,9 +840,9 @@
             הקישו להגדלה
           </div>
         </div>
-        <span class="gallery-card__category-tag">עוגות מעוצבות</span>
+        <span class="gallery-card__category-tag">בצקים</span>
       </div>
-      <div class="gallery-card" data-index="27" data-category="עוגות בנטו" role="button" tabindex="0" aria-label="עוגה מספר 27">
+      <div class="gallery-card" data-index="27" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגה מספר 27">
         <div class="gallery-card__image-wrapper">
           <img src="./images/image27.jpeg" alt="עוגה מעוצבת מספר 27" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+27'" onload="this.parentElement.parentElement.classList.add('loaded')">
           <div class="gallery-card__zoom-hint">
@@ -824,9 +850,9 @@
             הקישו להגדלה
           </div>
         </div>
-        <span class="gallery-card__category-tag">עוגות בנטו</span>
+        <span class="gallery-card__category-tag">עוגות מעוצבות</span>
       </div>
-      <div class="gallery-card" data-index="28" data-category="בצקים" role="button" tabindex="0" aria-label="עוגה מספר 28">
+      <div class="gallery-card" data-index="28" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגה מספר 28">
         <div class="gallery-card__image-wrapper">
           <img src="./images/image28.jpeg" alt="עוגה מעוצבת מספר 28" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+28'" onload="this.parentElement.parentElement.classList.add('loaded')">
           <div class="gallery-card__zoom-hint">
@@ -834,9 +860,9 @@
             הקישו להגדלה
           </div>
         </div>
-        <span class="gallery-card__category-tag">בצקים</span>
+        <span class="gallery-card__category-tag">עוגות מעוצבות</span>
       </div>
-      <div class="gallery-card" data-index="29" data-category="קינוחים" role="button" tabindex="0" aria-label="עוגה מספר 29">
+      <div class="gallery-card" data-index="29" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגה מספר 29">
         <div class="gallery-card__image-wrapper">
           <img src="./images/image29.jpeg" alt="עוגה מעוצבת מספר 29" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+29'" onload="this.parentElement.parentElement.classList.add('loaded')">
           <div class="gallery-card__zoom-hint">
@@ -844,9 +870,9 @@
             הקישו להגדלה
           </div>
         </div>
-        <span class="gallery-card__category-tag">קינוחים</span>
+        <span class="gallery-card__category-tag">עוגות מעוצבות</span>
       </div>
-      <div class="gallery-card" data-index="30" data-category="מארזים" role="button" tabindex="0" aria-label="עוגה מספר 30">
+      <div class="gallery-card" data-index="30" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגה מספר 30">
         <div class="gallery-card__image-wrapper">
           <img src="./images/image30.jpeg" alt="עוגה מעוצבת מספר 30" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+30'" onload="this.parentElement.parentElement.classList.add('loaded')">
           <div class="gallery-card__zoom-hint">
@@ -854,9 +880,9 @@
             הקישו להגדלה
           </div>
         </div>
-        <span class="gallery-card__category-tag">מארזים</span>
+        <span class="gallery-card__category-tag">עוגות מעוצבות</span>
       </div>
-      <div class="gallery-card" data-index="31" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגה מספר 31">
+      <div class="gallery-card" data-index="31" data-category="עוגות בנטו מארזים" role="button" tabindex="0" aria-label="עוגה מספר 31">
         <div class="gallery-card__image-wrapper">
           <img src="./images/image31.jpeg" alt="עוגה מעוצבת מספר 31" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+31'" onload="this.parentElement.parentElement.classList.add('loaded')">
           <div class="gallery-card__zoom-hint">
@@ -864,9 +890,9 @@
             הקישו להגדלה
           </div>
         </div>
-        <span class="gallery-card__category-tag">עוגות מעוצבות</span>
+        <span class="gallery-card__category-tag">עוגות בנטו, מארזים</span>
       </div>
-      <div class="gallery-card" data-index="32" data-category="עוגות בנטו" role="button" tabindex="0" aria-label="עוגה מספר 32">
+      <div class="gallery-card" data-index="32" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגה מספר 32">
         <div class="gallery-card__image-wrapper">
           <img src="./images/image32.jpeg" alt="עוגה מעוצבת מספר 32" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+32'" onload="this.parentElement.parentElement.classList.add('loaded')">
           <div class="gallery-card__zoom-hint">
@@ -874,9 +900,9 @@
             הקישו להגדלה
           </div>
         </div>
-        <span class="gallery-card__category-tag">עוגות בנטו</span>
+        <span class="gallery-card__category-tag">עוגות מעוצבות</span>
       </div>
-      <div class="gallery-card" data-index="33" data-category="בצקים" role="button" tabindex="0" aria-label="עוגה מספר 33">
+      <div class="gallery-card" data-index="33" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגה מספר 33">
         <div class="gallery-card__image-wrapper">
           <img src="./images/image33.jpeg" alt="עוגה מעוצבת מספר 33" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+33'" onload="this.parentElement.parentElement.classList.add('loaded')">
           <div class="gallery-card__zoom-hint">
@@ -884,9 +910,9 @@
             הקישו להגדלה
           </div>
         </div>
-        <span class="gallery-card__category-tag">בצקים</span>
+        <span class="gallery-card__category-tag">עוגות מעוצבות</span>
       </div>
-      <div class="gallery-card" data-index="34" data-category="קינוחים" role="button" tabindex="0" aria-label="עוגה מספר 34">
+      <div class="gallery-card" data-index="34" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגה מספר 34">
         <div class="gallery-card__image-wrapper">
           <img src="./images/image34.jpeg" alt="עוגה מעוצבת מספר 34" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+34'" onload="this.parentElement.parentElement.classList.add('loaded')">
           <div class="gallery-card__zoom-hint">
@@ -894,9 +920,9 @@
             הקישו להגדלה
           </div>
         </div>
-        <span class="gallery-card__category-tag">קינוחים</span>
+        <span class="gallery-card__category-tag">עוגות מעוצבות</span>
       </div>
-      <div class="gallery-card" data-index="35" data-category="מארזים" role="button" tabindex="0" aria-label="עוגה מספר 35">
+      <div class="gallery-card" data-index="35" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגה מספר 35">
         <div class="gallery-card__image-wrapper">
           <img src="./images/image35.jpeg" alt="עוגה מעוצבת מספר 35" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+35'" onload="this.parentElement.parentElement.classList.add('loaded')">
           <div class="gallery-card__zoom-hint">
@@ -904,9 +930,9 @@
             הקישו להגדלה
           </div>
         </div>
-        <span class="gallery-card__category-tag">מארזים</span>
+        <span class="gallery-card__category-tag">עוגות מעוצבות</span>
       </div>
-      <div class="gallery-card" data-index="36" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגה מספר 36">
+      <div class="gallery-card" data-index="36" data-category="מארזים" role="button" tabindex="0" aria-label="עוגה מספר 36">
         <div class="gallery-card__image-wrapper">
           <img src="./images/image36.jpeg" alt="עוגה מעוצבת מספר 36" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+36'" onload="this.parentElement.parentElement.classList.add('loaded')">
           <div class="gallery-card__zoom-hint">
@@ -914,9 +940,9 @@
             הקישו להגדלה
           </div>
         </div>
-        <span class="gallery-card__category-tag">עוגות מעוצבות</span>
+        <span class="gallery-card__category-tag">מארזים</span>
       </div>
-      <div class="gallery-card" data-index="37" data-category="עוגות בנטו" role="button" tabindex="0" aria-label="עוגה מספר 37">
+      <div class="gallery-card" data-index="37" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגה מספר 37">
         <div class="gallery-card__image-wrapper">
           <img src="./images/image37.jpeg" alt="עוגה מעוצבת מספר 37" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+37'" onload="this.parentElement.parentElement.classList.add('loaded')">
           <div class="gallery-card__zoom-hint">
@@ -924,9 +950,9 @@
             הקישו להגדלה
           </div>
         </div>
-        <span class="gallery-card__category-tag">עוגות בנטו</span>
+        <span class="gallery-card__category-tag">עוגות מעוצבות</span>
       </div>
-      <div class="gallery-card" data-index="38" data-category="בצקים" role="button" tabindex="0" aria-label="עוגה מספר 38">
+      <div class="gallery-card" data-index="38" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגה מספר 38">
         <div class="gallery-card__image-wrapper">
           <img src="./images/image38.jpeg" alt="עוגה מעוצבת מספר 38" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+38'" onload="this.parentElement.parentElement.classList.add('loaded')">
           <div class="gallery-card__zoom-hint">
@@ -934,9 +960,9 @@
             הקישו להגדלה
           </div>
         </div>
-        <span class="gallery-card__category-tag">בצקים</span>
+        <span class="gallery-card__category-tag">עוגות מעוצבות</span>
       </div>
-      <div class="gallery-card" data-index="39" data-category="קינוחים" role="button" tabindex="0" aria-label="עוגה מספר 39">
+      <div class="gallery-card" data-index="39" data-category="מארזים" role="button" tabindex="0" aria-label="עוגה מספר 39">
         <div class="gallery-card__image-wrapper">
           <img src="./images/image39.jpeg" alt="עוגה מעוצבת מספר 39" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+39'" onload="this.parentElement.parentElement.classList.add('loaded')">
           <div class="gallery-card__zoom-hint">
@@ -944,9 +970,9 @@
             הקישו להגדלה
           </div>
         </div>
-        <span class="gallery-card__category-tag">קינוחים</span>
+        <span class="gallery-card__category-tag">מארזים</span>
       </div>
-      <div class="gallery-card" data-index="40" data-category="מארזים" role="button" tabindex="0" aria-label="עוגה מספר 40">
+      <div class="gallery-card" data-index="40" data-category="עוגות בנטו מארזים" role="button" tabindex="0" aria-label="עוגה מספר 40">
         <div class="gallery-card__image-wrapper">
           <img src="./images/image40.jpeg" alt="עוגה מעוצבת מספר 40" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+40'" onload="this.parentElement.parentElement.classList.add('loaded')">
           <div class="gallery-card__zoom-hint">
@@ -954,9 +980,9 @@
             הקישו להגדלה
           </div>
         </div>
-        <span class="gallery-card__category-tag">מארזים</span>
+        <span class="gallery-card__category-tag">עוגות בנטו, מארזים</span>
       </div>
-      <div class="gallery-card" data-index="41" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגה מספר 41">
+      <div class="gallery-card" data-index="41" data-category="מארזים" role="button" tabindex="0" aria-label="עוגה מספר 41">
         <div class="gallery-card__image-wrapper">
           <img src="./images/image41.jpeg" alt="עוגה מעוצבת מספר 41" loading="lazy" decoding="async" width="600" height="600" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+41'" onload="this.parentElement.parentElement.classList.add('loaded')">
           <div class="gallery-card__zoom-hint">
@@ -964,7 +990,7 @@
             הקישו להגדלה
           </div>
         </div>
-        <span class="gallery-card__category-tag">עוגות מעוצבות</span>
+        <span class="gallery-card__category-tag">מארזים</span>
       </div>
       <div class="gallery-card" data-index="42" data-category="עוגות בנטו" role="button" tabindex="0" aria-label="עוגה מספר 42">
         <div class="gallery-card__image-wrapper">
@@ -977,6 +1003,7 @@
         <span class="gallery-card__category-tag">עוגות בנטו</span>
       </div>
     </div>
+    <button class="load-more-btn" id="loadMoreBtn" type="button">טען עוד</button>
   </section>
   <div class="section-divider" aria-hidden="true"></div>
 
@@ -1014,7 +1041,6 @@
         <p>✨ חוויות אמיתיות מלקוחות מרוצים ✨</p>
       </div>
       <div class="testimonials-grid" id="testimonialsGrid">
-        <!-- Static testimonials fallback - always visible -->
         <div class="testimonial-card">
           <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
           <p class="testimonial-text">"העוגה הייתה פשוט מדהימה! לא רק שנראתה כמו יצירת אמנות — הטעם היה עוד יותר טוב. כל האורחים לא הפסיקו לדבר עליה."</p>
@@ -1043,10 +1069,6 @@
     </div>
   </section>
 
-
-
-  
-
   <section id="about" class="about-section" aria-label="אודות נעה">
     <div class="about-inner container">
       <div class="about-img">
@@ -1057,7 +1079,6 @@
         <p>🍰 האופה והאמנית שמאחורי כל עוגה. כאן בירושלים, היא הופכת חלומות למתוקים.</p>
         <blockquote>
           "השקט שלי נמצא בין הקמח לסוכר. כל הזמנה היא זכות להכניס אור ושמחה."
-          
         </blockquote>
         <div class="about-features">
           <div class="about-feature">
@@ -1174,36 +1195,65 @@
       }
       setTimeout(function() { setInterval(nextSlide, slideInterval); }, 3000);
 
-      // Category Filter
+      // Category Filter & Pagination
       var categoryFilter = document.getElementById('categoryFilter');
       var categoryCount = document.getElementById('categoryCount');
       var galleryCards = document.querySelectorAll('.gallery-card');
+      var loadMoreBtn = document.getElementById('loadMoreBtn');
+      var ITEMS_PER_PAGE = 12;
+      var currentPage = 1;
+
+      function applyPagination() {
+        var visibleCards = Array.from(galleryCards).filter(function(c) { return !c.classList.contains('hidden'); });
+        var totalVisible = visibleCards.length;
+        var maxToShow = currentPage * ITEMS_PER_PAGE;
+
+        visibleCards.forEach(function(card, index) {
+          if (index < maxToShow) {
+            card.classList.remove('paginated-hidden');
+          } else {
+            card.classList.add('paginated-hidden');
+          }
+        });
+
+        if (loadMoreBtn) {
+          if (totalVisible > maxToShow) {
+            loadMoreBtn.style.display = 'block';
+            loadMoreBtn.textContent = 'טען עוד (' + (totalVisible - maxToShow) + ' נותרו)';
+          } else {
+            loadMoreBtn.style.display = 'none';
+          }
+        }
+
+        var showing = Math.min(maxToShow, totalVisible);
+        var label = categoryFilter.value === 'all' ? 'הכל' : categoryFilter.value;
+        categoryCount.textContent = 'מציג ' + showing + ' מתוך ' + totalVisible + ' פריטים בקטגוריה "' + label + '"';
+      }
 
       function filterGallery(category) {
-        var visible = 0;
+        currentPage = 1;
         galleryCards.forEach(function(card) {
-          var cardCategory = card.dataset.category;
-          if (category === 'all' || cardCategory === category) {
+          var cardCategories = card.dataset.category || '';
+          var categoryList = cardCategories.split(' ');
+          if (category === 'all' || categoryList.indexOf(category) !== -1) {
             card.classList.remove('hidden');
-            visible++;
           } else {
             card.classList.add('hidden');
           }
         });
-        var label = category === 'all' ? 'הכל' : category;
-        categoryCount.textContent = 'מציג ' + visible + ' פריטים בקטגוריה "' + label + '"';
+        applyPagination();
+        var url = new URL(window.location);
+        if (category === 'all') {
+          url.searchParams.delete('category');
+        } else {
+          url.searchParams.set('category', category);
+        }
+        window.history.pushState({}, '', url);
       }
 
       if (categoryFilter) {
         categoryFilter.addEventListener('change', function(e) {
           filterGallery(e.target.value);
-          var url = new URL(window.location);
-          if (e.target.value === 'all') {
-            url.searchParams.delete('category');
-          } else {
-            url.searchParams.set('category', e.target.value);
-          }
-          window.history.pushState({}, '', url);
         });
 
         var urlParams = new URLSearchParams(window.location.search);
@@ -1211,7 +1261,16 @@
         if (urlCategory) {
           categoryFilter.value = urlCategory;
           filterGallery(urlCategory);
+        } else {
+          applyPagination();
         }
+      }
+
+      if (loadMoreBtn) {
+        loadMoreBtn.addEventListener('click', function() {
+          currentPage++;
+          applyPagination();
+        });
       }
 
       // Gallery & Lightbox
@@ -1228,13 +1287,13 @@
       var resetBtn = document.getElementById('lightboxReset');
 
       var currentImageIndex = 0;
-      var visibleCards = Array.from(galleryCards).filter(function(c) { return !c.classList.contains('hidden'); });
+      var visibleCards = Array.from(galleryCards).filter(function(c) { return !c.classList.contains('hidden') && !c.classList.contains('paginated-hidden'); });
       var scale = 1, panX = 0, panY = 0;
       var isDragging = false, startX = 0, startY = 0, lastPanX = 0, lastPanY = 0;
       var initialPinchDistance = 0, initialScale = 1, isPinching = false;
 
       function updateVisibleCards() {
-        visibleCards = Array.from(galleryCards).filter(function(c) { return !c.classList.contains('hidden'); });
+        visibleCards = Array.from(galleryCards).filter(function(c) { return !c.classList.contains('hidden') && !c.classList.contains('paginated-hidden'); });
       }
 
       function updateTransform() {
@@ -1457,14 +1516,14 @@
 
           if (!cakeType || !date) { alert('אנא מלאו סוג עוגה ותאריך אספקה'); return; }
 
-          var msg = '🍰 *הזמנה חדשה לנעה* 🍰';
-          msg += '*סוג עוגה:* ' + cakeType + '';
-          if (design) msg += '*עיצוב:* ' + design + '';
-          msg += '*תאריך:* ' + date + '';
-          if (inscription) msg += '*כיתוב:* ' + inscription + '';
-          if (allergies) msg += '*הערות:* ' + allergies + '';
-          msg += '*איסוף/משלוח:* ' + (delivery === 'pickup' ? 'איסוף עצמי (חינם)' : 'משלוח בתשלום – ירושלים') + '';
-          msg += '*ירושלים בלבד* 🙏';
+          var msg = '*הזמנה חדשה לנעה*' + '\n';
+          msg += '*סוג עוגה:* ' + cakeType + '\n';
+          if (design) msg += '*עיצוב:* ' + design + '\n';
+          msg += '*תאריך:* ' + date + '\n';
+          if (inscription) msg += '*כיתוב:* ' + inscription + '\n';
+          if (allergies) msg += '*הערות:* ' + allergies + '\n';
+          msg += '*איסוף/משלוח:* ' + (delivery === 'pickup' ? 'איסוף עצמי (חינם)' : 'משלוח בתשלום – ירושלים') + '\n';
+          msg += '*ירושלים בלבד*';
 
           window.open('https://wa.me/972542345906?text=' + encodeURIComponent(msg), '_blank');
           closeModal();
@@ -1501,7 +1560,7 @@
 
       // WhatsApp
       document.getElementById('whatsappFloatBtn').addEventListener('click', function() {
-        window.open('https://wa.me/972542345906?text=' + encodeURIComponent('היי נעה, אשמח לשמוע ממך! 🍰'), '_blank');
+        window.open('https://wa.me/972542345906?text=' + encodeURIComponent('היי נעה, אשמח לשמוע ממך!'), '_blank');
       });
 
       // WhatsApp attention animation after 5 seconds
@@ -1532,7 +1591,7 @@
 
       function showCopiedMessage(btn) {
         btn.classList.add('copied');
-        btn.innerHTML = '✅ הכתובת הועתקה!';
+        btn.innerHTML = 'הכתובת הועתקה!';
         setTimeout(function() {
           btn.classList.remove('copied');
           btn.innerHTML = shareBtnOriginalHTML;
@@ -1581,7 +1640,7 @@
         });
       }
 
-            // Testimonials data - 30 reviews
+      // Testimonials data - 30 reviews
       var testimonialsData = [
         {"text": "העוגה הייתה פשוט מדהימה! לא רק שנראתה כמו יצירת אמנות — הטעם היה עוד יותר טוב. כל האורחים לא הפסיקו לדבר עליה.", "name": "— שירה ל.", "badge": "עוגת יום הולדת"},
         {"text": "הזמנתי מארז מתוקים לאירוע משפחתי והיה פשוט מושלם. הכל טרי, מעוצב בקפידה, והטעמים — בלתי נשכחים.", "name": "— רונית מ.", "badge": "מארז מתוקים"},
@@ -1619,11 +1678,10 @@
       function renderTestimonials() {
         var grid = document.getElementById('testimonialsGrid');
         if (!grid) return;
-        
-        // Shuffle and pick 3
+
         var shuffled = testimonialsData.slice().sort(function() { return 0.5 - Math.random(); });
         var selected = shuffled.slice(0, 3);
-        
+
         grid.innerHTML = selected.map(function(t) {
           return '<div class="testimonial-card">' +
             '<div class="testimonial-stars">⭐⭐⭐⭐⭐</div>' +
@@ -1635,19 +1693,16 @@
           '</div>';
         }).join('');
       }
-      
-      // Initial render
+
       renderTestimonials();
-      
-      // Rotate every 2 minutes (120 seconds)
       setInterval(renderTestimonials, 120000);
-      console.log('✅ נעה website initialized successfully');
+      console.log('נעה website initialized successfully');
     })();
   </script>
 
   <noscript>
     <div style="position: fixed; top: 0; left: 0; right: 0; background: var(--color-primary-dark); color: white; padding: 12px; text-align: center; z-index: 9999; font-size: 14px;">
-      ⚠️ האתר דורש JavaScript כדי לפעול במלואו. אנא הפעל JavaScript בדפדפן שלך.
+      האתר דורש JavaScript כדי לפעול במלואו. אנא הפעל JavaScript בדפדפן שלך.
     </div>
   </noscript>
 </body>
