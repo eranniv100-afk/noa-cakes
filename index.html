@@ -117,6 +117,8 @@
       .nav-links a::after { content: ''; position: absolute; inset-block-end: 0; inset-inline: 0; height: 2px; background: var(--color-primary); transform: scaleX(0); transform-origin: right; transition: transform var(--transition-base); }
       .nav-links a:hover { color: var(--color-primary-light); }
       .nav-links a:hover::after { transform: scaleX(1); }
+      .nav-links a.active { color: var(--color-primary); }
+      .nav-links a.active::after { transform: scaleX(1); }
       .order-nav-btn { background: var(--color-primary); color: white; padding: 10px 28px; border-radius: var(--radius-full); font-weight: 600; font-size: var(--text-sm); transition: all var(--transition-base); box-shadow: 0 4px 14px rgba(157, 23, 77, 0.25); touch-action: manipulation; white-space: nowrap; }
       .order-nav-btn:hover { background: var(--color-primary-dark); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(157, 23, 77, 0.35); }
       .order-nav-btn:active { transform: translateY(0); }
@@ -174,7 +176,7 @@
         overflow: hidden;
         isolation: isolate;
       }
-      .hero__slideshow { position: absolute; inset: 0; z-index: 0; overflow: hidden; }
+      .hero__slideshow { position: absolute; inset: 0; z-index: 0; overflow: hidden; will-change: transform; }
       .hero__slide { position: absolute; inset: 0; opacity: 0; transition: opacity 1.5s ease-in-out, transform 8s ease-out; transform: scale(1.1); }
       .hero__slide.active { opacity: 1; transform: scale(1); }
       .hero__slide img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.45) saturate(0.85); will-change: transform; }
@@ -189,17 +191,22 @@
         transition: all var(--transition-base); display: inline-flex; align-items: center; gap: 8px;
         touch-action: manipulation; position: relative; overflow: hidden;
       }
-      .btn-primary { background: var(--color-primary); color: white; border: 2px solid var(--color-primary); box-shadow: 0 4px 16px rgba(157, 23, 77, 0.3); }
-      .btn-primary:hover { background: var(--color-primary-dark); border-color: var(--color-primary-dark); transform: translateY(-3px); box-shadow: 0 8px 24px rgba(157, 23, 77, 0.4); }
+      .btn-primary { background: var(--color-primary); color: white; border: 2px solid var(--color-primary); box-shadow: 0 4px 16px rgba(157, 23, 77, 0.3); animation: gentlePulse 8s ease-in-out infinite; }
+      .btn-primary:hover { background: var(--color-primary-dark); border-color: var(--color-primary-dark); transform: translateY(-3px); box-shadow: 0 8px 24px rgba(157, 23, 77, 0.4); animation: none; }
       .btn-primary:active { transform: translateY(-1px); }
       .btn-outline { background: rgba(255, 255, 255, 0.15); border: 2px solid rgba(255,255,255,0.6); color: white; backdrop-filter: blur(8px); }
       .btn-outline:hover { background: rgba(255, 255, 255, 0.3); border-color: white; transform: translateY(-3px); }
+
+      .hero-signature { position: relative; z-index: 3; margin-block-start: var(--space-lg); display: flex; flex-direction: column; align-items: center; gap: 6px; }
+      .hero-signature__icon { width: 56px; height: 56px; filter: drop-shadow(0 4px 10px rgba(0,0,0,0.35)); }
+      .hero-signature__note { font-family: var(--font-display); font-style: italic; font-size: var(--text-sm); color: rgba(255,255,255,0.85); }
 
       .section-divider {
         height: 80px;
         background: linear-gradient(to bottom, var(--color-bg-warm) 0%, var(--color-bg) 50%, var(--color-bg-cream) 100%);
         position: relative;
         overflow: hidden;
+        display: flex; align-items: center; justify-content: center;
       }
       .section-divider::before {
         content: '';
@@ -211,9 +218,10 @@
         background: var(--color-border-light);
         border-radius: 1px;
       }
+      .section-divider__mark { position: relative; z-index: 1; width: 34px; height: 34px; opacity: 0.85; }
 
       /* Categories System */
-      .categories-section { padding-block: var(--space-2xl); background: var(--color-bg); }
+      .categories-section { padding-block: var(--space-2xl); background: var(--color-bg); position: relative; }
       .categories-grid {
         display: grid;
         grid-template-columns: repeat(6, 1fr);
@@ -233,11 +241,12 @@
       .category-card__slide.active { opacity: 1; }
       .category-card__slide img { width: 100%; height: 100%; object-fit: cover; }
       .category-card__overlay {
-        position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.2) 50%, transparent 100%);
+        position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.25) 55%, transparent 100%);
         z-index: 2; display: flex; flex-direction: column; justify-content: flex-end; padding: var(--space-md);
       }
       .category-card__name { color: white; font-weight: 700; font-size: var(--text-base); text-shadow: 0 2px 8px rgba(0,0,0,0.5); }
-      .category-card__count { color: rgba(255,255,255,0.8); font-size: var(--text-xs); margin-top: 2px; }
+      .category-card__tagline { color: rgba(255,255,255,0.88); font-size: var(--text-xs); margin-top: 2px; font-style: italic; font-family: var(--font-display); }
+      .category-card__count { color: rgba(255,255,255,0.7); font-size: var(--text-xs); margin-top: 2px; }
       .category-card__icon { position: absolute; top: 12px; right: 12px; z-index: 3; background: rgba(157,23,77,0.85); color: white; padding: 4px 10px; border-radius: var(--radius-full); font-size: var(--text-xs); font-weight: 600; backdrop-filter: blur(4px); }
 
       .back-to-categories {
@@ -281,8 +290,11 @@
       @media (hover: hover) { .gallery-card:hover { transform: translateY(-8px); box-shadow: var(--shadow-xl); } }
       .gallery-card:active { transform: scale(0.98); }
       .gallery-card__image-wrapper { position: relative; aspect-ratio: 1 / 1; overflow: hidden; background: linear-gradient(135deg, #f8e8e0 0%, #f0d8e0 100%); }
-      .gallery-card img { width: 100%; height: 100%; object-fit: cover; transition: transform var(--transition-slow); content-visibility: auto; contain: paint; }
+      .gallery-card img { width: 100%; height: 100%; object-fit: cover; content-visibility: auto; contain: paint; filter: blur(10px); opacity: 0; transform: scale(1.04); transition: transform var(--transition-slow), filter 0.5s ease, opacity 0.5s ease; }
+      .gallery-card.loaded img { filter: blur(0); opacity: 1; transform: scale(1); }
       @media (hover: hover) { .gallery-card:hover img { transform: scale(1.05); } }
+      .gallery-grid { transition: opacity 200ms ease; }
+      .gallery-grid.gallery-fading { opacity: 0; }
       .gallery-card__zoom-hint {
         position: absolute; bottom: 12px; left: 12px;
         background: rgba(0,0,0,0.5); color: white; padding: 6px 12px;
@@ -335,8 +347,8 @@
       }
       .load-more-btn:active { transform: translateY(0); }
 
-      .about-section { background: var(--color-bg-cream); padding-block: var(--space-2xl); }
-      .about-inner { max-width: 1100px; margin-inline: auto; display: flex; flex-wrap: wrap; gap: var(--space-xl); align-items: center; justify-content: center; }
+      .about-section { background: var(--color-bg-cream); padding-block: var(--space-2xl); position: relative; }
+      .about-inner { max-width: 1100px; margin-inline: auto; display: flex; flex-wrap: wrap; gap: var(--space-xl); align-items: center; justify-content: center; position: relative; z-index: 1; }
       .about-text { flex: 2; min-width: min(100%, 400px); }
       .about-text h2 { font-family: var(--font-display); font-size: var(--text-2xl); margin-block-end: var(--space-md); font-weight: 400; }
       .about-text p { margin-block-end: var(--space-md); color: var(--color-text); }
@@ -354,17 +366,6 @@
       .why-card__icon { font-size: 3rem; margin-bottom: var(--space-sm); }
       .why-card h3 { font-family: var(--font-display); font-size: var(--text-xl); color: var(--color-primary); margin-bottom: var(--space-sm); }
       .why-card p { color: var(--color-text-muted); font-size: var(--text-base); line-height: 1.6; }
-
-      .testimonials-section { padding-block: var(--space-2xl); background: var(--color-bg); }
-      .testimonials-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--space-lg); margin-top: var(--space-xl); }
-      .testimonial-card { background: white; border-radius: var(--radius-lg); padding: var(--space-xl); box-shadow: var(--shadow-md); transition: all var(--transition-base); position: relative; }
-      .testimonial-card::before { content: '"'; position: absolute; top: 16px; right: 20px; font-family: var(--font-display); font-size: 4rem; color: var(--color-bg-pink); line-height: 1; opacity: 0.6; }
-      @media (hover: hover) { .testimonial-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); } }
-      .testimonial-stars { font-size: 1.1rem; margin-bottom: var(--space-sm); letter-spacing: 2px; }
-      .testimonial-text { color: var(--color-text); font-size: var(--text-base); line-height: 1.7; margin-bottom: var(--space-md); font-style: italic; position: relative; z-index: 1; }
-      .testimonial-author { display: flex; align-items: center; gap: var(--space-sm); flex-wrap: wrap; }
-      .testimonial-name { font-weight: 600; color: var(--color-primary); }
-      .testimonial-badge { background: var(--color-bg-pink); color: var(--color-primary); padding: 4px 12px; border-radius: var(--radius-full); font-size: var(--text-xs); font-weight: 500; }
 
       footer { text-align: center; padding-block: var(--space-xl); background: white; border-top: 1px solid var(--color-bg-pink); color: var(--color-text-light); }
       footer p { margin-block-end: var(--space-sm); }
@@ -385,6 +386,10 @@
       .whatsapp-float:hover { transform: scale(1.1); box-shadow: 0 6px 24px rgba(0,0,0,0.3); }
       .whatsapp-float:active { transform: scale(0.95); }
 
+      .back-to-top { position: fixed; bottom: max(90px, env(safe-area-inset-bottom, 90px)); left: max(20px, env(safe-area-inset-left, 20px)); width: 46px; height: 46px; background: white; border: 2px solid var(--color-border-light); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-md); z-index: 1050; color: var(--color-primary); opacity: 0; visibility: hidden; transform: translateY(10px); transition: opacity var(--transition-base), transform var(--transition-base), visibility var(--transition-base); touch-action: manipulation; }
+      .back-to-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
+      .back-to-top:hover { background: var(--color-primary); color: white; border-color: var(--color-primary); }
+
       .order-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); z-index: 1500; align-items: center; justify-content: center; padding: var(--space-md); opacity: 0; transition: opacity var(--transition-base); }
       .order-modal.active { display: flex; opacity: 1; }
       .modal-card { background: white; max-width: 520px; width: 100%; border-radius: var(--radius-lg); padding: var(--space-xl); position: relative; text-align: right; box-shadow: var(--shadow-xl); transform: scale(0.9) translateY(20px); transition: transform var(--transition-base); max-height: 90vh; overflow-y: auto; }
@@ -398,6 +403,9 @@
       .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 12px 16px; border: 2px solid var(--color-border-light); border-radius: var(--radius-md); font-size: var(--text-base); transition: all var(--transition-fast); background: var(--color-bg); }
       .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: var(--color-primary); box-shadow: 0 0 0 4px rgba(157, 23, 77, 0.1); }
       .form-group input::placeholder, .form-group textarea::placeholder { color: #aaa; }
+      .form-group.has-error input, .form-group.has-error select, .form-group.has-error textarea { border-color: #b91c1c; }
+      .form-error { color: #b91c1c; font-size: var(--text-xs); margin-top: 4px; display: none; }
+      .form-group.has-error .form-error { display: block; }
       .submit-btn { background: var(--color-primary); color: white; width: 100%; padding: 14px; border-radius: var(--radius-full); font-weight: 700; font-size: var(--text-base); margin-block-start: var(--space-sm); transition: all var(--transition-base); box-shadow: 0 4px 16px rgba(157, 23, 77, 0.3); touch-action: manipulation; }
       .submit-btn:hover { background: var(--color-primary-dark); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(157, 23, 77, 0.4); }
       .submit-btn:active { transform: translateY(0); }
@@ -430,6 +438,22 @@
       @keyframes spin { to { transform: rotate(360deg); } }
       @keyframes preloaderPulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
       @keyframes skeletonShimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+      @keyframes flicker {
+        0%, 100% { opacity: 1; transform: scaleY(1) translateX(0); }
+        25% { opacity: 0.85; transform: scaleY(1.08) translateX(0.5px); }
+        50% { opacity: 0.95; transform: scaleY(0.95) translateX(-0.5px); }
+        75% { opacity: 0.9; transform: scaleY(1.05) translateX(0.5px); }
+      }
+      @keyframes steamRise {
+        0% { opacity: 0; transform: translateY(0) scaleX(1); }
+        30% { opacity: 0.7; }
+        100% { opacity: 0; transform: translateY(-14px) scaleX(1.4); }
+      }
+      @keyframes iconFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+      @keyframes gentlePulse {
+        0%, 88%, 100% { transform: scale(1); box-shadow: 0 4px 16px rgba(157, 23, 77, 0.3); }
+        94% { transform: scale(1.035); box-shadow: 0 6px 20px rgba(157, 23, 77, 0.4); }
+      }
       @supports (animation-timeline: scroll()) {
         .gallery-card { animation: fadeInUp 0.6s ease-out backwards; animation-timeline: view(); animation-range: entry 10% cover 30%; }
       }
@@ -439,8 +463,13 @@
     }
 
     @layer utilities {
+      .signature-flame { transform-origin: bottom center; animation: flicker 2.4s ease-in-out infinite; }
+      .signature-steam { animation: steamRise 3s ease-in-out infinite; }
+      .signature-steam.delay1 { animation-delay: 1s; }
+      .signature-steam.delay2 { animation-delay: 2s; }
+      .section-divider__mark { animation: iconFloat 3.5s ease-in-out infinite; }
+
       @media (max-width: 768px) {
-        .testimonials-grid { grid-template-columns: 1fr; }
         .why-grid { grid-template-columns: 1fr; }
         .nav-links { display: none; }
         .mobile-menu-btn { display: block; }
@@ -455,15 +484,18 @@
         .section-divider { height: 60px; }
         .jerusalem-badge { bottom: max(80px, env(safe-area-inset-bottom, 80px)); left: 12px; font-size: 0.7rem; padding: 6px 14px; }
         .whatsapp-float { width: 52px; height: 52px; bottom: max(16px, env(safe-area-inset-bottom, 16px)); right: 16px; }
+        .back-to-top { bottom: max(140px, env(safe-area-inset-bottom, 140px)); left: 12px; width: 42px; height: 42px; }
         .modal-card { padding: var(--space-lg); margin: var(--space-sm); max-height: 85vh; }
         .lightbox img { max-width: 95vw; max-height: 80vh; }
         .lightbox__controls { bottom: 16px; padding: 6px 12px; }
         .lightbox__btn { width: 40px; height: 40px; font-size: 1.1rem; }
         .categories-grid { grid-template-columns: repeat(3, 1fr); gap: var(--space-sm); }
         .category-card__name { font-size: var(--text-sm); }
+        .category-card__tagline { display: none; }
         .send-photo-nav-btn { padding: 8px 14px; font-size: 0.8rem; }
         .send-photo-nav-btn .label-text { display: none; }
         .send-photo-nav-btn .icon { font-size: 1.2em; }
+        .hero-signature__icon { width: 46px; height: 46px; }
       }
       @media (max-width: 480px) {
         .gallery-grid { grid-template-columns: 1fr; }
@@ -492,6 +524,7 @@
         html { scroll-behavior: auto; }
         .hero__slide { transition: none; }
         .preloader { display: none !important; }
+        .signature-flame, .signature-steam, .section-divider__mark { animation: none !important; }
       }
       @media print {
         .navbar, .jerusalem-badge, .whatsapp-float, .mobile-menu-btn, .hero-buttons, .hero__slideshow, .preloader { display: none !important; }
@@ -539,7 +572,6 @@
     ]
   }
   </script>
-<base target="_blank">
 </head>
 <body>
   <!-- Preloader -->
@@ -550,6 +582,9 @@
   </div>
 
   <div class="jerusalem-badge" aria-hidden="true">ירושלים בלבד</div>
+  <button class="back-to-top" id="backToTopBtn" type="button" aria-label="חזרה למעלה">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg>
+  </button>
   <div class="whatsapp-float" id="whatsappFloatBtn" role="button" aria-label="פתח צאט וואטסאפ" tabindex="0">
     <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="white" viewBox="0 0 16 16" aria-hidden="true">
       <path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"/>
@@ -567,7 +602,6 @@
         <a href="#categories" aria-label="עבור לקטגוריות">קטגוריות</a>
         <a href="#gallery" aria-label="עבור לקולקציה">קולקציה</a>
         <a href="#why-noa" aria-label="עבור לסקציה למה נעה">למה נעה</a>
-        <a href="#testimonials" aria-label="עבור לביקורות">ביקורות</a>
         <a href="#about" aria-label="עבור לאודות">אודות</a>
         <button class="send-photo-nav-btn" id="navSendPhotoBtn" type="button" aria-label="שלחו תמונה לנעה">
           <span class="icon" aria-hidden="true">📷</span>
@@ -586,7 +620,6 @@
     <a href="#categories">קטגוריות</a>
     <a href="#gallery">קולקציה</a>
     <a href="#why-noa">למה נעה</a>
-    <a href="#testimonials">ביקורות</a>
     <a href="#about">אודות</a>
     <button class="send-photo-nav-btn" id="mobileSendPhotoBtn" type="button" aria-label="שלחו תמונה לנעה">
       <span class="icon" aria-hidden="true">📷</span> שלחו תמונה
@@ -597,10 +630,10 @@
   <section id="home" class="hero" aria-label="ראשי">
     <div class="hero__slideshow" id="heroSlideshow" aria-hidden="true">
       <div class="hero__slide active" data-slide="0"><img src="./images/image1.jpeg" alt="עוגת יום הולדת מעוצבת — נעה ירושלים" loading="eager" width="1200" height="800" decoding="async" fetchpriority="high"></div>
-      <div class="hero__slide" data-slide="1"><img src="./images/image5.jpeg" alt="בצקים טריים ופריכים — נעה ירושלים" loading="eager" width="1200" height="800" decoding="async"></div>
-      <div class="hero__slide" data-slide="2"><img src="./images/image10.jpeg" alt="מארז מתוקים מיוחד — נעה ירושלים" loading="eager" width="1200" height="800" decoding="async"></div>
-      <div class="hero__slide" data-slide="3"><img src="./images/image15.jpeg" alt="קינוחים מעוצבים — נעה ירושלים" loading="eager" width="1200" height="800" decoding="async"></div>
-      <div class="hero__slide" data-slide="4"><img src="./images/image20.jpeg" alt="עוגת אירוע מעוצבת — נעה ירושלים" loading="eager" width="1200" height="800" decoding="async"></div>
+      <div class="hero__slide" data-slide="1"><img src="./images/image5.jpeg" alt="בצקים טריים ופריכים — נעה ירושלים" loading="lazy" width="1200" height="800" decoding="async"></div>
+      <div class="hero__slide" data-slide="2"><img src="./images/image10.jpeg" alt="מארז מתוקים מיוחד — נעה ירושלים" loading="lazy" width="1200" height="800" decoding="async"></div>
+      <div class="hero__slide" data-slide="3"><img src="./images/image15.jpeg" alt="קינוחים מעוצבים — נעה ירושלים" loading="lazy" width="1200" height="800" decoding="async"></div>
+      <div class="hero__slide" data-slide="4"><img src="./images/image20.jpeg" alt="עוגת אירוע מעוצבת — נעה ירושלים" loading="lazy" width="1200" height="800" decoding="async"></div>
     </div>
     <div class="hero__overlay" aria-hidden="true"></div>
     <div class="hero__vignette" aria-hidden="true"></div>
@@ -611,10 +644,28 @@
         <a href="#categories" class="btn-outline" aria-label="עבור לקטגוריות">הקולקציה</a>
         <button class="btn-primary" id="heroOrderBtn" type="button" aria-label="פתח טופס הזמנה אישית">הזמנה אישית</button>
       </div>
+      <div class="hero-signature" aria-hidden="true">
+        <svg class="hero-signature__icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path class="signature-steam" d="M22 20 Q19 16 22 12" stroke="rgba(255,255,255,0.55)" stroke-width="2" stroke-linecap="round"/>
+          <path class="signature-steam delay1" d="M32 18 Q29 13 32 8" stroke="rgba(255,255,255,0.55)" stroke-width="2" stroke-linecap="round"/>
+          <path class="signature-steam delay2" d="M42 20 Q39 16 42 12" stroke="rgba(255,255,255,0.55)" stroke-width="2" stroke-linecap="round"/>
+          <path d="M12 30 C12 26 16 24 20 25 C22 21 27 20 32 22 C37 20 42 21 44 25 C48 24 52 26 52 30 L52 32 L12 32 Z" fill="#fdf2f8"/>
+          <rect x="14" y="32" width="36" height="18" rx="3" fill="#fbcfe8"/>
+          <path d="M14 40 Q20 37 26 40 T38 40 T50 40" stroke="#be185d" stroke-width="1.5" fill="none" opacity="0.5"/>
+          <rect x="14" y="46" width="36" height="6" rx="2" fill="#f9a8d4"/>
+        </svg>
+        <span class="hero-signature__note">יצירת אמנות שאפשר לטעום</span>
+      </div>
     </div>
   </section>
 
-  <div class="section-divider" aria-hidden="true"></div>
+  <div class="section-divider" aria-hidden="true">
+    <svg class="section-divider__mark" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M7 15 C7 12.5 9.5 11 12 11.5 C13 9 16 8 17 9.5 C18 8 21 9 22 11.5 C24.5 11 27 12.5 27 15 L27 16 L7 16 Z" fill="#be185d" opacity="0.55"/>
+      <rect x="8" y="16" width="18" height="9" rx="2" fill="#fbcfe8"/>
+      <path d="M8 24 Q13 22 17 24 T26 24" stroke="#9d174d" stroke-width="1.2" fill="none" opacity="0.6"/>
+    </svg>
+  </div>
 
   <!-- Categories Section -->
   <section id="categories" class="categories-section container" aria-label="קטגוריות מוצרים">
@@ -632,6 +683,7 @@
         </div>
         <div class="category-card__overlay">
           <div class="category-card__name">עוגות מעוצבות</div>
+          <div class="category-card__tagline">כל עוגה מספרת סיפור אחר</div>
           <div class="category-card__count">19 פריטים</div>
         </div>
         <span class="category-card__icon" aria-hidden="true">🎂</span>
@@ -645,6 +697,7 @@
         </div>
         <div class="category-card__overlay">
           <div class="category-card__name">עוגות בנטו</div>
+          <div class="category-card__tagline">מתנה קטנה שמרגישה גדולה</div>
           <div class="category-card__count">4 פריטים</div>
         </div>
         <span class="category-card__icon" aria-hidden="true">🍱</span>
@@ -658,6 +711,7 @@
         </div>
         <div class="category-card__overlay">
           <div class="category-card__name">בצקים</div>
+          <div class="category-card__tagline">טרי מהתנור, כל בוקר</div>
           <div class="category-card__count">7 פריטים</div>
         </div>
         <span class="category-card__icon" aria-hidden="true">🥐</span>
@@ -671,6 +725,7 @@
         </div>
         <div class="category-card__overlay">
           <div class="category-card__name">קינוחים</div>
+          <div class="category-card__tagline">ביס קטן של שמחה</div>
           <div class="category-card__count">5 פריטים</div>
         </div>
         <span class="category-card__icon" aria-hidden="true">🍮</span>
@@ -684,6 +739,7 @@
         </div>
         <div class="category-card__overlay">
           <div class="category-card__name">מארזים</div>
+          <div class="category-card__tagline">בשביל מי שאוהבים אתכם</div>
           <div class="category-card__count">10 פריטים</div>
         </div>
         <span class="category-card__icon" aria-hidden="true">🎁</span>
@@ -697,6 +753,7 @@
         </div>
         <div class="category-card__overlay">
           <div class="category-card__name">עוגיות</div>
+          <div class="category-card__tagline">קטנות, פריכות, בלתי נשכחות</div>
           <div class="category-card__count">4 פריטים</div>
         </div>
         <span class="category-card__icon" aria-hidden="true">🍪</span>
@@ -704,7 +761,13 @@
     </div>
   </section>
 
-  <div class="section-divider" aria-hidden="true"></div>
+  <div class="section-divider" aria-hidden="true">
+    <svg class="section-divider__mark" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M7 15 C7 12.5 9.5 11 12 11.5 C13 9 16 8 17 9.5 C18 8 21 9 22 11.5 C24.5 11 27 12.5 27 15 L27 16 L7 16 Z" fill="#be185d" opacity="0.55"/>
+      <rect x="8" y="16" width="18" height="9" rx="2" fill="#fbcfe8"/>
+      <path d="M8 24 Q13 22 17 24 T26 24" stroke="#9d174d" stroke-width="1.2" fill="none" opacity="0.6"/>
+    </svg>
+  </div>
 
   <!-- Gallery Section -->
   <section id="gallery" class="gallery-section container" aria-label="גלריית עוגות">
@@ -1142,7 +1205,13 @@
     </div>
     <button class="load-more-btn" id="loadMoreBtn" type="button" aria-label="טען עוד פריטים">טען עוד</button>
   </section>
-  <div class="section-divider" aria-hidden="true"></div>
+  <div class="section-divider" aria-hidden="true">
+    <svg class="section-divider__mark" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M7 15 C7 12.5 9.5 11 12 11.5 C13 9 16 8 17 9.5 C18 8 21 9 22 11.5 C24.5 11 27 12.5 27 15 L27 16 L7 16 Z" fill="#be185d" opacity="0.55"/>
+      <rect x="8" y="16" width="18" height="9" rx="2" fill="#fbcfe8"/>
+      <path d="M8 24 Q13 22 17 24 T26 24" stroke="#9d174d" stroke-width="1.2" fill="none" opacity="0.6"/>
+    </svg>
+  </div>
 
   <section id="why-noa" class="why-section" aria-label="למה נעה">
     <div class="container">
@@ -1169,42 +1238,13 @@
       </div>
     </div>
   </section>
-  <div class="section-divider" aria-hidden="true"></div>
-
-  <section id="testimonials" class="testimonials-section" aria-label="ביקורות לקוחות">
-    <div class="container">
-      <div class="section-header">
-        <h2>מה הלקוחות אומרים</h2>
-        <p>חוויות אמיתיות מלקוחות מרוצים</p>
-      </div>
-      <div class="testimonials-grid" id="testimonialsGrid">
-        <div class="testimonial-card">
-          <div class="testimonial-stars" aria-label="5 כוכבים">⭐⭐⭐⭐⭐</div>
-          <p class="testimonial-text">"העוגה הייתה פשוט מדהימה! לא רק שנראתה כמו יצירת אמנות — הטעם היה עוד יותר טוב. כל האורחים לא הפסיקו לדבר עליה."</p>
-          <div class="testimonial-author">
-            <span class="testimonial-name">— שירה ל.</span>
-            <span class="testimonial-badge">עוגת יום הולדת</span>
-          </div>
-        </div>
-        <div class="testimonial-card">
-          <div class="testimonial-stars" aria-label="5 כוכבים">⭐⭐⭐⭐⭐</div>
-          <p class="testimonial-text">"הזמנתי מארז מתוקים לאירוע משפחתי והיה פשוט מושלם. הכל טרי, מעוצב בקפידה, והטעמים — בלתי נשכחים."</p>
-          <div class="testimonial-author">
-            <span class="testimonial-name">— רונית מ.</span>
-            <span class="testimonial-badge">מארז מתוקים</span>
-          </div>
-        </div>
-        <div class="testimonial-card">
-          <div class="testimonial-stars" aria-label="5 כוכבים">⭐⭐⭐⭐⭐</div>
-          <p class="testimonial-text">"נעה הכינה לנו עוגת חתונה חלומית. כל פרט תוכנן איתה, והתוצאה עלתה על כל ציפייה. גם טעם וגם יופי — בלתי רגיל!"</p>
-          <div class="testimonial-author">
-            <span class="testimonial-name">— דנה ויובל</span>
-            <span class="testimonial-badge">עוגת חתונה</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+  <div class="section-divider" aria-hidden="true">
+    <svg class="section-divider__mark" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M7 15 C7 12.5 9.5 11 12 11.5 C13 9 16 8 17 9.5 C18 8 21 9 22 11.5 C24.5 11 27 12.5 27 15 L27 16 L7 16 Z" fill="#be185d" opacity="0.55"/>
+      <rect x="8" y="16" width="18" height="9" rx="2" fill="#fbcfe8"/>
+      <path d="M8 24 Q13 22 17 24 T26 24" stroke="#9d174d" stroke-width="1.2" fill="none" opacity="0.6"/>
+    </svg>
+  </div>
 
   <section id="about" class="about-section" aria-label="אודות נעה">
     <div class="about-inner container">
@@ -1260,17 +1300,19 @@
       <h3>הזמנה אישית</h3>
       <p class="modal-badge">נעה עובדת בירושלים בלבד</p>
       <form id="orderForm" novalidate>
-        <div class="form-group">
+        <div class="form-group" id="cakeTypeGroup">
           <label for="cakeType">סוג העוגה *</label>
           <input type="text" id="cakeType" name="cakeType" placeholder="למשל: עוגת יום הולדת, חתונה..." required aria-required="true">
+          <span class="form-error">אנא מלאו את סוג העוגה</span>
         </div>
         <div class="form-group">
           <label for="design">עיצוב</label>
           <input type="text" id="design" name="design" placeholder="תארו את העיצוב הרצוי">
         </div>
-        <div class="form-group">
+        <div class="form-group" id="dateGroup">
           <label for="date">תאריך אספקה *</label>
           <input type="date" id="date" name="date" required aria-required="true">
+          <span class="form-error">אנא בחרו תאריך אספקה</span>
         </div>
         <div class="form-group">
           <label for="inscription">כיתוב על העוגה</label>
@@ -1401,7 +1443,10 @@
       categoryCount.textContent = 'מציג ' + showing + ' מתוך ' + totalVisible + ' פריטים בקטגוריה "' + label + '"';
     }
 
-    function filterGallery(category) {
+    var galleryGridEl = document.getElementById('galleryGrid');
+    var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function applyFilter(category) {
       currentPage = 1;
       currentCategory = category;
       galleryCards.forEach(function(card) {
@@ -1430,6 +1475,15 @@
         url.searchParams.set('category', category);
       }
       window.history.pushState({}, '', url);
+    }
+
+    function filterGallery(category) {
+      if (prefersReducedMotion || !galleryGridEl) { applyFilter(category); return; }
+      galleryGridEl.classList.add('gallery-fading');
+      setTimeout(function() {
+        applyFilter(category);
+        requestAnimationFrame(function() { galleryGridEl.classList.remove('gallery-fading'); });
+      }, 200);
     }
 
     // Category card clicks
@@ -1470,7 +1524,7 @@
     var urlParams = new URLSearchParams(window.location.search);
     var urlCategory = urlParams.get('category');
     if (urlCategory) {
-      filterGallery(urlCategory);
+      applyFilter(urlCategory);
     } else {
       applyPagination();
     }
@@ -1509,28 +1563,61 @@
       updateTransform();
     }
 
-    function openLightbox(index) {
-      updateVisibleCards();
-      currentImageIndex = index;
-      var card = visibleCards[index];
-      if (!card) return;
-      var img = card.querySelector('img');
-      if (img && img.src) {
-        lightboxImg.src = img.src;
-        lightboxImg.alt = img.alt || 'תצוגה מוגדלת';
-        lightbox.classList.add('active');
-        document.body.style.overflow = 'hidden';
-        resetZoom();
-        updateCounter();
-        closeLightboxBtn.focus();
+    var VT_NAME = 'cake-photo-transition';
+    function supportsViewTransition() {
+      return !prefersReducedMotion && typeof document.startViewTransition === 'function';
+    }
+
+    function openLightbox(index, sourceImg) {
+      function doOpen() {
+        updateVisibleCards();
+        currentImageIndex = index;
+        var card = visibleCards[index];
+        if (!card) return;
+        var img = card.querySelector('img');
+        if (img && img.src) {
+          lightboxImg.src = img.src;
+          lightboxImg.alt = img.alt || 'תצוגה מוגדלת';
+          lightbox.classList.add('active');
+          document.body.style.overflow = 'hidden';
+          resetZoom();
+          updateCounter();
+          closeLightboxBtn.focus();
+        }
+      }
+      if (supportsViewTransition() && sourceImg) {
+        sourceImg.style.viewTransitionName = VT_NAME;
+        var transition = document.startViewTransition(function() {
+          doOpen();
+          sourceImg.style.viewTransitionName = '';
+          lightboxImg.style.viewTransitionName = VT_NAME;
+        });
+        transition.finished.then(function() { lightboxImg.style.viewTransitionName = ''; }).catch(function() {});
+      } else {
+        doOpen();
       }
     }
 
     function closeLightbox() {
-      lightbox.classList.remove('active');
-      document.body.style.overflow = '';
-      resetZoom();
-      setTimeout(function() { lightboxImg.src = ''; }, 300);
+      function doClose() {
+        lightbox.classList.remove('active');
+        document.body.style.overflow = '';
+        resetZoom();
+        setTimeout(function() { lightboxImg.src = ''; }, 300);
+      }
+      var card = visibleCards[currentImageIndex];
+      var sourceImg = card ? card.querySelector('img') : null;
+      if (supportsViewTransition() && sourceImg) {
+        lightboxImg.style.viewTransitionName = VT_NAME;
+        var transition = document.startViewTransition(function() {
+          doClose();
+          lightboxImg.style.viewTransitionName = '';
+          sourceImg.style.viewTransitionName = VT_NAME;
+        });
+        transition.finished.then(function() { sourceImg.style.viewTransitionName = ''; }).catch(function() {});
+      } else {
+        doClose();
+      }
     }
 
     function updateCounter() {
@@ -1558,14 +1645,14 @@
       card.addEventListener('click', function() {
         updateVisibleCards();
         var visibleIndex = visibleCards.indexOf(card);
-        if (visibleIndex !== -1) openLightbox(visibleIndex);
+        if (visibleIndex !== -1) openLightbox(visibleIndex, card.querySelector('img'));
       });
       card.addEventListener('keydown', function(e) {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
           updateVisibleCards();
           var visibleIndex = visibleCards.indexOf(card);
-          if (visibleIndex !== -1) openLightbox(visibleIndex);
+          if (visibleIndex !== -1) openLightbox(visibleIndex, card.querySelector('img'));
         }
       });
     });
@@ -1702,25 +1789,65 @@
     var closeModalBtn = document.getElementById('closeModalBtn');
     var orderForm = document.getElementById('orderForm');
 
-    function openModal() { modal.classList.add('active'); document.body.style.overflow = 'hidden'; closeModalBtn.focus(); }
+    function getFocusable(container) {
+      return Array.prototype.slice.call(
+        container.querySelectorAll('a[href], button:not([disabled]), input, select, textarea, [tabindex]:not([tabindex="-1"])')
+      ).filter(function(el) { return el.offsetParent !== null; });
+    }
+
+    function trapFocus(container, e) {
+      if (e.key !== 'Tab') return;
+      var focusable = getFocusable(container);
+      if (!focusable.length) return;
+      var first = focusable[0];
+      var last = focusable[focusable.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    }
+
+    function openModal() {
+      modal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+      closeModalBtn.focus();
+    }
     function closeModal() { modal.classList.remove('active'); document.body.style.overflow = ''; }
 
     openModalBtns.forEach(function(btn) { btn.addEventListener('click', openModal); });
     if (closeModalBtn) closeModalBtn.addEventListener('click', closeModal);
     modal.addEventListener('click', function(e) { if (e.target === modal) closeModal(); });
-    document.addEventListener('keydown', function(e) { if (e.key === 'Escape' && modal.classList.contains('active')) closeModal(); });
+    document.addEventListener('keydown', function(e) {
+      if (!modal.classList.contains('active')) return;
+      if (e.key === 'Escape') closeModal();
+      else trapFocus(modal, e);
+    });
 
     if (orderForm) {
+      var cakeTypeGroup = document.getElementById('cakeTypeGroup');
+      var dateGroup = document.getElementById('dateGroup');
+
       orderForm.addEventListener('submit', function(e) {
         e.preventDefault();
-        var cakeType = document.getElementById('cakeType').value.trim();
+        var cakeTypeInput = document.getElementById('cakeType');
+        var dateInput2 = document.getElementById('date');
+        var cakeType = cakeTypeInput.value.trim();
         var design = document.getElementById('design').value.trim();
-        var date = document.getElementById('date').value;
+        var date = dateInput2.value;
         var inscription = document.getElementById('inscription').value.trim();
         var allergies = document.getElementById('allergies').value.trim();
         var delivery = document.getElementById('delivery').value;
 
-        if (!cakeType || !date) { alert('אנא מלאו סוג עוגה ותאריך אספקה'); return; }
+        cakeTypeGroup.classList.toggle('has-error', !cakeType);
+        dateGroup.classList.toggle('has-error', !date);
+
+        if (!cakeType || !date) {
+          (!cakeType ? cakeTypeInput : dateInput2).focus();
+          return;
+        }
 
         var msg = '*הזמנה חדשה לנעה*' + '\n' +
           '*סוג עוגה:* ' + cakeType + '\n' +
@@ -1731,9 +1858,18 @@
           '*איסוף/משלוח:* ' + (delivery === 'pickup' ? 'איסוף עצמי (חינם)' : 'משלוח בתשלום – ירושלים') + '\n' +
           '*ירושלים בלבד*';
 
-        window.open('https://wa.me/972542345906?text=' + encodeURIComponent(msg), '_blank');
+        window.open('https://wa.me/972542345906?text=' + encodeURIComponent(msg), '_blank', 'noopener,noreferrer');
         closeModal();
         orderForm.reset();
+        cakeTypeGroup.classList.remove('has-error');
+        dateGroup.classList.remove('has-error');
+      });
+
+      [cakeTypeGroup, dateGroup].forEach(function(group) {
+        var field = group.querySelector('input');
+        field.addEventListener('input', function() {
+          if (field.value.trim()) group.classList.remove('has-error');
+        });
       });
     }
 
@@ -1749,7 +1885,7 @@
         var msg = 'היי נעה, אשמח לשלוח לך תמונה להשראה!\n' +
           'אני מעוניין/ת בעוגה מעוצבת.\n' +
           'אשלח תמונה בצאט.';
-        window.open('https://wa.me/972542345906?text=' + encodeURIComponent(msg), '_blank');
+        window.open('https://wa.me/972542345906?text=' + encodeURIComponent(msg), '_blank', 'noopener,noreferrer');
       });
     });
 
@@ -1772,7 +1908,11 @@
     if (closeDrawerBtn) closeDrawerBtn.addEventListener('click', closeDrawer);
     if (drawerOverlay) drawerOverlay.addEventListener('click', closeDrawer);
     drawer.querySelectorAll('a, button').forEach(function(el) { el.addEventListener('click', closeDrawer); });
-    document.addEventListener('keydown', function(e) { if (e.key === 'Escape' && drawer.classList.contains('open')) closeDrawer(); });
+    document.addEventListener('keydown', function(e) {
+      if (!drawer.classList.contains('open')) return;
+      if (e.key === 'Escape') closeDrawer();
+      else trapFocus(drawer, e);
+    });
 
     // ===== NAVBAR SCROLL =====
     var navbar = document.getElementById('navbar');
@@ -1780,9 +1920,57 @@
       navbar.classList.toggle('navbar--scrolled', window.scrollY > 60);
     }, { passive: true });
 
+    // ===== SCROLL SPY (active nav link) =====
+    if ('IntersectionObserver' in window) {
+      var navLinkMap = {};
+      document.querySelectorAll('.nav-links a[href^="#"]').forEach(function(a) {
+        navLinkMap[a.getAttribute('href').slice(1)] = a;
+      });
+      var spyObserver = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            Object.keys(navLinkMap).forEach(function(id) { navLinkMap[id].classList.remove('active'); });
+            var link = navLinkMap[entry.target.id];
+            if (link) link.classList.add('active');
+          }
+        });
+      }, { rootMargin: '-40% 0px -55% 0px', threshold: 0 });
+      document.querySelectorAll('section[id]').forEach(function(s) { spyObserver.observe(s); });
+    }
+
+    // ===== BACK TO TOP + HERO PARALLAX (rAF-throttled single scroll listener) =====
+    var backToTopBtn = document.getElementById('backToTopBtn');
+    var heroEl = document.getElementById('home');
+    var heroSlideshowEl = document.getElementById('heroSlideshow');
+    var scrollTicking = false;
+
+    function onScrollFrame() {
+      var y = window.scrollY;
+      if (backToTopBtn) backToTopBtn.classList.toggle('visible', y > 500);
+      if (heroSlideshowEl && !prefersReducedMotion) {
+        var heroHeight = heroEl.offsetHeight;
+        if (y < heroHeight) {
+          heroSlideshowEl.style.transform = 'translateY(' + (y * 0.25) + 'px)';
+        }
+      }
+      scrollTicking = false;
+    }
+    window.addEventListener('scroll', function() {
+      if (!scrollTicking) {
+        requestAnimationFrame(onScrollFrame);
+        scrollTicking = true;
+      }
+    }, { passive: true });
+
+    if (backToTopBtn) {
+      backToTopBtn.addEventListener('click', function() {
+        window.scrollTo({ top: 0, behavior: prefersReducedMotion ? 'auto' : 'smooth' });
+      });
+    }
+
     // ===== WHATSAPP FLOAT =====
     document.getElementById('whatsappFloatBtn').addEventListener('click', function() {
-      window.open('https://wa.me/972542345906?text=' + encodeURIComponent('היי נעה, אשמח לשמוע ממך!'), '_blank');
+      window.open('https://wa.me/972542345906?text=' + encodeURIComponent('היי נעה, אשמח לשמוע ממך!'), '_blank', 'noopener,noreferrer');
     });
 
     // WhatsApp attention animation after 5 seconds
@@ -1851,60 +2039,6 @@
       }
       document.body.removeChild(textArea);
     }
-
-    // ===== TESTIMONIALS =====
-    var testimonialsData = [
-      {"text": "העוגה הייתה פשוט מדהימה! לא רק שנראתה כמו יצירת אמנות — הטעם היה עוד יותר טוב. כל האורחים לא הפסיקו לדבר עליה.", "name": "— שירה ל.", "badge": "עוגת יום הולדת"},
-      {"text": "הזמנתי מארז מתוקים לאירוע משפחתי והיה פשוט מושלם. הכל טרי, מעוצב בקפידה, והטעמים — בלתי נשכחים.", "name": "— רונית מ.", "badge": "מארז מתוקים"},
-      {"text": "נעה הכינה לנו עוגת חתונה חלומית. כל פרט תוכנן איתה, והתוצאה עלתה על כל ציפייה. גם טעם וגם יופי — בלתי רגיל!", "name": "— דנה ויובל", "badge": "עוגת חתונה"},
-      {"text": "הקאפקייקס שהזמנו לברית היו הכי יפים שראיתי. כל אחד מעוצב בדיוק כמו שביקשנו. הילדים התלהבו!", "name": "— מיכל ש.", "badge": "קאפקייקס מעוצבים"},
-      {"text": "העוגה ליום ההולדת של אמא הייתה מרגשת. נעה הקשיבה לכל בקשה והתוצאה הייתה מושלמת. תודה על הלב!", "name": "— אורי כ.", "badge": "עוגת יום הולדת"},
-      {"text": "המקרונים היו פשוט divine! טעמים מדויקים, מרקם מושלם, ועיצוב שמח. כבר הזמנתי שוב לשבוע הבא.", "name": "— נועה ר.", "badge": "מקרונים"},
-      {"text": "עוגת השכבות ליום הנישואין שלנו הייתה חלום. נעה ידעה בדיוק מה אנחנו רוצים אפילו שלא ידענו להסביר.", "name": "— אביגיל ורועי", "badge": "עוגת שכבות"},
-      {"text": "העוגיות המעוצבות לחג היו פשוט קסם. כל אחת כמו תמונה קטנה. המשפחה התרגשה מאוד.", "name": "— חנה ג.", "badge": "עוגיות מעוצבות"},
-      {"text": "הזמנתי בקושרונה ונעה דאגה שאקבל את העוגה בזמן ושהיא תגיע בשלמות. השירות לפני הטעם — וגם הטעם מעולה!", "name": "— ליאת פ.", "badge": "עוגת אירוע"},
-      {"text": "עוגת הבר מצווה של הבן שלי הייתה מדהימה. עיצוב ספורטיבי בדיוק כמו שביקשנו, והטעם — כל הילדים אכלו ולא הפסיקו!", "name": "— רחל א.", "badge": "עוגת בר מצווה"},
-      {"text": "העוגה ליום הולדת 60 של אבא הייתה מרגשת. נעה שילבה את כל התחביבים שלו בעיצוב. הוא בכה מרוב התרגשות.", "name": "— יובל מ.", "badge": "עוגת יום הולדת"},
-      {"text": "הבצקים של נעה הם פשוט הקטע הכי טוב בבוקר. קרואסונים פריכים, שמרים אווריריים — אין כמוה בירושלים!", "name": "— אלון ד.", "badge": "בצקים"},
-      {"text": "הזמנתי עוגה ליום הולדת של חברה והיא פשוט לא האמינה. העיצוב היה כל כך מדויק לסגנון שלה. נעה — קוסמת!", "name": "— מאיה ת.", "badge": "עוגת יום הולדת"},
-      {"text": "עוגת הבנטו שהזמנתי הייתה מתוקה ויפהפייה. המארז היה מושלם למתנה. כבר הזמנתי עוד אחת לאמא שלי.", "name": "— שירן ב.", "badge": "עוגת בנטו"},
-      {"text": "הקינוחים לסוף שנה של הצוות היו פשוט יצירות אמנות קטנות. כל אחד טעם אחר, כולם מדהימים. תודה נעה!", "name": "— אורנה ח.", "badge": "קינוחים מעוצבים"},
-      {"text": "נעה הכינה לנו עוגה לחגיגת 10 שנים לעסק. העיצוב כלל את הלוגו שלנו — פשוט מושלם! מקצועיות ברמה אחרת.", "name": "— דוד ושלומי", "badge": "עוגת אירוע עסקי"},
-      {"text": "העוגה לבת המצווה שלי הייתה החלום שלה. נסיכות, ורוד, נצנצים — נעה הבינה בדיוק מה היא רוצה. הייתה מושלמת!", "name": "— מירב ק.", "badge": "עוגת בת מצווה"},
-      {"text": "המארז המתוקים לשבת היה פשוט קסום. כל דבר טרי וטעים, והעיצוב — שולחן חג ממש. תודה על הכל!", "name": "— שרה ל.", "badge": "מארז שבת"},
-      {"text": "הזמנתי עוגה ליום הולדת של אחי והיא הייתה מטורפת. עיצוב גיימינג מדויק, והטעם — שוקולד שמיים. תודה נעה!", "name": "— טל י.", "badge": "עוגת יום הולדת"},
-      {"text": "עוגת הפרחים שהזמנתי לאמא הייתה כל כך עדינה ויפה. נעה השקיעה בכל עלה וכל צבע. אמא בכתה מרוב התרגשות.", "name": "— רותם ש.", "badge": "עוגת פרחים"},
-      {"text": "העוגה לבריתה של הנכדה הייתה ורודה ומתוקה בדיוק כמו שהיינו רוצים. נעה דאגה לכל פרט — אפילו לסרט המתנה.", "name": "— רבקה א.", "badge": "עוגת בריתה"},
-      {"text": "הזמנתי עוגה ליום נישואין והיא הייתה רומנטית ומושלמת. נעה ידעה לתפוס את הרוח שלנו בלי מילים. מומלצת בחום!", "name": "— ניר וגלית", "badge": "עוגת יום נישואין"},
-      {"text": "העוגיות לסוף שנה של הכיתה היו פשוט קסומות. כל ילד קיבל עוגייה עם השם שלו. נעה — את מדהימה!", "name": "— מורן פ.", "badge": "עוגיות מעוצבות"},
-      {"text": "עוגת היום הולדת שלי הייתה הפתעה מבן הזוג. הוא אמר שדיבר עם נעה שעה על מה אני אוהבת. והיא פגעה בול!", "name": "— ליאור א.", "badge": "עוגת יום הולדת"},
-      {"text": "המארז לחג הפסח היה מרשים. כל הדברים כשרים, טעימים, ומעוצבים בקפידה. כבר הזמנתי לשנה הבאה!", "name": "— משה ורחל", "badge": "מארז חג"},
-      {"text": "נעה הכינה לנו עוגה ליום הולדת של הכלב! כן, הכלב! והיא הייתה מושלמת — עם עיצוב של כף רגל וקשת בענן. מדהים!", "name": "— ניצן ואור", "badge": "עוגת יום הולדת"},
-      {"text": "העוגה לחתונת הזהב של ההורים הייתה מרגשת ומלכותית. נעה שילבה את התמונה המקורית שלהם מהחתונה. פשוט מדהים!", "name": "— אפרת מ.", "badge": "עוגת חתונת זהב"},
-      {"text": "הזמנתי עוגה ליום הולדת של חבר ונעה עשתה עיצוב של ספרים כי הוא אוהב לקרוא. הוא לא האמין שזו עוגה אמיתית!", "name": "— אלמוג ש.", "badge": "עוגת יום הולדת"},
-      {"text": "הקינוחים לכנס העסקי היו מקוריים וטעימים. כל אורח שאל מאיפה הזמנו. נעה — את מקצוענית ברמה אחרת!", "name": "— איילת ר.", "badge": "קינוחים לאירוע"},
-      {"text": "עוגת היום הולדת של הבת שלי הייתה מלאה בחיות הים שהיא אוהבת. נעה ציירה כל דג ביד! אין עלייך נעה, תודה!", "name": "— טליה ג.", "badge": "עוגת יום הולדת"}
-    ];
-
-    function renderTestimonials() {
-      var grid = document.getElementById('testimonialsGrid');
-      if (!grid) return;
-      var shuffled = testimonialsData.slice().sort(function() { return 0.5 - Math.random(); });
-      var selected = shuffled.slice(0, 3);
-      grid.innerHTML = selected.map(function(t) {
-        return '<div class="testimonial-card">' +
-          '<div class="testimonial-stars" aria-label="5 כוכבים">⭐⭐⭐⭐⭐</div>' +
-          '<p class="testimonial-text">"' + t.text + '"</p>' +
-          '<div class="testimonial-author">' +
-            '<span class="testimonial-name">' + t.name + '</span>' +
-            '<span class="testimonial-badge">' + t.badge + '</span>' +
-          '</div>' +
-        '</div>';
-      }).join('');
-    }
-
-    renderTestimonials();
-    setInterval(renderTestimonials, 120000);
 
     console.log('נעה website initialized successfully');
   })();
