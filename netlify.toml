@@ -1,2 +1,9 @@
 [build]
   publish = "."
+
+# One site only (founder, 2026-10-23): the Netlify copy sends every visitor to the GitHub Pages site.
+[[redirects]]
+  from = "/*"
+  to = "https://eranniv100-afk.github.io/noa-cakes/:splat"
+  status = 301
+  force = true
