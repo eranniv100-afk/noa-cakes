@@ -580,6 +580,84 @@
     ]
   }
   </script>
+  <!-- Liquid glass and 3D layer: additions only, no change to layout, colours or text -->
+  <link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@300;400;500;700&family=Heebo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style id="liquid-glass">
+    :root {
+      /* Fonts (Niv 23.10): Hebrew headings in Frank Ruhl Libre (Playfair has no Hebrew letters, so they fell back to Times), body in Heebo */
+      --font-body: 'Heebo', 'Assistant', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --font-display: 'Playfair Display', 'Frank Ruhl Libre', 'Times New Roman', serif;
+      --glass-bg: rgba(255, 252, 249, 0.42);
+      --glass-bg-strong: rgba(255, 252, 249, 0.62);
+      --glass-edge: rgba(255, 255, 255, 0.7);
+      --glass-tint: rgba(190, 24, 93, 0.10);
+      --glass-shadow: 0 10px 30px rgba(76, 5, 25, 0.10), inset 0 1px 0 rgba(255, 255, 255, 0.85), inset 0 -1px 0 rgba(157, 23, 77, 0.08);
+      --glass-blur: blur(18px) saturate(170%);
+    }
+    /* Soft brand-coloured light behind the warm sections, so the glass has something to refract */
+    .why-section, .about-section, .categories-section, .gallery-section { position: relative; isolation: isolate; }
+    .why-section::before, .about-section::before, .categories-section::before, .gallery-section::before {
+      content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+      background:
+        radial-gradient(40% 35% at 15% 20%, rgba(190, 24, 93, 0.10), transparent 70%),
+        radial-gradient(35% 30% at 85% 75%, rgba(157, 23, 77, 0.08), transparent 70%),
+        radial-gradient(30% 25% at 60% 10%, rgba(252, 231, 243, 0.9), transparent 70%);
+      animation: lgDrift 22s ease-in-out infinite alternate;
+    }
+    @keyframes lgDrift { from { background-position: 0 0, 0 0, 0 0; } to { background-position: 40px -30px, -30px 20px, 20px 30px; } }
+
+    /* The glass itself */
+    .navbar, .navbar--scrolled { background: var(--glass-bg-strong); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur); box-shadow: var(--glass-shadow); }
+    .why-card, .mobile-drawer, .order-modal > *:first-child, .load-more-btn, .back-to-top, .category-count, .back-to-categories {
+      background: var(--glass-bg); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
+      border: 1px solid var(--glass-edge); box-shadow: var(--glass-shadow);
+    }
+    .order-modal > *:first-child { background: var(--glass-bg-strong); }
+    .gallery-card { background: var(--glass-bg-strong); border: 1px solid var(--glass-edge); box-shadow: var(--glass-shadow); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur); }
+    .category-card { box-shadow: var(--glass-shadow); }
+    .category-card__icon, .gallery-card__category-tag { backdrop-filter: blur(10px) saturate(160%); -webkit-backdrop-filter: blur(10px) saturate(160%); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35); }
+
+    /* Liquid light: a sheen layer added as its own element (never the cards' own ::before/::after), following the pointer */
+    .lg-host { position: relative; }
+    .lg-sheen { position: absolute; inset: 0; border-radius: inherit; overflow: hidden; pointer-events: none; z-index: 4; }
+    .lg-sheen::before {
+      content: ""; position: absolute; inset: 0; border-radius: inherit;
+      background: radial-gradient(220px circle at var(--lg-x, 50%) var(--lg-y, -40%), rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0.08) 40%, transparent 65%);
+      mix-blend-mode: soft-light; opacity: 0; transition: opacity 300ms ease;
+    }
+    .lg-host:hover > .lg-sheen::before { opacity: 1; }
+    .lg-sheen--edge::after {
+      content: ""; position: absolute; inset: 0; border-radius: inherit; padding: 1px;
+      background: linear-gradient(130deg, rgba(255, 255, 255, 0.9), rgba(251, 207, 232, 0.6) 35%, rgba(255, 255, 255, 0.1) 60%, rgba(190, 24, 93, 0.35));
+      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask-composite: exclude;
+    }
+
+    /* 3D tilt on the cards (pointer devices only) */
+    @media (hover: hover) and (pointer: fine) {
+      .categories-grid, .gallery-grid { perspective: 1200px; }
+      .lg-tilt { transform-style: preserve-3d; will-change: transform; }
+      .lg-tilt.lg-tilting { transition: transform 120ms ease-out, box-shadow 250ms ease; transform: rotateX(var(--lg-rx, 0deg)) rotateY(var(--lg-ry, 0deg)) translateY(-6px); }
+    }
+
+    /* The 3D showcase: a slowly turning ring of Noa's cakes */
+    .showcase-3d { padding-block: var(--space-md); overflow: hidden; }
+    .showcase-3d__stage { position: relative; height: clamp(240px, 28vw, 340px); perspective: 1600px; display: grid; place-items: center; touch-action: pan-y; cursor: grab; -webkit-mask-image: linear-gradient(90deg, transparent, #000 18%, #000 82%, transparent); mask-image: linear-gradient(90deg, transparent, #000 18%, #000 82%, transparent); }
+    .showcase-3d__stage:active { cursor: grabbing; }
+    .showcase-3d__ring { position: relative; width: clamp(110px, 13vw, 180px); aspect-ratio: 3 / 4; transform-style: preserve-3d; transform: translateZ(calc(var(--radius-3d) * -0.55)) rotateX(-8deg) rotateY(var(--ring-angle, 0deg)); }
+    .showcase-3d__item {
+      position: absolute; inset: 0; border-radius: var(--radius-lg); overflow: hidden; backface-visibility: hidden;
+      transform: rotateY(calc(var(--i) * var(--step))) translateZ(var(--radius-3d));
+      background: var(--glass-bg); border: 1px solid var(--glass-edge); box-shadow: 0 18px 40px rgba(76, 5, 25, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    }
+    .showcase-3d__item img { width: 100%; height: 100%; object-fit: cover; }
+    .showcase-3d__item::after { content: ""; position: absolute; inset: 0; background: linear-gradient(160deg, rgba(255, 255, 255, 0.35), transparent 40%, rgba(157, 23, 77, 0.12)); pointer-events: none; }
+    .showcase-3d__floor { position: absolute; bottom: 4%; width: min(80%, 640px); height: 40px; border-radius: 50%; background: radial-gradient(closest-side, rgba(157, 23, 77, 0.18), transparent); filter: blur(6px); }
+
+    @media (prefers-reduced-motion: reduce) {
+      .why-section::before, .about-section::before, .categories-section::before, .gallery-section::before { animation: none; }
+      .lg-tilt.lg-tilting { transform: none; }
+    }
+  </style>
 </head>
 <body>
   <!-- Preloader -->
@@ -776,6 +854,25 @@
       <path d="M8 24 Q13 22 17 24 T26 24" stroke="#9d174d" stroke-width="1.2" fill="none" opacity="0.6"/>
     </svg>
   </div>
+
+  <!-- 3D showcase: decorative, no text; the same photos as the gallery -->
+  <section id="showcase-3d" class="showcase-3d" aria-hidden="true">
+    <div class="showcase-3d__stage" id="showcase3dStage">
+      <div class="showcase-3d__ring" id="showcase3dRing" style="--count:10; --step: calc(360deg / var(--count)); --radius-3d: clamp(200px, 26vw, 360px);">
+        <div class="showcase-3d__item" style="--i:0"><img data-src="images/image1.jpeg" alt="" decoding="async"></div>
+        <div class="showcase-3d__item" style="--i:1"><img data-src="images/image5.jpeg" alt="" decoding="async"></div>
+        <div class="showcase-3d__item" style="--i:2"><img data-src="images/image10.jpeg" alt="" decoding="async"></div>
+        <div class="showcase-3d__item" style="--i:3"><img data-src="images/image15.jpeg" alt="" decoding="async"></div>
+        <div class="showcase-3d__item" style="--i:4"><img data-src="images/image20.jpeg" alt="" decoding="async"></div>
+        <div class="showcase-3d__item" style="--i:5"><img data-src="images/image25.jpeg" alt="" decoding="async"></div>
+        <div class="showcase-3d__item" style="--i:6"><img data-src="images/image30.jpeg" alt="" decoding="async"></div>
+        <div class="showcase-3d__item" style="--i:7"><img data-src="images/image35.jpeg" alt="" decoding="async"></div>
+        <div class="showcase-3d__item" style="--i:8"><img data-src="images/image40.jpeg" alt="" decoding="async"></div>
+        <div class="showcase-3d__item" style="--i:9"><img data-src="images/image42.jpeg" alt="" decoding="async"></div>
+      </div>
+      <div class="showcase-3d__floor"></div>
+    </div>
+  </section>
 
   <!-- Gallery Section -->
   <section id="gallery" class="gallery-section container" aria-label="גלריית עוגות">
@@ -2057,5 +2154,66 @@
       האתר דורש JavaScript כדי לפעול במלואו. אנא הפעל JavaScript בדפדפן שלך.
     </div>
   </noscript>
+  <!-- Liquid glass and 3D layer script: additions only -->
+  <script>
+  (function () {
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    var glassy = document.querySelectorAll('.why-card, .gallery-card, .category-card, .load-more-btn, .btn-primary, .btn-outline, .order-nav-btn');
+    glassy.forEach(function (el) {
+      el.classList.add('lg-host');
+      var sheen = document.createElement('span');
+      sheen.className = 'lg-sheen' + (el.matches('.btn-primary, .order-nav-btn') ? '' : ' lg-sheen--edge');
+      sheen.setAttribute('aria-hidden', 'true');
+      el.appendChild(sheen);
+      if (fine && !reduce && (el.classList.contains('gallery-card') || el.classList.contains('category-card'))) el.classList.add('lg-tilt');
+      el.addEventListener('pointermove', function (e) {
+        var r = el.getBoundingClientRect();
+        var x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
+        el.style.setProperty('--lg-x', (x * 100).toFixed(1) + '%');
+        el.style.setProperty('--lg-y', (y * 100).toFixed(1) + '%');
+        if (el.classList.contains('lg-tilt')) {
+          el.classList.add('lg-tilting');
+          el.style.setProperty('--lg-rx', ((0.5 - y) * 10).toFixed(2) + 'deg');
+          el.style.setProperty('--lg-ry', ((x - 0.5) * 12).toFixed(2) + 'deg');
+        }
+      });
+      el.addEventListener('pointerleave', function () {
+        el.classList.remove('lg-tilting');
+        el.style.removeProperty('--lg-rx'); el.style.removeProperty('--lg-ry');
+      });
+    });
+
+    var stage = document.getElementById('showcase3dStage');
+    var ring = document.getElementById('showcase3dRing');
+    if (!stage || !ring) return;
+    // The ring's photos load only when the section comes near (the 3D transform hides them from the browser's own lazy loading)
+    var imgs = ring.querySelectorAll('img[data-src]');
+    function loadRing() { imgs.forEach(function (img) { if (!img.src) img.src = img.getAttribute('data-src'); }); }
+    if ('IntersectionObserver' in window) {
+      var near = new IntersectionObserver(function (entries) { if (entries[0].isIntersecting) { loadRing(); near.disconnect(); } }, { rootMargin: '600px 0px' });
+      near.observe(stage);
+    } else loadRing();
+    var angle = 0, speed = reduce ? 0 : 0.12, dragging = false, lastX = 0, velocity = 0, visible = true, hover = false;
+    if ('IntersectionObserver' in window) new IntersectionObserver(function (entries) { visible = entries[0].isIntersecting; }).observe(stage);
+    stage.addEventListener('pointerenter', function () { hover = true; });
+    stage.addEventListener('pointerleave', function () { hover = false; dragging = false; });
+    stage.addEventListener('pointerdown', function (e) { dragging = true; lastX = e.clientX; velocity = 0; });
+    window.addEventListener('pointerup', function () { dragging = false; });
+    stage.addEventListener('pointermove', function (e) {
+      if (!dragging) return;
+      var dx = e.clientX - lastX; lastX = e.clientX;
+      velocity = dx * -0.25; angle += velocity;
+    });
+    function frame() {
+      if (visible) {
+        if (!dragging) { angle += (hover ? speed * 0.3 : speed) + velocity; velocity *= 0.94; }
+        ring.style.setProperty('--ring-angle', angle.toFixed(2) + 'deg');
+      }
+      requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+  })();
+  </script>
 </body>
 </html>
