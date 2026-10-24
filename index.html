@@ -35,7 +35,110 @@
   <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
   <style>
 
-    @layer reset, base, layout, components, utilities, animations;
+    @layer reset, base, layout, components, glass, utilities, animations;
+
+    /* Liquid glass (founder, 24.10): every glass token and rule lives in this layer. Surfaces carry one of three
+       classes - .glass (panel), .glass-strong (denser panel: nav, drawer, modal, footer), .glass-capsule (buttons, tags) -
+       and a surface may only re-tint itself through --glass-rgb / --glass-alpha below; no one-off rgba anywhere else.
+       The layer sits after components (so it restyles them) and before utilities (so the phone breakpoints still win). */
+    @layer glass {
+      :root {
+        --glass-rgb: 255 252 249;                 /* panel colour = the page cream (--color-bg) */
+        --glass-alpha: 0.62;                      /* .glass */
+        --glass-alpha-strong: 0.74;               /* .glass-strong */
+        --glass-blur: blur(18px) saturate(170%);
+        --glass-border: 1px solid rgb(255 255 255 / 0.35);
+        --glass-border-dark: 1px solid rgb(255 255 255 / 0.55);   /* for glass over dark backdrops (hero, lightbox) */
+        --glass-highlight: inset 0 1px 0 rgb(255 255 255 / 0.45);
+        --glass-shadow: var(--glass-highlight), 0 8px 30px rgb(0 0 0 / 0.18);
+        --glass-gloss: linear-gradient(to bottom, rgb(255 255 255 / 0.18), rgb(255 255 255 / 0) 40%);  /* top-edge gloss, under the text */
+        --glass-brighten: linear-gradient(rgb(255 255 255 / 0.10), rgb(255 255 255 / 0.10));          /* hover */
+        --glass-radius: 24px;
+        --glass-radius-lg: 28px;
+        --glass-glow-primary: 0 8px 24px rgb(157 23 77 / 0.35);
+        --glass-glow-whatsapp: 0 8px 24px rgb(37 211 102 / 0.35);
+        /* the three blobs behind the page: the palette's own colours, large and soft, fixed so the glass refracts them */
+        --glass-blob-1: radial-gradient(42vmax 32vmax at 12% 18%, rgb(252 231 243 / 0.75), rgb(252 231 243 / 0) 70%);
+        --glass-blob-2: radial-gradient(36vmax 30vmax at 88% 72%, rgb(190 24 93 / 0.10), rgb(190 24 93 / 0) 70%);
+        --glass-blob-3: radial-gradient(30vmax 26vmax at 60% 100%, rgb(255 245 240 / 0.9), rgb(255 245 240 / 0) 70%);
+      }
+
+      /* The blobs: one fixed layer behind everything (z-index -1 of the root stacking context, above the body colour) */
+      body::before {
+        content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+        background: var(--glass-blob-1), var(--glass-blob-2), var(--glass-blob-3);
+      }
+      /* Section colours keep their hue but let the blobs through (same tokens, 55% alpha) */
+      .categories-section, .gallery-section { background: rgb(255 252 249 / 0.55); }
+      .why-section { background: rgb(255 245 240 / 0.55); }
+      .about-section { background: rgb(254 249 246 / 0.55); }
+
+      /* The three classes */
+      .glass, .glass-strong, .glass-capsule {
+        background: var(--glass-gloss), rgb(var(--glass-rgb) / var(--glass-alpha));
+        -webkit-backdrop-filter: var(--glass-blur);
+        backdrop-filter: var(--glass-blur);
+        border: var(--glass-border);
+        box-shadow: var(--glass-shadow);
+        border-radius: var(--glass-radius);
+      }
+      .glass-strong { --glass-alpha: var(--glass-alpha-strong); }
+      .glass-capsule { border-radius: var(--radius-full); }
+      /* No blur nested inside blur: a capsule inside a panel keeps its tint, highlight and border only */
+      :is(.glass, .glass-strong, .glass-capsule) :is(.glass, .glass-strong, .glass-capsule) { -webkit-backdrop-filter: none; backdrop-filter: none; }
+      /* The gallery (42 lazy photos) and the category tiles: glass on the frame only, no blur per card, so the phone stays smooth */
+      .gallery-card.glass, .category-card.glass { -webkit-backdrop-filter: none; backdrop-filter: none; }
+
+      /* Interaction: brighter glass and a 1.02 scale on hover, 0.98 on press, visible focus rings */
+      :is(.glass-capsule, .glass):is(a, button, [role="button"]):hover {
+        background: var(--glass-gloss), var(--glass-brighten), rgb(var(--glass-rgb) / var(--glass-alpha));
+      }
+      .glass-capsule:is(a, button, [role="button"]):hover { transform: translateY(-2px) scale(1.02); }
+      .glass-capsule:is(a, button, [role="button"]):active { transform: scale(0.98); }
+      :is(.glass, .glass-strong, .glass-capsule):focus-visible { outline: 3px solid var(--color-primary-light); outline-offset: 3px; }
+      :is(.hero-content, .lightbox) :is(.glass, .glass-capsule):focus-visible { outline-color: #fff; }
+
+      /* Surface tints and shapes (colour tokens only; text colours untouched) */
+      .navbar { border-width: 0 0 1px; border-radius: 0; }
+      .mobile-drawer { border-radius: 0; border-start-start-radius: var(--glass-radius-lg); border-end-start-radius: var(--glass-radius-lg); }
+      .hero-content { --glass-rgb: 76 5 25; --glass-alpha: 0.55; border: var(--glass-border-dark); border-radius: var(--glass-radius-lg); padding: clamp(1.25rem, 1rem + 2vw, 2.5rem) clamp(1.25rem, 1rem + 3vw, 3rem); max-width: min(100%, 880px); }
+      .btn-outline { --glass-rgb: 255 255 255; --glass-alpha: 0.18; border: var(--glass-border-dark); }
+      .btn-outline:hover { --glass-alpha: 0.3; }
+      .btn-primary, .order-nav-btn, .submit-btn { --glass-rgb: 157 23 77; --glass-alpha: 1; box-shadow: var(--glass-highlight), var(--glass-glow-primary); }
+      .btn-primary:hover, .order-nav-btn:hover, .submit-btn:hover { --glass-rgb: 190 24 93; }
+      .send-photo-nav-btn { --glass-alpha: 0.5; }
+      .send-photo-nav-btn:hover { --glass-rgb: 252 231 243; --glass-alpha: 0.9; }
+      .back-to-categories:hover, .load-more-btn:hover, .share-btn:hover, .back-to-top:hover { --glass-rgb: 157 23 77; --glass-alpha: 1; }
+      .share-btn { --glass-rgb: 252 231 243; }
+      .share-btn.copied { --glass-rgb: 37 211 102; --glass-alpha: 1; }
+      .jerusalem-badge { --glass-rgb: 252 231 243; --glass-alpha: 0.72; }
+      .whatsapp-float { --glass-rgb: 37 211 102; --glass-alpha: 0.92; box-shadow: var(--glass-highlight), var(--glass-glow-whatsapp); }
+      .category-card { border-radius: var(--glass-radius); }
+      .category-card__icon, .gallery-card__category-tag { --glass-rgb: 157 23 77; --glass-alpha: 0.85; }
+      .gallery-card { padding: 6px; }
+      .gallery-card__image-wrapper { border-radius: calc(var(--glass-radius) - 6px); }
+      .category-count { width: fit-content; margin-inline: auto; padding: 6px 18px; }
+      .about-inner { border-radius: var(--glass-radius-lg); padding: var(--space-xl); }
+      footer { border-width: 1px 0 0; border-radius: var(--glass-radius-lg) var(--glass-radius-lg) 0 0; }
+      .modal-card { --glass-alpha: 0.9; border-radius: var(--glass-radius-lg); }
+      .order-modal, .lightbox { -webkit-backdrop-filter: none; backdrop-filter: none; }   /* the card and the chrome blur for themselves */
+      .lightbox__controls, .close-lightbox, .lightbox__hint { --glass-rgb: 24 8 16; --glass-alpha: 0.82; border: var(--glass-border-dark); }
+      .lightbox__btn { --glass-rgb: 255 255 255; --glass-alpha: 0.15; }
+      .lightbox__btn:hover { --glass-alpha: 0.3; }
+
+      /* Fallbacks: solid panels when the visitor asks for less transparency or the browser has no backdrop-filter */
+      @media (prefers-reduced-transparency: reduce) {
+        .glass, .glass-strong, .glass-capsule { --glass-alpha: 0.97 !important; -webkit-backdrop-filter: none !important; backdrop-filter: none !important; }
+        body::before { display: none; }
+      }
+      @supports not (backdrop-filter: blur(1px)) {
+        .glass, .glass-strong, .glass-capsule { --glass-alpha: 0.97 !important; }
+      }
+      @media print {
+        .glass, .glass-strong, .glass-capsule { background: #fff !important; box-shadow: none !important; -webkit-backdrop-filter: none !important; backdrop-filter: none !important; }
+        body::before { display: none; }
+      }
+    }
 
     @layer reset {
       *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -572,42 +675,14 @@
     ]
   }
   </script>
-  <!-- Liquid glass and 3D layer: additions only, no change to layout, colours or text -->
+  <!-- Fonts, pointer sheen, card tilt and the 3D ring: additions only, no change to layout, colours or text (the glass itself is the glass layer above) -->
   <link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@300;400;500;700&family=Heebo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <style id="liquid-glass">
+  <style id="sheen-and-3d">
     :root {
       /* Fonts (Niv 23.10): Hebrew headings in Frank Ruhl Libre (Playfair has no Hebrew letters, so they fell back to Times), body in Heebo */
       --font-body: 'Heebo', 'Assistant', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
       --font-display: 'Playfair Display', 'Frank Ruhl Libre', 'Times New Roman', serif;
-      --glass-bg: rgba(255, 252, 249, 0.42);
-      --glass-bg-strong: rgba(255, 252, 249, 0.62);
-      --glass-edge: rgba(255, 255, 255, 0.7);
-      --glass-tint: rgba(190, 24, 93, 0.10);
-      --glass-shadow: 0 10px 30px rgba(76, 5, 25, 0.10), inset 0 1px 0 rgba(255, 255, 255, 0.85), inset 0 -1px 0 rgba(157, 23, 77, 0.08);
-      --glass-blur: blur(18px) saturate(170%);
     }
-    /* Soft brand-coloured light behind the warm sections, so the glass has something to refract */
-    .why-section, .about-section, .categories-section, .gallery-section { position: relative; isolation: isolate; }
-    .why-section::before, .about-section::before, .categories-section::before, .gallery-section::before {
-      content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
-      background:
-        radial-gradient(40% 35% at 15% 20%, rgba(190, 24, 93, 0.10), transparent 70%),
-        radial-gradient(35% 30% at 85% 75%, rgba(157, 23, 77, 0.08), transparent 70%),
-        radial-gradient(30% 25% at 60% 10%, rgba(252, 231, 243, 0.9), transparent 70%);
-      animation: lgDrift 22s ease-in-out infinite alternate;
-    }
-    @keyframes lgDrift { from { background-position: 0 0, 0 0, 0 0; } to { background-position: 40px -30px, -30px 20px, 20px 30px; } }
-
-    /* The glass itself */
-    .navbar, .navbar--scrolled { background: var(--glass-bg-strong); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur); box-shadow: var(--glass-shadow); }
-    .why-card, .mobile-drawer, .order-modal > *:first-child, .load-more-btn, .back-to-top, .category-count, .back-to-categories {
-      background: var(--glass-bg); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
-      border: 1px solid var(--glass-edge); box-shadow: var(--glass-shadow);
-    }
-    .order-modal > *:first-child { background: var(--glass-bg-strong); }
-    .gallery-card { background: var(--glass-bg-strong); border: 1px solid var(--glass-edge); box-shadow: var(--glass-shadow); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur); }
-    .category-card { box-shadow: var(--glass-shadow); }
-    .category-card__icon, .gallery-card__category-tag { backdrop-filter: blur(10px) saturate(160%); -webkit-backdrop-filter: blur(10px) saturate(160%); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35); }
 
     /* Liquid light: a sheen layer added as its own element (never the cards' own ::before/::after), following the pointer */
     .lg-host { position: relative; }
@@ -639,14 +714,13 @@
     .showcase-3d__item {
       position: absolute; inset: 0; border-radius: var(--radius-lg); overflow: hidden; backface-visibility: hidden;
       transform: rotateY(calc(var(--i) * var(--step))) translateZ(var(--radius-3d));
-      background: var(--glass-bg); border: 1px solid var(--glass-edge); box-shadow: 0 18px 40px rgba(76, 5, 25, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+      background: rgb(var(--glass-rgb) / var(--glass-alpha)); border: var(--glass-border); box-shadow: 0 18px 40px rgba(76, 5, 25, 0.18), var(--glass-highlight);
     }
     .showcase-3d__item img { width: 100%; height: 100%; object-fit: cover; }
     .showcase-3d__item::after { content: ""; position: absolute; inset: 0; background: linear-gradient(160deg, rgba(255, 255, 255, 0.35), transparent 40%, rgba(157, 23, 77, 0.12)); pointer-events: none; }
     .showcase-3d__floor { position: absolute; bottom: 4%; width: min(80%, 640px); height: 40px; border-radius: 50%; background: radial-gradient(closest-side, rgba(157, 23, 77, 0.18), transparent); filter: blur(6px); }
 
     @media (prefers-reduced-motion: reduce) {
-      .why-section::before, .about-section::before, .categories-section::before, .gallery-section::before { animation: none; }
       .lg-tilt.lg-tilting { transform: none; }
     }
   </style>
@@ -659,17 +733,17 @@
     <div class="preloader__spinner" aria-hidden="true"></div>
   </div>
 
-  <div class="jerusalem-badge" aria-hidden="true">ירושלים בלבד</div>
-  <button class="back-to-top" id="backToTopBtn" type="button" aria-label="חזרה למעלה">
+  <div class="jerusalem-badge glass-capsule" aria-hidden="true">ירושלים בלבד</div>
+  <button class="back-to-top glass-capsule" id="backToTopBtn" type="button" aria-label="חזרה למעלה">
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg>
   </button>
-  <div class="whatsapp-float" id="whatsappFloatBtn" role="button" aria-label="פתח צאט וואטסאפ" tabindex="0">
+  <div class="whatsapp-float glass-capsule" id="whatsappFloatBtn" role="button" aria-label="פתח צאט וואטסאפ" tabindex="0">
     <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="white" viewBox="0 0 16 16" aria-hidden="true">
       <path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"/>
     </svg>
   </div>
 
-  <nav class="navbar" id="navbar" role="navigation" aria-label="ניווט ראשי">
+  <nav class="navbar glass-strong" id="navbar" role="navigation" aria-label="ניווט ראשי">
     <div class="nav-container">
       <div class="logo-area">
         <img src="./logo.jpg" width="900" height="882" loading="eager" alt="לוגו נעה עוגות מעוצבות" class="logo-img" onerror="this.src='https://placehold.co/60x60?text=Logo'">
@@ -681,28 +755,28 @@
         <a href="#gallery" aria-label="עבור לקולקציה">קולקציה</a>
         <a href="#why-noa" aria-label="עבור לסקציה למה נעה">למה נעה</a>
         <a href="#about" aria-label="עבור לאודות">אודות</a>
-        <button class="send-photo-nav-btn" id="navSendPhotoBtn" type="button" aria-label="שלחו תמונה לנעה">
+        <button class="send-photo-nav-btn glass-capsule" id="navSendPhotoBtn" type="button" aria-label="שלחו תמונה לנעה">
           <span class="icon" aria-hidden="true">📷</span>
           <span class="label-text">שלחו תמונה</span>
         </button>
-        <button class="order-nav-btn" id="navOrderBtn" type="button" aria-label="פתח טופס הזמנה">הזמנות</button>
+        <button class="order-nav-btn glass-capsule" id="navOrderBtn" type="button" aria-label="פתח טופס הזמנה">הזמנות</button>
       </div>
       <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="פתח תפריט" aria-expanded="false" aria-controls="mobileDrawer">☰</button>
     </div>
   </nav>
 
   <div class="drawer-overlay" id="drawerOverlay" aria-hidden="true"></div>
-  <div class="mobile-drawer" id="mobileDrawer" role="dialog" aria-label="תפריט נייד" aria-modal="true">
+  <div class="mobile-drawer glass-strong" id="mobileDrawer" role="dialog" aria-label="תפריט נייד" aria-modal="true">
     <button class="close-drawer" id="closeDrawerBtn" aria-label="סגור תפריט">✕</button>
     <a href="#home">בית</a>
     <a href="#categories">קטגוריות</a>
     <a href="#gallery">קולקציה</a>
     <a href="#why-noa">למה נעה</a>
     <a href="#about">אודות</a>
-    <button class="send-photo-nav-btn" id="mobileSendPhotoBtn" type="button" aria-label="שלחו תמונה לנעה">
+    <button class="send-photo-nav-btn glass-capsule" id="mobileSendPhotoBtn" type="button" aria-label="שלחו תמונה לנעה">
       <span class="icon" aria-hidden="true">📷</span> שלחו תמונה
     </button>
-    <button class="order-nav-btn" id="mobileOrderBtn" type="button" aria-label="פתח טופס הזמנה">הזמנות</button>
+    <button class="order-nav-btn glass-capsule" id="mobileOrderBtn" type="button" aria-label="פתח טופס הזמנה">הזמנות</button>
   </div>
 
   <section id="home" class="hero" aria-label="ראשי">
@@ -715,12 +789,12 @@
     </div>
     <div class="hero__overlay" aria-hidden="true"></div>
     <div class="hero__vignette" aria-hidden="true"></div>
-    <div class="hero-content">
+    <div class="hero-content glass">
       <h1>עוגות מעוצבות בעבודת יד, ירושלים</h1>
       <p class="hero-subtitle">Made with love</p>
       <div class="hero-buttons">
-        <a href="#categories" class="btn-outline" aria-label="עבור לקטגוריות">הקולקציה</a>
-        <button class="btn-primary" id="heroOrderBtn" type="button" aria-label="פתח טופס הזמנה אישית">הזמנה אישית</button>
+        <a href="#categories" class="btn-outline glass-capsule" aria-label="עבור לקטגוריות">הקולקציה</a>
+        <button class="btn-primary glass-capsule" id="heroOrderBtn" type="button" aria-label="פתח טופס הזמנה אישית">הזמנה אישית</button>
       </div>
       <div class="hero-signature" aria-hidden="true">
         <svg class="hero-signature__icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -752,7 +826,7 @@
       <p>בחרו קטגוריה וגלו את היצירות של נעה</p>
     </div>
     <div class="categories-grid" id="categoriesGrid" role="list">
-      <div class="category-card" data-category="עוגות מעוצבות" role="listitem" tabindex="0" aria-label="עוגות מעוצבות, 19 פריטים">
+      <div class="category-card glass" data-category="עוגות מעוצבות" role="listitem" tabindex="0" aria-label="עוגות מעוצבות, 19 פריטים">
         <div class="category-card__slideshow" data-category="עוגות מעוצבות">
           <div class="category-card__slide active"><img src="./images/image4.jpeg" width="675" height="900" loading="lazy" alt="עוגות מעוצבות — דוגמה 1"></div>
           <div class="category-card__slide"><img src="./images/image9.jpeg" width="675" height="900" loading="lazy" alt="עוגות מעוצבות — דוגמה 2"></div>
@@ -764,9 +838,9 @@
           <div class="category-card__tagline">כל עוגה מספרת סיפור אחר</div>
           <div class="category-card__count">19 פריטים</div>
         </div>
-        <span class="category-card__icon" aria-hidden="true">🎂</span>
+        <span class="category-card__icon glass-capsule" aria-hidden="true">🎂</span>
       </div>
-      <div class="category-card" data-category="עוגות בנטו" role="listitem" tabindex="0" aria-label="עוגות בנטו, 4 פריטים">
+      <div class="category-card glass" data-category="עוגות בנטו" role="listitem" tabindex="0" aria-label="עוגות בנטו, 4 פריטים">
         <div class="category-card__slideshow" data-category="עוגות בנטו">
           <div class="category-card__slide active"><img src="./images/image14.jpeg" width="675" height="900" loading="lazy" alt="עוגות בנטו — דוגמה 1"></div>
           <div class="category-card__slide"><img src="./images/image31.jpeg" width="675" height="900" loading="lazy" alt="עוגות בנטו — דוגמה 2"></div>
@@ -778,9 +852,9 @@
           <div class="category-card__tagline">מתנה קטנה שמרגישה גדולה</div>
           <div class="category-card__count">4 פריטים</div>
         </div>
-        <span class="category-card__icon" aria-hidden="true">🍱</span>
+        <span class="category-card__icon glass-capsule" aria-hidden="true">🍱</span>
       </div>
-      <div class="category-card" data-category="בצקים" role="listitem" tabindex="0" aria-label="בצקים, 7 פריטים">
+      <div class="category-card glass" data-category="בצקים" role="listitem" tabindex="0" aria-label="בצקים, 7 פריטים">
         <div class="category-card__slideshow" data-category="בצקים">
           <div class="category-card__slide active"><img src="./images/image5.jpeg" width="675" height="900" loading="lazy" alt="בצקים — דוגמה 1"></div>
           <div class="category-card__slide"><img src="./images/image6.jpeg" width="675" height="900" loading="lazy" alt="בצקים — דוגמה 2"></div>
@@ -792,9 +866,9 @@
           <div class="category-card__tagline">טרי מהתנור, כל בוקר</div>
           <div class="category-card__count">7 פריטים</div>
         </div>
-        <span class="category-card__icon" aria-hidden="true">🥐</span>
+        <span class="category-card__icon glass-capsule" aria-hidden="true">🥐</span>
       </div>
-      <div class="category-card" data-category="קינוחים" role="listitem" tabindex="0" aria-label="קינוחים, 5 פריטים">
+      <div class="category-card glass" data-category="קינוחים" role="listitem" tabindex="0" aria-label="קינוחים, 5 פריטים">
         <div class="category-card__slideshow" data-category="קינוחים">
           <div class="category-card__slide active"><img src="./images/image1.jpeg" width="675" height="900" loading="lazy" alt="קינוחים — דוגמה 1"></div>
           <div class="category-card__slide"><img src="./images/image2.jpeg" width="675" height="900" loading="lazy" alt="קינוחים — דוגמה 2"></div>
@@ -806,9 +880,9 @@
           <div class="category-card__tagline">ביס קטן של שמחה</div>
           <div class="category-card__count">5 פריטים</div>
         </div>
-        <span class="category-card__icon" aria-hidden="true">🍮</span>
+        <span class="category-card__icon glass-capsule" aria-hidden="true">🍮</span>
       </div>
-      <div class="category-card" data-category="מארזים" role="listitem" tabindex="0" aria-label="מארזים, 10 פריטים">
+      <div class="category-card glass" data-category="מארזים" role="listitem" tabindex="0" aria-label="מארזים, 10 פריטים">
         <div class="category-card__slideshow" data-category="מארזים">
           <div class="category-card__slide active"><img src="./images/image21.jpeg" width="675" height="900" loading="lazy" alt="מארזים — דוגמה 1"></div>
           <div class="category-card__slide"><img src="./images/image36.jpeg" width="506" height="900" loading="lazy" alt="מארזים — דוגמה 2"></div>
@@ -820,9 +894,9 @@
           <div class="category-card__tagline">בשביל מי שאוהבים אתכם</div>
           <div class="category-card__count">10 פריטים</div>
         </div>
-        <span class="category-card__icon" aria-hidden="true">🎁</span>
+        <span class="category-card__icon glass-capsule" aria-hidden="true">🎁</span>
       </div>
-      <div class="category-card" data-category="עוגיות" role="listitem" tabindex="0" aria-label="עוגיות, 4 פריטים">
+      <div class="category-card glass" data-category="עוגיות" role="listitem" tabindex="0" aria-label="עוגיות, 4 פריטים">
         <div class="category-card__slideshow" data-category="עוגיות">
           <div class="category-card__slide active"><img src="./images/image13.jpeg" width="675" height="900" loading="lazy" alt="עוגיות — דוגמה 1"></div>
           <div class="category-card__slide"><img src="./images/image16.jpeg" width="675" height="900" loading="lazy" alt="עוגיות — דוגמה 2"></div>
@@ -834,7 +908,7 @@
           <div class="category-card__tagline">קטנות, פריכות, בלתי נשכחות</div>
           <div class="category-card__count">4 פריטים</div>
         </div>
-        <span class="category-card__icon" aria-hidden="true">🍪</span>
+        <span class="category-card__icon glass-capsule" aria-hidden="true">🍪</span>
       </div>
     </div>
   </section>
@@ -872,271 +946,271 @@
       <h2>הקולקציה שלנו</h2>
       <p>כל עוגה היא יצירת אמנות – גלו, התאהבו והזמינו</p>
     </div>
-    <button class="back-to-categories" id="backToCategoriesBtn" type="button" aria-label="חזרה לקטגוריות">
+    <button class="back-to-categories glass-capsule" id="backToCategoriesBtn" type="button" aria-label="חזרה לקטגוריות">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"></polyline></svg>
       חזרה לקטגוריות
     </button>
-    <div class="category-count" id="categoryCount">מציג 12 מתוך 42 פריטים</div>
+    <div class="category-count glass-capsule" id="categoryCount">מציג 12 מתוך 42 פריטים</div>
     <p class="gallery-hint">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
       הקישו להגדלה
     </p>
 
     <div class="gallery-grid" id="galleryGrid">
-      <div class="gallery-card" data-index="1" data-category="קינוחים,מארזים" role="button" tabindex="0" aria-label="קינוחים ומארזים — תמונה 1">
+      <div class="gallery-card glass" data-index="1" data-category="קינוחים,מארזים" role="button" tabindex="0" aria-label="קינוחים ומארזים — תמונה 1">
         <div class="gallery-card__image-wrapper">
           <img src="./images/image1.jpeg" width="675" height="900" loading="eager" alt="קינוחים ומארזים — תמונה 1 — נעה ירושלים" decoding="async" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+1'" onload="this.parentElement.parentElement.classList.add('loaded')">
         </div>
-        <span class="gallery-card__category-tag">קינוחים ומארזים</span>
+        <span class="gallery-card__category-tag glass-capsule">קינוחים ומארזים</span>
       </div>
-      <div class="gallery-card" data-index="2" data-category="קינוחים,מארזים" role="button" tabindex="0" aria-label="קינוחים ומארזים — תמונה 2">
+      <div class="gallery-card glass" data-index="2" data-category="קינוחים,מארזים" role="button" tabindex="0" aria-label="קינוחים ומארזים — תמונה 2">
         <div class="gallery-card__image-wrapper">
           <img src="./images/image2.jpeg" width="675" height="900" loading="eager" alt="קינוחים ומארזים — תמונה 2 — נעה ירושלים" decoding="async" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+2'" onload="this.parentElement.parentElement.classList.add('loaded')">
         </div>
-        <span class="gallery-card__category-tag">קינוחים ומארזים</span>
+        <span class="gallery-card__category-tag glass-capsule">קינוחים ומארזים</span>
       </div>
-      <div class="gallery-card" data-index="3" data-category="קינוחים" role="button" tabindex="0" aria-label="קינוחים — תמונה 3">
+      <div class="gallery-card glass" data-index="3" data-category="קינוחים" role="button" tabindex="0" aria-label="קינוחים — תמונה 3">
         <div class="gallery-card__image-wrapper">
           <img src="./images/image3.jpeg" width="675" height="900" loading="eager" alt="קינוחים — תמונה 3 — נעה ירושלים" decoding="async" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+3'" onload="this.parentElement.parentElement.classList.add('loaded')">
         </div>
-        <span class="gallery-card__category-tag">קינוחים</span>
+        <span class="gallery-card__category-tag glass-capsule">קינוחים</span>
       </div>
-      <div class="gallery-card" data-index="4" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגות מעוצבות — תמונה 4">
+      <div class="gallery-card glass" data-index="4" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגות מעוצבות — תמונה 4">
         <div class="gallery-card__image-wrapper">
           <img src="./images/image4.jpeg" width="675" height="900" loading="lazy" alt="עוגות מעוצבות — תמונה 4 — נעה ירושלים" decoding="async" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+4'" onload="this.parentElement.parentElement.classList.add('loaded')">
         </div>
-        <span class="gallery-card__category-tag">עוגות מעוצבות</span>
+        <span class="gallery-card__category-tag glass-capsule">עוגות מעוצבות</span>
       </div>
-      <div class="gallery-card" data-index="5" data-category="בצקים" role="button" tabindex="0" aria-label="בצקים — תמונה 5">
+      <div class="gallery-card glass" data-index="5" data-category="בצקים" role="button" tabindex="0" aria-label="בצקים — תמונה 5">
         <div class="gallery-card__image-wrapper">
           <img src="./images/image5.jpeg" width="675" height="900" loading="lazy" alt="בצקים — תמונה 5 — נעה ירושלים" decoding="async" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+5'" onload="this.parentElement.parentElement.classList.add('loaded')">
         </div>
-        <span class="gallery-card__category-tag">בצקים</span>
+        <span class="gallery-card__category-tag glass-capsule">בצקים</span>
       </div>
-      <div class="gallery-card" data-index="6" data-category="בצקים" role="button" tabindex="0" aria-label="בצקים — תמונה 6">
+      <div class="gallery-card glass" data-index="6" data-category="בצקים" role="button" tabindex="0" aria-label="בצקים — תמונה 6">
         <div class="gallery-card__image-wrapper">
           <img src="./images/image6.jpeg" width="675" height="900" loading="lazy" alt="בצקים — תמונה 6 — נעה ירושלים" decoding="async" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+6'" onload="this.parentElement.parentElement.classList.add('loaded')">
         </div>
-        <span class="gallery-card__category-tag">בצקים</span>
+        <span class="gallery-card__category-tag glass-capsule">בצקים</span>
       </div>
-      <div class="gallery-card" data-index="7" data-category="בצקים" role="button" tabindex="0" aria-label="בצקים — תמונה 7">
+      <div class="gallery-card glass" data-index="7" data-category="בצקים" role="button" tabindex="0" aria-label="בצקים — תמונה 7">
         <div class="gallery-card__image-wrapper">
           <img src="./images/image7.jpeg" width="675" height="900" loading="lazy" alt="בצקים — תמונה 7 — נעה ירושלים" decoding="async" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+7'" onload="this.parentElement.parentElement.classList.add('loaded')">
         </div>
-        <span class="gallery-card__category-tag">בצקים</span>
+        <span class="gallery-card__category-tag glass-capsule">בצקים</span>
       </div>
-      <div class="gallery-card" data-index="8" data-category="קינוחים" role="button" tabindex="0" aria-label="קינוחים — תמונה 8">
+      <div class="gallery-card glass" data-index="8" data-category="קינוחים" role="button" tabindex="0" aria-label="קינוחים — תמונה 8">
         <div class="gallery-card__image-wrapper">
           <img src="./images/image8.jpeg" width="675" height="900" loading="lazy" alt="קינוחים — תמונה 8 — נעה ירושלים" decoding="async" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+8'" onload="this.parentElement.parentElement.classList.add('loaded')">
         </div>
-        <span class="gallery-card__category-tag">קינוחים</span>
+        <span class="gallery-card__category-tag glass-capsule">קינוחים</span>
       </div>
-      <div class="gallery-card" data-index="9" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגות מעוצבות — תמונה 9">
+      <div class="gallery-card glass" data-index="9" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגות מעוצבות — תמונה 9">
         <div class="gallery-card__image-wrapper">
           <img src="./images/image9.jpeg" width="675" height="900" loading="lazy" alt="עוגות מעוצבות — תמונה 9 — נעה ירושלים" decoding="async" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+9'" onload="this.parentElement.parentElement.classList.add('loaded')">
         </div>
-        <span class="gallery-card__category-tag">עוגות מעוצבות</span>
+        <span class="gallery-card__category-tag glass-capsule">עוגות מעוצבות</span>
       </div>
-      <div class="gallery-card" data-index="10" data-category="בצקים" role="button" tabindex="0" aria-label="בצקים — תמונה 10">
+      <div class="gallery-card glass" data-index="10" data-category="בצקים" role="button" tabindex="0" aria-label="בצקים — תמונה 10">
         <div class="gallery-card__image-wrapper">
           <img src="./images/image10.jpeg" width="675" height="900" loading="lazy" alt="בצקים — תמונה 10 — נעה ירושלים" decoding="async" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+10'" onload="this.parentElement.parentElement.classList.add('loaded')">
         </div>
-        <span class="gallery-card__category-tag">בצקים</span>
+        <span class="gallery-card__category-tag glass-capsule">בצקים</span>
       </div>
-      <div class="gallery-card" data-index="11" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגות מעוצבות — תמונה 11">
+      <div class="gallery-card glass" data-index="11" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגות מעוצבות — תמונה 11">
         <div class="gallery-card__image-wrapper">
           <img src="./images/image11.jpeg" width="675" height="900" loading="lazy" alt="עוגות מעוצבות — תמונה 11 — נעה ירושלים" decoding="async" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+11'" onload="this.parentElement.parentElement.classList.add('loaded')">
         </div>
-        <span class="gallery-card__category-tag">עוגות מעוצבות</span>
+        <span class="gallery-card__category-tag glass-capsule">עוגות מעוצבות</span>
       </div>
-      <div class="gallery-card" data-index="12" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגות מעוצבות — תמונה 12">
+      <div class="gallery-card glass" data-index="12" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגות מעוצבות — תמונה 12">
         <div class="gallery-card__image-wrapper">
           <img src="./images/image12.jpeg" width="675" height="900" loading="lazy" alt="עוגות מעוצבות — תמונה 12 — נעה ירושלים" decoding="async" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+12'" onload="this.parentElement.parentElement.classList.add('loaded')">
         </div>
-        <span class="gallery-card__category-tag">עוגות מעוצבות</span>
+        <span class="gallery-card__category-tag glass-capsule">עוגות מעוצבות</span>
       </div>
-      <div class="gallery-card" data-index="13" data-category="עוגיות" role="button" tabindex="0" aria-label="עוגיות — תמונה 13">
+      <div class="gallery-card glass" data-index="13" data-category="עוגיות" role="button" tabindex="0" aria-label="עוגיות — תמונה 13">
         <div class="gallery-card__image-wrapper">
           <img src="./images/image13.jpeg" width="675" height="900" loading="lazy" alt="עוגיות — תמונה 13 — נעה ירושלים" decoding="async" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+13'" onload="this.parentElement.parentElement.classList.add('loaded')">
         </div>
-        <span class="gallery-card__category-tag">עוגיות</span>
+        <span class="gallery-card__category-tag glass-capsule">עוגיות</span>
       </div>
-      <div class="gallery-card" data-index="14" data-category="עוגות בנטו,מארזים" role="button" tabindex="0" aria-label="עוגות בנטו ומארזים — תמונה 14">
+      <div class="gallery-card glass" data-index="14" data-category="עוגות בנטו,מארזים" role="button" tabindex="0" aria-label="עוגות בנטו ומארזים — תמונה 14">
         <div class="gallery-card__image-wrapper">
           <img src="./images/image14.jpeg" width="675" height="900" loading="lazy" alt="עוגות בנטו ומארזים — תמונה 14 — נעה ירושלים" decoding="async" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+14'" onload="this.parentElement.parentElement.classList.add('loaded')">
         </div>
-        <span class="gallery-card__category-tag">עוגות בנטו ומארזים</span>
+        <span class="gallery-card__category-tag glass-capsule">עוגות בנטו ומארזים</span>
       </div>
-      <div class="gallery-card" data-index="15" data-category="בצקים" role="button" tabindex="0" aria-label="בצקים — תמונה 15">
+      <div class="gallery-card glass" data-index="15" data-category="בצקים" role="button" tabindex="0" aria-label="בצקים — תמונה 15">
         <div class="gallery-card__image-wrapper">
           <img src="./images/image15.jpeg" width="675" height="900" loading="lazy" alt="בצקים — תמונה 15 — נעה ירושלים" decoding="async" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+15'" onload="this.parentElement.parentElement.classList.add('loaded')">
         </div>
-        <span class="gallery-card__category-tag">בצקים</span>
+        <span class="gallery-card__category-tag glass-capsule">בצקים</span>
       </div>
-      <div class="gallery-card" data-index="16" data-category="עוגיות" role="button" tabindex="0" aria-label="עוגיות — תמונה 16">
+      <div class="gallery-card glass" data-index="16" data-category="עוגיות" role="button" tabindex="0" aria-label="עוגיות — תמונה 16">
         <div class="gallery-card__image-wrapper">
           <img src="./images/image16.jpeg" width="675" height="900" loading="lazy" alt="עוגיות — תמונה 16 — נעה ירושלים" decoding="async" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+16'" onload="this.parentElement.parentElement.classList.add('loaded')">
         </div>
-        <span class="gallery-card__category-tag">עוגיות</span>
+        <span class="gallery-card__category-tag glass-capsule">עוגיות</span>
       </div>
-      <div class="gallery-card" data-index="17" data-category="בצקים" role="button" tabindex="0" aria-label="בצקים — תמונה 17">
+      <div class="gallery-card glass" data-index="17" data-category="בצקים" role="button" tabindex="0" aria-label="בצקים — תמונה 17">
         <div class="gallery-card__image-wrapper">
           <img src="./images/image17.jpeg" width="675" height="900" loading="lazy" alt="בצקים — תמונה 17 — נעה ירושלים" decoding="async" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+17'" onload="this.parentElement.parentElement.classList.add('loaded')">
         </div>
-        <span class="gallery-card__category-tag">בצקים</span>
+        <span class="gallery-card__category-tag glass-capsule">בצקים</span>
       </div>
-      <div class="gallery-card" data-index="18" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגות מעוצבות — תמונה 18">
+      <div class="gallery-card glass" data-index="18" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגות מעוצבות — תמונה 18">
         <div class="gallery-card__image-wrapper">
           <img src="./images/image18.jpeg" width="675" height="900" loading="lazy" alt="עוגות מעוצבות — תמונה 18 — נעה ירושלים" decoding="async" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+18'" onload="this.parentElement.parentElement.classList.add('loaded')">
         </div>
-        <span class="gallery-card__category-tag">עוגות מעוצבות</span>
+        <span class="gallery-card__category-tag glass-capsule">עוגות מעוצבות</span>
       </div>
-      <div class="gallery-card" data-index="19" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגות מעוצבות — תמונה 19">
+      <div class="gallery-card glass" data-index="19" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגות מעוצבות — תמונה 19">
         <div class="gallery-card__image-wrapper">
           <img src="./images/image19.jpeg" width="675" height="900" loading="lazy" alt="עוגות מעוצבות — תמונה 19 — נעה ירושלים" decoding="async" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+19'" onload="this.parentElement.parentElement.classList.add('loaded')">
         </div>
-        <span class="gallery-card__category-tag">עוגות מעוצבות</span>
+        <span class="gallery-card__category-tag glass-capsule">עוגות מעוצבות</span>
       </div>
-      <div class="gallery-card" data-index="20" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגות מעוצבות — תמונה 20">
+      <div class="gallery-card glass" data-index="20" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגות מעוצבות — תמונה 20">
         <div class="gallery-card__image-wrapper">
           <img src="./images/image20.jpeg" width="675" height="900" loading="lazy" alt="עוגות מעוצבות — תמונה 20 — נעה ירושלים" decoding="async" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+20'" onload="this.parentElement.parentElement.classList.add('loaded')">
         </div>
-        <span class="gallery-card__category-tag">עוגות מעוצבות</span>
+        <span class="gallery-card__category-tag glass-capsule">עוגות מעוצבות</span>
       </div>
-      <div class="gallery-card" data-index="21" data-category="קינוחים,מארזים" role="button" tabindex="0" aria-label="קינוחים ומארזים — תמונה 21">
+      <div class="gallery-card glass" data-index="21" data-category="קינוחים,מארזים" role="button" tabindex="0" aria-label="קינוחים ומארזים — תמונה 21">
         <div class="gallery-card__image-wrapper">
           <img src="./images/image21.jpeg" width="675" height="900" loading="lazy" alt="קינוחים ומארזים — תמונה 21 — נעה ירושלים" decoding="async" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+21'" onload="this.parentElement.parentElement.classList.add('loaded')">
         </div>
-        <span class="gallery-card__category-tag">קינוחים ומארזים</span>
+        <span class="gallery-card__category-tag glass-capsule">קינוחים ומארזים</span>
       </div>
-      <div class="gallery-card" data-index="22" data-category="עוגיות" role="button" tabindex="0" aria-label="עוגיות — תמונה 22">
+      <div class="gallery-card glass" data-index="22" data-category="עוגיות" role="button" tabindex="0" aria-label="עוגיות — תמונה 22">
         <div class="gallery-card__image-wrapper">
           <img src="./images/image22.jpeg" width="675" height="900" loading="lazy" alt="עוגיות — תמונה 22 — נעה ירושלים" decoding="async" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+22'" onload="this.parentElement.parentElement.classList.add('loaded')">
         </div>
-        <span class="gallery-card__category-tag">עוגיות</span>
+        <span class="gallery-card__category-tag glass-capsule">עוגיות</span>
       </div>
-      <div class="gallery-card" data-index="23" data-category="עוגות מעוצבות,מארזים" role="button" tabindex="0" aria-label="עוגות מעוצבות ומארזים — תמונה 23">
+      <div class="gallery-card glass" data-index="23" data-category="עוגות מעוצבות,מארזים" role="button" tabindex="0" aria-label="עוגות מעוצבות ומארזים — תמונה 23">
         <div class="gallery-card__image-wrapper">
           <img src="./images/image23.jpeg" width="675" height="900" loading="lazy" alt="עוגות מעוצבות ומארזים — תמונה 23 — נעה ירושלים" decoding="async" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+23'" onload="this.parentElement.parentElement.classList.add('loaded')">
         </div>
-        <span class="gallery-card__category-tag">עוגות מעוצבות ומארזים</span>
+        <span class="gallery-card__category-tag glass-capsule">עוגות מעוצבות ומארזים</span>
       </div>
-      <div class="gallery-card" data-index="24" data-category="עוגיות" role="button" tabindex="0" aria-label="עוגיות — תמונה 24">
+      <div class="gallery-card glass" data-index="24" data-category="עוגיות" role="button" tabindex="0" aria-label="עוגיות — תמונה 24">
         <div class="gallery-card__image-wrapper">
           <img src="./images/image24.jpeg" width="675" height="900" loading="lazy" alt="עוגיות — תמונה 24 — נעה ירושלים" decoding="async" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+24'" onload="this.parentElement.parentElement.classList.add('loaded')">
         </div>
-        <span class="gallery-card__category-tag">עוגיות</span>
+        <span class="gallery-card__category-tag glass-capsule">עוגיות</span>
       </div>
-      <div class="gallery-card" data-index="25" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגות מעוצבות — תמונה 25">
+      <div class="gallery-card glass" data-index="25" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגות מעוצבות — תמונה 25">
         <div class="gallery-card__image-wrapper">
           <img src="./images/image25.jpeg" width="675" height="900" loading="lazy" alt="עוגות מעוצבות — תמונה 25 — נעה ירושלים" decoding="async" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+25'" onload="this.parentElement.parentElement.classList.add('loaded')">
         </div>
-        <span class="gallery-card__category-tag">עוגות מעוצבות</span>
+        <span class="gallery-card__category-tag glass-capsule">עוגות מעוצבות</span>
       </div>
-      <div class="gallery-card" data-index="26" data-category="בצקים" role="button" tabindex="0" aria-label="בצקים — תמונה 26">
+      <div class="gallery-card glass" data-index="26" data-category="בצקים" role="button" tabindex="0" aria-label="בצקים — תמונה 26">
         <div class="gallery-card__image-wrapper">
           <img src="./images/image26.jpeg" width="675" height="900" loading="lazy" alt="בצקים — תמונה 26 — נעה ירושלים" decoding="async" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+26'" onload="this.parentElement.parentElement.classList.add('loaded')">
         </div>
-        <span class="gallery-card__category-tag">בצקים</span>
+        <span class="gallery-card__category-tag glass-capsule">בצקים</span>
       </div>
-      <div class="gallery-card" data-index="27" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגות מעוצבות — תמונה 27">
+      <div class="gallery-card glass" data-index="27" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגות מעוצבות — תמונה 27">
         <div class="gallery-card__image-wrapper">
           <img src="./images/image27.jpeg" width="675" height="900" loading="lazy" alt="עוגות מעוצבות — תמונה 27 — נעה ירושלים" decoding="async" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+27'" onload="this.parentElement.parentElement.classList.add('loaded')">
         </div>
-        <span class="gallery-card__category-tag">עוגות מעוצבות</span>
+        <span class="gallery-card__category-tag glass-capsule">עוגות מעוצבות</span>
       </div>
-      <div class="gallery-card" data-index="28" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגות מעוצבות — תמונה 28">
+      <div class="gallery-card glass" data-index="28" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגות מעוצבות — תמונה 28">
         <div class="gallery-card__image-wrapper">
           <img src="./images/image28.jpeg" width="675" height="900" loading="lazy" alt="עוגות מעוצבות — תמונה 28 — נעה ירושלים" decoding="async" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+28'" onload="this.parentElement.parentElement.classList.add('loaded')">
         </div>
-        <span class="gallery-card__category-tag">עוגות מעוצבות</span>
+        <span class="gallery-card__category-tag glass-capsule">עוגות מעוצבות</span>
       </div>
-      <div class="gallery-card" data-index="29" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגות מעוצבות — תמונה 29">
+      <div class="gallery-card glass" data-index="29" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגות מעוצבות — תמונה 29">
         <div class="gallery-card__image-wrapper">
           <img src="./images/image29.jpeg" width="675" height="900" loading="lazy" alt="עוגות מעוצבות — תמונה 29 — נעה ירושלים" decoding="async" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+29'" onload="this.parentElement.parentElement.classList.add('loaded')">
         </div>
-        <span class="gallery-card__category-tag">עוגות מעוצבות</span>
+        <span class="gallery-card__category-tag glass-capsule">עוגות מעוצבות</span>
       </div>
-      <div class="gallery-card" data-index="30" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגות מעוצבות — תמונה 30">
+      <div class="gallery-card glass" data-index="30" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגות מעוצבות — תמונה 30">
         <div class="gallery-card__image-wrapper">
           <img src="./images/image30.jpeg" width="675" height="900" loading="lazy" alt="עוגות מעוצבות — תמונה 30 — נעה ירושלים" decoding="async" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+30'" onload="this.parentElement.parentElement.classList.add('loaded')">
         </div>
-        <span class="gallery-card__category-tag">עוגות מעוצבות</span>
+        <span class="gallery-card__category-tag glass-capsule">עוגות מעוצבות</span>
       </div>
-      <div class="gallery-card" data-index="31" data-category="עוגות בנטו,מארזים" role="button" tabindex="0" aria-label="עוגות בנטו ומארזים — תמונה 31">
+      <div class="gallery-card glass" data-index="31" data-category="עוגות בנטו,מארזים" role="button" tabindex="0" aria-label="עוגות בנטו ומארזים — תמונה 31">
         <div class="gallery-card__image-wrapper">
           <img src="./images/image31.jpeg" width="675" height="900" loading="lazy" alt="עוגות בנטו ומארזים — תמונה 31 — נעה ירושלים" decoding="async" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+31'" onload="this.parentElement.parentElement.classList.add('loaded')">
         </div>
-        <span class="gallery-card__category-tag">עוגות בנטו ומארזים</span>
+        <span class="gallery-card__category-tag glass-capsule">עוגות בנטו ומארזים</span>
       </div>
-      <div class="gallery-card" data-index="32" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגות מעוצבות — תמונה 32">
+      <div class="gallery-card glass" data-index="32" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגות מעוצבות — תמונה 32">
         <div class="gallery-card__image-wrapper">
           <img src="./images/image32.jpeg" width="506" height="900" loading="lazy" alt="עוגות מעוצבות — תמונה 32 — נעה ירושלים" decoding="async" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+32'" onload="this.parentElement.parentElement.classList.add('loaded')">
         </div>
-        <span class="gallery-card__category-tag">עוגות מעוצבות</span>
+        <span class="gallery-card__category-tag glass-capsule">עוגות מעוצבות</span>
       </div>
-      <div class="gallery-card" data-index="33" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגות מעוצבות — תמונה 33">
+      <div class="gallery-card glass" data-index="33" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגות מעוצבות — תמונה 33">
         <div class="gallery-card__image-wrapper">
           <img src="./images/image33.jpeg" width="675" height="900" loading="lazy" alt="עוגות מעוצבות — תמונה 33 — נעה ירושלים" decoding="async" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+33'" onload="this.parentElement.parentElement.classList.add('loaded')">
         </div>
-        <span class="gallery-card__category-tag">עוגות מעוצבות</span>
+        <span class="gallery-card__category-tag glass-capsule">עוגות מעוצבות</span>
       </div>
-      <div class="gallery-card" data-index="34" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגות מעוצבות — תמונה 34">
+      <div class="gallery-card glass" data-index="34" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגות מעוצבות — תמונה 34">
         <div class="gallery-card__image-wrapper">
           <img src="./images/image34.jpeg" width="675" height="900" loading="lazy" alt="עוגות מעוצבות — תמונה 34 — נעה ירושלים" decoding="async" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+34'" onload="this.parentElement.parentElement.classList.add('loaded')">
         </div>
-        <span class="gallery-card__category-tag">עוגות מעוצבות</span>
+        <span class="gallery-card__category-tag glass-capsule">עוגות מעוצבות</span>
       </div>
-      <div class="gallery-card" data-index="35" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגות מעוצבות — תמונה 35">
+      <div class="gallery-card glass" data-index="35" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגות מעוצבות — תמונה 35">
         <div class="gallery-card__image-wrapper">
           <img src="./images/image35.jpeg" width="675" height="900" loading="lazy" alt="עוגות מעוצבות — תמונה 35 — נעה ירושלים" decoding="async" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+35'" onload="this.parentElement.parentElement.classList.add('loaded')">
         </div>
-        <span class="gallery-card__category-tag">עוגות מעוצבות</span>
+        <span class="gallery-card__category-tag glass-capsule">עוגות מעוצבות</span>
       </div>
-      <div class="gallery-card" data-index="36" data-category="מארזים" role="button" tabindex="0" aria-label="מארזים — תמונה 36">
+      <div class="gallery-card glass" data-index="36" data-category="מארזים" role="button" tabindex="0" aria-label="מארזים — תמונה 36">
         <div class="gallery-card__image-wrapper">
           <img src="./images/image36.jpeg" width="506" height="900" loading="lazy" alt="מארזים — תמונה 36 — נעה ירושלים" decoding="async" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+36'" onload="this.parentElement.parentElement.classList.add('loaded')">
         </div>
-        <span class="gallery-card__category-tag">מארזים</span>
+        <span class="gallery-card__category-tag glass-capsule">מארזים</span>
       </div>
-      <div class="gallery-card" data-index="37" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגות מעוצבות — תמונה 37">
+      <div class="gallery-card glass" data-index="37" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגות מעוצבות — תמונה 37">
         <div class="gallery-card__image-wrapper">
           <img src="./images/image37.jpeg" width="675" height="900" loading="lazy" alt="עוגות מעוצבות — תמונה 37 — נעה ירושלים" decoding="async" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+37'" onload="this.parentElement.parentElement.classList.add('loaded')">
         </div>
-        <span class="gallery-card__category-tag">עוגות מעוצבות</span>
+        <span class="gallery-card__category-tag glass-capsule">עוגות מעוצבות</span>
       </div>
-      <div class="gallery-card" data-index="38" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגות מעוצבות — תמונה 38">
+      <div class="gallery-card glass" data-index="38" data-category="עוגות מעוצבות" role="button" tabindex="0" aria-label="עוגות מעוצבות — תמונה 38">
         <div class="gallery-card__image-wrapper">
           <img src="./images/image38.jpeg" width="675" height="900" loading="lazy" alt="עוגות מעוצבות — תמונה 38 — נעה ירושלים" decoding="async" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+38'" onload="this.parentElement.parentElement.classList.add('loaded')">
         </div>
-        <span class="gallery-card__category-tag">עוגות מעוצבות</span>
+        <span class="gallery-card__category-tag glass-capsule">עוגות מעוצבות</span>
       </div>
-      <div class="gallery-card" data-index="39" data-category="מארזים" role="button" tabindex="0" aria-label="מארזים — תמונה 39">
+      <div class="gallery-card glass" data-index="39" data-category="מארזים" role="button" tabindex="0" aria-label="מארזים — תמונה 39">
         <div class="gallery-card__image-wrapper">
           <img src="./images/image39.jpeg" width="675" height="900" loading="lazy" alt="מארזים — תמונה 39 — נעה ירושלים" decoding="async" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+39'" onload="this.parentElement.parentElement.classList.add('loaded')">
         </div>
-        <span class="gallery-card__category-tag">מארזים</span>
+        <span class="gallery-card__category-tag glass-capsule">מארזים</span>
       </div>
-      <div class="gallery-card" data-index="40" data-category="עוגות בנטו,מארזים" role="button" tabindex="0" aria-label="עוגות בנטו ומארזים — תמונה 40">
+      <div class="gallery-card glass" data-index="40" data-category="עוגות בנטו,מארזים" role="button" tabindex="0" aria-label="עוגות בנטו ומארזים — תמונה 40">
         <div class="gallery-card__image-wrapper">
           <img src="./images/image40.jpeg" width="675" height="900" loading="lazy" alt="עוגות בנטו ומארזים — תמונה 40 — נעה ירושלים" decoding="async" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+40'" onload="this.parentElement.parentElement.classList.add('loaded')">
         </div>
-        <span class="gallery-card__category-tag">עוגות בנטו ומארזים</span>
+        <span class="gallery-card__category-tag glass-capsule">עוגות בנטו ומארזים</span>
       </div>
-      <div class="gallery-card" data-index="41" data-category="מארזים" role="button" tabindex="0" aria-label="מארזים — תמונה 41">
+      <div class="gallery-card glass" data-index="41" data-category="מארזים" role="button" tabindex="0" aria-label="מארזים — תמונה 41">
         <div class="gallery-card__image-wrapper">
           <img src="./images/image41.jpeg" width="675" height="900" loading="lazy" alt="מארזים — תמונה 41 — נעה ירושלים" decoding="async" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+41'" onload="this.parentElement.parentElement.classList.add('loaded')">
         </div>
-        <span class="gallery-card__category-tag">מארזים</span>
+        <span class="gallery-card__category-tag glass-capsule">מארזים</span>
       </div>
-      <div class="gallery-card" data-index="42" data-category="עוגות בנטו" role="button" tabindex="0" aria-label="עוגות בנטו — תמונה 42">
+      <div class="gallery-card glass" data-index="42" data-category="עוגות בנטו" role="button" tabindex="0" aria-label="עוגות בנטו — תמונה 42">
         <div class="gallery-card__image-wrapper">
           <img src="./images/image42.jpeg" width="675" height="900" loading="lazy" alt="עוגות בנטו — תמונה 42 — נעה ירושלים" decoding="async" onerror="this.parentElement.parentElement.classList.add('loaded'); this.src='https://placehold.co/600x600?text=עוגה+42'" onload="this.parentElement.parentElement.classList.add('loaded')">
         </div>
-        <span class="gallery-card__category-tag">עוגות בנטו</span>
+        <span class="gallery-card__category-tag glass-capsule">עוגות בנטו</span>
       </div>
     </div>
-    <button class="load-more-btn" id="loadMoreBtn" type="button" aria-label="טען עוד פריטים">טען עוד</button>
+    <button class="load-more-btn glass-capsule" id="loadMoreBtn" type="button" aria-label="טען עוד פריטים">טען עוד</button>
   </section>
   <div class="section-divider" aria-hidden="true">
     <svg class="section-divider__mark" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1153,17 +1227,17 @@
         <p>מה שמייחד אותנו מכל השאר</p>
       </div>
       <div class="why-grid">
-        <div class="why-card">
+        <div class="why-card glass">
           <div class="why-card__icon" aria-hidden="true">👩‍🍳</div>
           <h3>אומנות בעבודת יד</h3>
           <p>כל עוגה מעוצבת ומוכנה ידנית — אין שני עוגות זהות. תשומת לב לכל פרט, מעיצוב ועד טעם.</p>
         </div>
-        <div class="why-card">
+        <div class="why-card glass">
           <div class="why-card__icon" aria-hidden="true">🌿</div>
           <h3>חומרים איכותיים</h3>
           <p>רק חומרים טריים ואיכותיים — שוקולד אמיתי, שמנת טבעית, ופירות טריים. אין פשרות על טעם.</p>
         </div>
-        <div class="why-card">
+        <div class="why-card glass">
           <div class="why-card__icon" aria-hidden="true">💝</div>
           <h3>תהליך אדיב ואישי</h3>
           <p>נעה דואגת לכל לקוחה כאילו היא המשפחה שלה. מהרגע הראשון ועד שהעוגה מגיעה מושלמת — עם לב, סבלנות ותשומת לב לכל פרט.</p>
@@ -1180,7 +1254,7 @@
   </div>
 
   <section id="about" class="about-section" aria-label="אודות נעה">
-    <div class="about-inner container">
+    <div class="about-inner container glass">
       <div class="about-img">
         <img src="./noa.jpeg" width="506" height="900" loading="lazy" alt="נעה - האופה והאמנית מאחורי כל עוגה" decoding="async" onerror="this.src='https://placehold.co/280x280?text=Noa'">
       </div>
@@ -1196,14 +1270,14 @@
             <p>ניסיון רב בתחום הקונדיטוריה המעוצבת והבוטיק.</p>
           </div>
         </div>
-        <button class="send-photo-nav-btn" id="aboutSendPhotoBtn" type="button" aria-label="שלחו תמונה לנעה" style="margin-top: var(--space-lg); display: inline-flex;">
+        <button class="send-photo-nav-btn glass-capsule" id="aboutSendPhotoBtn" type="button" aria-label="שלחו תמונה לנעה" style="margin-top: var(--space-lg); display: inline-flex;">
           <span class="icon" aria-hidden="true">📷</span> שלחו לי תמונה
         </button>
       </div>
     </div>
   </section>
 
-  <footer>
+  <footer class="glass-strong">
     <p>© 2026 נעה | Made with love | ירושלים</p>
     <div>
       <a href="https://www.instagram.com/noa__sweet_/" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="עקוב אחרינו באינסטגרם">
@@ -1215,7 +1289,7 @@
         Instagram
       </a>
     </div>
-    <button class="share-btn" id="shareBtn" type="button" aria-label="שתף את האתר">
+    <button class="share-btn glass-capsule" id="shareBtn" type="button" aria-label="שתף את האתר">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <circle cx="18" cy="5" r="3"></circle>
         <circle cx="6" cy="12" r="3"></circle>
@@ -1228,7 +1302,7 @@
   </footer>
 
   <div id="orderModal" class="order-modal" role="dialog" aria-label="טופס הזמנה" aria-modal="true">
-    <div class="modal-card">
+    <div class="modal-card glass-strong">
       <button class="close-modal" id="closeModalBtn" aria-label="סגור טופס">&times;</button>
       <h3>הזמנה אישית</h3>
       <p class="modal-badge">נעה עובדת בירושלים בלבד</p>
@@ -1262,34 +1336,34 @@
             <option value="delivery">משלוח בתשלום – ירושלים</option>
           </select>
         </div>
-        <button type="submit" class="submit-btn" aria-label="שלח הזמנה בוואטסאפ">שלחי לוואטסאפ</button>
+        <button type="submit" class="submit-btn glass-capsule" aria-label="שלח הזמנה בוואטסאפ">שלחי לוואטסאפ</button>
       </form>
     </div>
   </div>
 
   <div id="lightbox" class="lightbox" role="dialog" aria-label="תצוגת תמונה מוגדלת" aria-modal="true">
-    <button class="close-lightbox" id="closeLightboxBtn" aria-label="סגור תצוגה">&times;</button>
-    <div class="lightbox__hint">דאבל-טאפ לזום • שני אצבעות לפינץ' • גרירה להזזה</div>
+    <button class="close-lightbox glass-capsule" id="closeLightboxBtn" aria-label="סגור תצוגה">&times;</button>
+    <div class="lightbox__hint glass-capsule">דאבל-טאפ לזום • שני אצבעות לפינץ' • גרירה להזזה</div>
     <div class="lightbox__stage" id="lightboxStage">
       <div class="lightbox__image-wrapper" id="lightboxImageWrapper">
         <img id="lightboxImg" src="" alt="תצוגה מוגדלת" loading="eager" draggable="false">
       </div>
     </div>
-    <div class="lightbox__controls">
-      <button class="lightbox__btn" id="lightboxPrev" aria-label="תמונה קודמת">
+    <div class="lightbox__controls glass-capsule">
+      <button class="lightbox__btn glass-capsule" id="lightboxPrev" aria-label="תמונה קודמת">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
       </button>
       <span class="lightbox__counter" id="lightboxCounter" aria-live="polite">1 / 42</span>
-      <button class="lightbox__btn" id="lightboxNext" aria-label="תמונה הבאה">
+      <button class="lightbox__btn glass-capsule" id="lightboxNext" aria-label="תמונה הבאה">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
       </button>
-      <button class="lightbox__btn" id="lightboxZoomOut" aria-label="הקטן תמונה">
+      <button class="lightbox__btn glass-capsule" id="lightboxZoomOut" aria-label="הקטן תמונה">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
       </button>
-      <button class="lightbox__btn" id="lightboxZoomIn" aria-label="הגדל תמונה">
+      <button class="lightbox__btn glass-capsule" id="lightboxZoomIn" aria-label="הגדל תמונה">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
       </button>
-      <button class="lightbox__btn" id="lightboxReset" aria-label="איפוס זום">
+      <button class="lightbox__btn glass-capsule" id="lightboxReset" aria-label="איפוס זום">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>
       </button>
     </div>
